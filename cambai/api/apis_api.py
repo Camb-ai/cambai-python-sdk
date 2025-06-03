@@ -10,7 +10,7 @@
 
     Do not edit the class manually.
 """  # noqa: E501
-
+import time
 import warnings
 from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -62,7 +62,113 @@ class ApisApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-
+    @validate_call
+    def text_to_speech(
+        self,
+        text: str,
+        voice_id: int,
+        language: int = 1,
+        wait_time: int = 10,
+        max_retries: int = 10,
+        output_type: OutputType = OutputType.FILE_URL,
+        save_to_file: Optional[str] = None,
+        verbose: bool = False
+    ) -> Union[str, bytes, dict]:
+        """Convert text to speech and return the audio URL, bytes, or save to file.
+        
+        This is a convenience method that combines create_tts, get_tts_result_by_id,
+        and get_tts_run_info_by_id into a single call.
+        
+        Args:
+            text: The text to convert to speech
+            voice_id: The ID of the voice to use
+            language: The language ID (default: 1)
+            wait_time: Time to wait between polling attempts in seconds (default: 15)
+            max_retries: Maximum number of polling attempts (default: 10)
+            output_type: Type of output to return (default: FILE_URL)
+            save_to_file: Optional file path to save the audio to (works with BYTES output type)
+            verbose: Whether to print status updates during processing
+            
+        Returns:
+            If output_type is FILE_URL: Returns the URL string or dict with URL
+            If output_type is BYTES: Returns the audio bytes or saves to file if save_to_file is provided
+            
+        Raises:
+            ApiException: If there's an error with the API call
+            TimeoutError: If the maximum number of retries is exceeded
+            IOError: If there's an error saving the file
+        """
+        # Create the request payload
+        request_payload = CreateTTSRequestPayload(
+            text=text,
+            voice_id=voice_id,
+            language=language
+        )
+        
+        # Submit the TTS request
+        if verbose:
+            print(f"Submitting TTS request for text: '{text[:30]}...' with voice ID: {voice_id}")
+        
+        task_id_obj = self.create_tts(request_payload)
+        task_id_str = task_id_obj.task_id
+        
+        if verbose:
+            print(f"Request submitted. Task ID: {task_id_str}")
+            print(f"Waiting for processing to complete (checking every {wait_time} seconds, max {max_retries} attempts)...")
+        
+        # Poll for results
+        for attempt in range(max_retries):
+            if verbose:
+                print(f"Attempt {attempt+1}/{max_retries}: Checking status...")
+            
+            time.sleep(wait_time)
+            try:
+                result = self.get_tts_result_by_id(task_id_str)
+                
+                if hasattr(result, 'run_id') and result.run_id is not None:
+                    if verbose:
+                        print(f"Processing complete! Run ID: {result.run_id}")
+                        print(f"Retrieving audio with output type: {output_type}")
+                    
+                    # Get the final result
+                    if output_type == OutputType.RAW_BYTES:
+                        try:
+                            # Get raw response without automatic deserialization
+                            response_data = self.get_tts_run_info_by_id_without_preload_content(
+                                run_id=result.run_id, 
+                                output_type=output_type
+                            )
+                            
+                            # Read binary data directly
+                            binary_data = response_data.data
+                            
+                            # If save_to_file is provided, save to file
+                            if save_to_file:
+                                try:
+                                    with open(save_to_file, 'wb') as f:
+                                        f.write(binary_data)
+                                    if verbose:
+                                        print(f"Audio saved to file: {save_to_file}")
+                                    return f"Audio saved to {save_to_file}"
+                                except IOError as e:
+                                    raise IOError(f"Failed to save audio to file: {str(e)}")
+                            
+                            return binary_data
+                        except Exception as e:
+                            if verbose:
+                                print(f"Error retrieving binary data: {str(e)}")
+                            raise
+                    else:
+                        response = self.get_tts_run_info_by_id(result.run_id, output_type=output_type)
+                        return response
+                elif verbose:
+                    print(f"Still processing... (status: {getattr(result, 'status', 'unknown')})")
+                
+            except Exception as e:
+                if verbose:
+                    print(f"Error checking status: {str(e)}")
+        
+        raise TimeoutError(f"TTS request did not complete after {max_retries} attempts ({wait_time * max_retries} seconds)")
     @validate_call
     def create_audio_separation(
         self,
@@ -128,7 +234,6 @@ class ApisApi:
             response_data=response_data,
             response_types_map=_response_types_map,
         ).data
-
 
     @validate_call
     def create_audio_separation_with_http_info(
@@ -1339,9 +1444,6 @@ class ApisApi:
             _host=_host,
             _request_auth=_request_auth
         )
-
-
-
 
     @validate_call
     def create_text_to_sound(
