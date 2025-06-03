@@ -12,6 +12,8 @@
 """  # noqa: E501
 import time
 import warnings
+
+import requests
 from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
@@ -62,6 +64,208 @@ class ApisApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
+    @validate_call
+    def text_to_audio(
+        self,
+        prompt: str,
+        duration: int,
+        wait_time: int = 15,
+        max_retries: int = 10,
+        save_to_file: Optional[str] = None,
+        verbose: bool = False
+    ) -> Union[str, bytearray]:
+        """Convert text to audio and return the audio bytes or save to file.
+        
+        This is a convenience method that combines create_text_to_sound, get_text_to_audio_status_by_id,
+        and get_text_to_sound_run_result_by_id into a single call.
+        
+        Args:
+            prompt: The text prompt to convert to audio
+            duration: The desired duration of the audio in seconds
+            wait_time: Time to wait between polling attempts in seconds (default: 15)
+            max_retries: Maximum number of polling attempts (default: 10)
+            save_to_file: Optional file path to save the audio to
+            verbose: Whether to print status updates during processing
+            
+        Returns:
+            If save_to_file is provided: Returns a string confirming the file was saved
+            Otherwise: Returns the audio as a bytearray
+            
+        Raises:
+            ApiException: If there's an error with the API call
+            TimeoutError: If the maximum number of retries is exceeded
+            IOError: If there's an error saving the file
+        """
+        from cambai.models.create_text_to_audio_request_payload import CreateTextToAudioRequestPayload
+        
+        # Create the request payload
+        request_payload = CreateTextToAudioRequestPayload(
+            prompt=prompt,
+            duration=duration
+        )
+        
+        # Submit the request
+        if verbose:
+            print(f"Submitting text-to-audio request for prompt: '{prompt[:30]}...' with duration: {duration}")
+        
+        task_id_obj = self.create_text_to_sound(request_payload)
+        task_id_str = task_id_obj.task_id
+        
+        if verbose:
+            print(f"Request submitted. Task ID: {task_id_str}")
+            print(f"Waiting for processing to complete (checking every {wait_time} seconds, max {max_retries} attempts)...")
+        
+        # Poll for results
+        for attempt in range(max_retries):
+            if verbose:
+                print(f"Attempt {attempt+1}/{max_retries}: Checking status...")
+            
+            time.sleep(wait_time)
+            try:
+                result = self.get_text_to_audio_status_by_id(task_id_str)
+                
+                if hasattr(result, 'run_id') and result.run_id is not None:
+                    if verbose:
+                        print(f"Processing complete! Run ID: {result.run_id}")
+                        print(f"Retrieving audio...")
+                    
+                    # Get the audio data
+                    audio_data = self.get_text_to_sound_run_result_by_id(run_id=result.run_id)
+                    
+                    # If save_to_file is provided, save to file
+                    if save_to_file:
+                        try:
+                            with open(save_to_file, 'wb') as f:
+                                f.write(audio_data)
+                            if verbose:
+                                print(f"Audio saved to file: {save_to_file}")
+                            return f"Audio saved to {save_to_file}"
+                        except IOError as e:
+                            raise IOError(f"Failed to save audio to file: {str(e)}")
+                    
+                    return audio_data
+                elif verbose:
+                    status = getattr(result, 'status', None)
+                    if status:
+                        print(f"Still processing... (status: {status})")
+                    else:
+                        print("Still processing... (status unknown)")
+                
+            except Exception as e:
+                if verbose:
+                    print(f"Error checking status: {str(e)}")
+        
+        raise TimeoutError(f"Text-to-audio request did not complete after {max_retries} attempts ({wait_time * max_retries} seconds)")
+    @validate_call
+    def text_to_voice(
+        self,
+        text: str,
+        voice_description: str,
+        wait_time: int = 15,
+        max_retries: int = 10,
+        save_to_file: Optional[str] = None,
+        verbose: bool = False
+    ) -> Union[str, dict]:
+        """Convert text to voice using a voice description and return the result.
+        
+        This is a convenience method that combines create_voice_from_description, text_to_voice_task_id_get,
+        and get_text_to_voice_run_result_by_id into a single call.
+        
+        Args:
+            text: The text to convert to speech
+            voice_description: Description of the voice to generate
+            wait_time: Time to wait between polling attempts in seconds (default: 15)
+            max_retries: Maximum number of polling attempts (default: 10)
+            save_to_file: Optional file path to save the audio to
+            verbose: Whether to print status updates during processing
+            
+        Returns:
+            If save_to_file is provided: Returns a string confirming the file was saved
+            Otherwise: Returns a dictionary with the voice generation result (typically containing a URL)
+            
+        Raises:
+            ApiException: If there's an error with the API call
+            TimeoutError: If the maximum number of retries is exceeded
+            IOError: If there's an error saving the file
+        """
+        from cambai.models.create_text_to_voice_request_payload import CreateTextToVoiceRequestPayload
+        
+        # Create the request payload
+        request_payload = CreateTextToVoiceRequestPayload(
+            text=text,
+            voice_description=voice_description
+        )
+        
+        # Submit the request
+        if verbose:
+            print(f"Submitting text-to-voice request for text: '{text[:30]}...'")
+            print(f"Voice description: '{voice_description[:50]}...'")
+        
+        task_id_obj = self.create_voice_from_description(request_payload)
+        task_id_str = task_id_obj.task_id
+        
+        if verbose:
+            print(f"Request submitted. Task ID: {task_id_str}")
+            print(f"Waiting for processing to complete (checking every {wait_time} seconds, max {max_retries} attempts)...")
+        
+        # Poll for results
+        for attempt in range(max_retries):
+            if verbose:
+                print(f"Attempt {attempt+1}/{max_retries}: Checking status...")
+            
+            time.sleep(wait_time)
+            try:
+                result = self.text_to_voice_task_id_get(task_id_str)
+                
+                if hasattr(result, 'run_id') and result.run_id is not None:
+                    if verbose:
+                        print(f"Processing complete! Run ID: {result.run_id}")
+                        print(f"Retrieving voice result...")
+                    
+                    # Get the result (typically a URL to the generated audio)
+                    response = self.get_text_to_voice_run_result_by_id(result.run_id)
+                    
+                    # If save_to_file is provided, download and save the audio
+                    if save_to_file:
+                        try:
+                            # Extract URL from response
+                            audio_url = response.get('url') if isinstance(response, dict) else response
+                            
+                            if not audio_url:
+                                raise ValueError("No URL found in the response")
+                            
+                            if verbose:
+                                print(f"Downloading audio from: {audio_url}")
+                            
+                            # Download the audio file
+                            audio_response = requests.get(audio_url)
+                            audio_response.raise_for_status()  # Raise exception for HTTP errors
+                            
+                            # Save to file
+                            with open(save_to_file, 'wb') as f:
+                                f.write(audio_response.content)
+                            
+                            if verbose:
+                                print(f"Audio saved to file: {save_to_file}")
+                            
+                            return f"Audio saved to {save_to_file}"
+                        except Exception as e:
+                            raise IOError(f"Failed to download or save audio: {str(e)}")
+                    
+                    return response
+                elif verbose:
+                    status = getattr(result, 'status', None)
+                    if status:
+                        print(f"Still processing... (status: {status})")
+                    else:
+                        print("Still processing... (status unknown)")
+                
+            except Exception as e:
+                if verbose:
+                    print(f"Error checking status: {str(e)}")
+        
+        raise TimeoutError(f"Text-to-voice request did not complete after {max_retries} attempts ({wait_time * max_retries} seconds)")
+     
     @validate_call
     def text_to_speech(
         self,
