@@ -13,7 +13,6 @@
 import time
 import warnings
 
-import requests
 from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
@@ -163,9 +162,8 @@ class ApisApi:
         voice_description: str,
         wait_time: int = 15,
         max_retries: int = 10,
-        save_to_file: Optional[str] = None,
         verbose: bool = False
-    ) -> Union[str, dict]:
+    ) -> dict:
         """Convert text to voice using a voice description and return the result.
         
         This is a convenience method that combines create_voice_from_description, text_to_voice_task_id_get,
@@ -176,17 +174,14 @@ class ApisApi:
             voice_description: Description of the voice to generate
             wait_time: Time to wait between polling attempts in seconds (default: 15)
             max_retries: Maximum number of polling attempts (default: 10)
-            save_to_file: Optional file path to save the audio to
             verbose: Whether to print status updates during processing
             
         Returns:
-            If save_to_file is provided: Returns a string confirming the file was saved
-            Otherwise: Returns a dictionary with the voice generation result (typically containing a URL)
+            A dictionary with the voice generation result (typically containing URLs to the generated audio)
             
         Raises:
             ApiException: If there's an error with the API call
             TimeoutError: If the maximum number of retries is exceeded
-            IOError: If there's an error saving the file
         """
         from cambai.models.create_text_to_voice_request_payload import CreateTextToVoiceRequestPayload
         
@@ -222,36 +217,8 @@ class ApisApi:
                         print(f"Processing complete! Run ID: {result.run_id}")
                         print(f"Retrieving voice result...")
                     
-                    # Get the result (typically a URL to the generated audio)
+                    # Get the result (typically URLs to the generated audio)
                     response = self.get_text_to_voice_run_result_by_id(result.run_id)
-                    
-                    # If save_to_file is provided, download and save the audio
-                    if save_to_file:
-                        try:
-                            # Extract URL from response
-                            audio_url = response.get('url') if isinstance(response, dict) else response
-                            
-                            if not audio_url:
-                                raise ValueError("No URL found in the response")
-                            
-                            if verbose:
-                                print(f"Downloading audio from: {audio_url}")
-                            
-                            # Download the audio file
-                            audio_response = requests.get(audio_url)
-                            audio_response.raise_for_status()  # Raise exception for HTTP errors
-                            
-                            # Save to file
-                            with open(save_to_file, 'wb') as f:
-                                f.write(audio_response.content)
-                            
-                            if verbose:
-                                print(f"Audio saved to file: {save_to_file}")
-                            
-                            return f"Audio saved to {save_to_file}"
-                        except Exception as e:
-                            raise IOError(f"Failed to download or save audio: {str(e)}")
-                    
                     return response
                 elif verbose:
                     status = getattr(result, 'status', None)
