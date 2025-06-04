@@ -9,7 +9,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 ---
 
 ## ✨ Features
-
+- **Dubbing**: Dub your videos into multiple languages with voice cloning!
 - **Expressive Text-to-Speech**: Convert text into natural-sounding speech using a wide range of pre-existing voices.  
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.  
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.  
@@ -19,19 +19,17 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 
 ## 📦 Installation
 
-You'll need **Python 3.9** or higher.
-
-Install the SDK using pip:
+Install the SDK using pip, ensure **Python 3.9+**:
 
 ```bash
 pip install camb-ai
 ````
 
-> If the package is not yet on PyPI, you can install it directly from GitHub for now:
->
-> ```bash
-> pip install git+https://github.com/Camb-ai/cambai-python-sdk
-> ```
+Or through
+
+```bash
+pip install git+https://github.com/Camb-ai/cambai-python-sdk
+```
 
 ---
 
@@ -55,9 +53,7 @@ Set your API key as an environment variable named `CAMB_AI_API_KEY`:
    ```
 ---
 
-## 🚀 Getting Started: Core Capabilities
-
-Below are examples of how to use some of the core features of the Camb AI SDK.
+## 🚀 Getting Started: Examples
 
 ### 1. Text-to-Speech (TTS)
 
