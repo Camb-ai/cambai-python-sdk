@@ -30,7 +30,7 @@ pip install camb-ai-sdk
 > If the package is not yet on PyPI, you can install it directly from GitHub for now:
 >
 > ```bash
-> pip install git+https://github.com/your-org/camb-ai-python-sdk.git
+> pip install git+https://github.com/Camb-ai/python-sdk
 > ```
 
 ---
@@ -92,7 +92,7 @@ Generate speech and save it as an MP3 file (or other supported formats).
 
 ```python
 from cambai.api import apis_api
-from cambai.models.output_type import OutputType  # Make sure to import OutputType
+from cambai.models.output_type import OutputType 
 from cambai.rest import ApiException
 
 # Initialize client
@@ -102,8 +102,7 @@ file_path = "my_generated_speech.mp3"
 
 try:
     print(f"Generating speech and saving to {file_path}...")
-    # This function will return None if save_to_file is specified and output_type is RAW_BYTES,
-    # as the file is written directly.
+
     client.text_to_speech(
         text="This is another test, saving directly to a file.",
         voice_id=20303,                # Example voice ID
@@ -177,10 +176,10 @@ output_file = "generated_sound_effect.mp3"
 
 try:
     print(f"Generating sound effect and saving to {output_file}...")
-    # Similar to text_to_speech, this will save the file and return None.
+
     client.text_to_audio(
         prompt="A gentle breeze rustling through autumn leaves in a quiet forest.",
-        duration=10,       # Duration of the audio in seconds
+        duration=10,       
         save_to_file=output_file,
         verbose=True
     )
