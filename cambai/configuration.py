@@ -229,13 +229,8 @@ conf = cambai.Configuration(
         """
         # Authentication Settings
         self.api_key = {}
-        env_api_key = os.environ.get("CAMB_API_KEY")
-        if isinstance(api_key, str):
+        if api_key:
             self.api_key['APIKeyHeader'] = api_key
-        elif isinstance(api_key, dict):
-            self.api_key = api_key
-        elif env_api_key:
-            self.api_key['APIKeyHeader'] = env_api_key
         """dict to store API key(s)
         """
         self.api_key_prefix = {}
