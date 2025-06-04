@@ -14,14 +14,14 @@
 
 import unittest
 
-from cambai.api.apis_api import ApisApi
+from cambai.api.apis_api import CambAI
 
 
 class TestApisApi(unittest.TestCase):
     """ApisApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = ApisApi()
+        self.api = CambAI()
 
     def tearDown(self) -> None:
         pass

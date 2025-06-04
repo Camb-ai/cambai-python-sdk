@@ -18,7 +18,7 @@ __version__ = "1.0.0"
 
 # Define package exports
 __all__ = [
-    "ApisApi",
+    "CambAI",
     "AudioSeparationApi",
     "DictionariesApi",
     "DubApi",
@@ -80,7 +80,7 @@ __all__ = [
 ]
 
 # import apis into sdk package
-from cambai.api.apis_api import ApisApi as ApisApi
+from cambai.api.apis_api import CambAI as CambAI
 from cambai.api.audio_separation_api import AudioSeparationApi as AudioSeparationApi
 from cambai.api.dictionaries_api import DictionariesApi as DictionariesApi
 from cambai.api.dub_api import DubApi as DubApi
