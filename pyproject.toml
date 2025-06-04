@@ -1,13 +1,13 @@
 [project]
 name = "cambai"
 version = "1.0.0"
-description = "FastAPI"
+description = "Camb AI Python SDK for Text-to-Speech, Voice Generation, and Audio APIs"
 authors = [
-  {name = "OpenAPI Generator Community",email = "team@openapitools.org"},
+  {name = "Camb AI", email = "support@camb.ai"},
 ]
-license = {text = "Proprietary"}
+license = {text = "MIT"}
 readme = "README.md"
-keywords = ["OpenAPI", "OpenAPI-Generator", "FastAPI"]
+keywords = ["AI", "Text-to-Speech", "Voice", "Audio", "SDK"]
 requires-python = ">=3.9"
 
 dependencies = [
@@ -18,7 +18,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/GIT_USER_ID/GIT_REPO_ID"
+Repository = "https://github.com/Camb-ai/python-sdk"
+Documentation = "https://docs.camb.ai"
 
 [tool.poetry]
 requires-poetry = ">=2.0"

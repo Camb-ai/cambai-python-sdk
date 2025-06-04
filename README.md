@@ -24,7 +24,7 @@ You'll need **Python 3.9** or higher.
 Install the SDK using pip:
 
 ```bash
-pip install camb-ai-sdk
+pip install cambai
 ````
 
 > If the package is not yet on PyPI, you can install it directly from GitHub for now:
@@ -42,9 +42,9 @@ To use the Camb AI SDK, you'll need an API key. You can authenticate in either o
 ### 1. Pass the API key directly
 
 ```python
-from cambai.api import apis_api
+from cambai.api.apis_api import CambAI
 
-client = apis_api.CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
 ```
 
 ### 2. Use an environment variable
@@ -68,11 +68,11 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 This is useful if you want to play the audio in a web application or share a link.
 
 ```python
-from cambai.api import apis_api
+from cambai.api.apis_api import CambAI
 from cambai.rest import ApiException
 
 # Initialize client (ensure API key is set)
-# client = apis_api.CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
 
 try:
     print("Generating speech and getting audio URL...")
@@ -91,12 +91,12 @@ except ApiException as e:
 Generate speech and save it as an MP3 file (or other supported formats).
 
 ```python
-from cambai.api import apis_api
+from cambai.api.apis_api import CambAI
 from cambai.models.output_type import OutputType 
 from cambai.rest import ApiException
 
 # Initialize client
-# client = apis_api.CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
 
 file_path = "my_generated_speech.mp3"
 
@@ -137,11 +137,11 @@ except ApiException as e:
 Create completely new and unique voices from a textual description of the desired voice characteristics.
 
 ```python
-from cambai.api import apis_api
+from cambai.api.apis_api import CambAI
 from cambai.rest import ApiException
 
 # Initialize client
-# client = apis_api.CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
 
 output_file = "generated_voice_output.mp3"
 
@@ -166,11 +166,11 @@ except ApiException as e:
 Generate sound effects or ambient audio from a descriptive prompt.
 
 ```python
-from cambai.api import apis_api
+from cambai.api.apis_api import CambAI
 from cambai.rest import ApiException
 
 # Initialize client
-# client = apis_api.CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
 
 output_file = "generated_sound_effect.mp3"
 
@@ -204,133 +204,6 @@ The Camb AI SDK offers a wide range of capabilities beyond these examples, inclu
 Please refer to the [**Official Camb AI API Documentation**](https://docs.camb.ai/introduction) for a comprehensive list of features and advanced usage patterns.
 
 ---
-
-
-
-## Documentation for API Endpoints
-
-All URIs are relative to *https://client.camb.ai/apis*
-
-Class | Method | HTTP request | Description
------------- | ------------- | ------------- | -------------
-*ApisApi* | [**create_audio_separation**](docs/ApisApi.md#create_audio_separation) | **POST** /audio-separation | Create Audio Separation
-*ApisApi* | [**create_custom_voice**](docs/ApisApi.md#create_custom_voice) | **POST** /create-custom-voice | Create Custom Voice
-*ApisApi* | [**create_end_to_end_dubbing**](docs/ApisApi.md#create_end_to_end_dubbing) | **POST** /dub | End To End Dubbing
-*ApisApi* | [**create_story**](docs/ApisApi.md#create_story) | **POST** /story | Create Story
-*ApisApi* | [**create_text_to_sound**](docs/ApisApi.md#create_text_to_sound) | **POST** /text-to-sound | Create Text to Sound
-*ApisApi* | [**create_transcription**](docs/ApisApi.md#create_transcription) | **POST** /transcribe | Create Transcription
-*ApisApi* | [**create_translated_story**](docs/ApisApi.md#create_translated_story) | **POST** /translated-story/{run_id} | Create Translated Story
-*ApisApi* | [**create_translated_tts**](docs/ApisApi.md#create_translated_tts) | **POST** /translated-tts | Create Translated Tts
-*ApisApi* | [**create_translation**](docs/ApisApi.md#create_translation) | **POST** /translate | Create Translation
-*ApisApi* | [**create_translation_stream**](docs/ApisApi.md#create_translation_stream) | **POST** /translation/stream | Create Translation Stream
-*ApisApi* | [**create_tts**](docs/ApisApi.md#create_tts) | **POST** /tts | Create Tts
-*ApisApi* | [**create_tts_stream**](docs/ApisApi.md#create_tts_stream) | **POST** /tts-stream | Create TTS Stream
-*ApisApi* | [**create_voice_from_description**](docs/ApisApi.md#create_voice_from_description) | **POST** /text-to-voice | Create Voice from Description
-*ApisApi* | [**dictionaries_get**](docs/ApisApi.md#dictionaries_get) | **GET** /dictionaries | Get Workspace Dictionaries
-*ApisApi* | [**get_audio_separation_run_info_by_id**](docs/ApisApi.md#get_audio_separation_run_info_by_id) | **GET** /audio-separation-result/{run_id} | Get Audio Separation Run Info
-*ApisApi* | [**get_audio_separation_status_by_id**](docs/ApisApi.md#get_audio_separation_status_by_id) | **GET** /audio-separation/{task_id} | Get Audio Separation Status
-*ApisApi* | [**get_dubbed_run_info_by_id**](docs/ApisApi.md#get_dubbed_run_info_by_id) | **GET** /dub-result/{run_id} | Get Dubbed Run Info
-*ApisApi* | [**get_end_to_end_dubbing_status_by_id**](docs/ApisApi.md#get_end_to_end_dubbing_status_by_id) | **GET** /dub/{task_id} | Get End To End Dubbing Status
-*ApisApi* | [**get_source_languages**](docs/ApisApi.md#get_source_languages) | **GET** /source-languages | Get Source Languages
-*ApisApi* | [**get_story_run_info_by_id**](docs/ApisApi.md#get_story_run_info_by_id) | **GET** /story-result/{run_id} | Get Story Run Info
-*ApisApi* | [**get_story_status_by_id**](docs/ApisApi.md#get_story_status_by_id) | **GET** /story/{task_id} | Get Story Status
-*ApisApi* | [**get_target_languages**](docs/ApisApi.md#get_target_languages) | **GET** /target-languages | Get Target Languages
-*ApisApi* | [**get_text_to_audio_status_by_id**](docs/ApisApi.md#get_text_to_audio_status_by_id) | **GET** /text-to-sound/{task_id} | Get Text To Audio Status
-*ApisApi* | [**get_text_to_sound_run_result_by_id**](docs/ApisApi.md#get_text_to_sound_run_result_by_id) | **GET** /text-to-sound-result/{run_id} | Get Text to Sound Run Result
-*ApisApi* | [**get_text_to_voice_run_result_by_id**](docs/ApisApi.md#get_text_to_voice_run_result_by_id) | **GET** /text-to-voice-result/{run_id} | Get Text-to-Voice Run Result
-*ApisApi* | [**get_transcription_result_by_id**](docs/ApisApi.md#get_transcription_result_by_id) | **GET** /transcription-result/{run_id} | Get Transcription Result
-*ApisApi* | [**get_transcription_task_status_by_id**](docs/ApisApi.md#get_transcription_task_status_by_id) | **GET** /transcribe/{task_id} | Create Transcription Task Status
-*ApisApi* | [**get_translated_story_run_info**](docs/ApisApi.md#get_translated_story_run_info) | **GET** /translated-story-result/{run_id}/{target_language} | Get Translated Story Run Info
-*ApisApi* | [**get_translated_story_status_by_id**](docs/ApisApi.md#get_translated_story_status_by_id) | **GET** /translated-story/{task_id} | Get Translated Story Status
-*ApisApi* | [**get_translated_tts_task_status_by_id**](docs/ApisApi.md#get_translated_tts_task_status_by_id) | **GET** /translated-tts/{task_id} | Create Translated Tts Task Status
-*ApisApi* | [**get_translation_result_by_id**](docs/ApisApi.md#get_translation_result_by_id) | **GET** /translation-result/{run_id} | Get Translation Result
-*ApisApi* | [**get_translation_task_status_by_id**](docs/ApisApi.md#get_translation_task_status_by_id) | **GET** /translate/{task_id} | Create translation Task Status
-*ApisApi* | [**get_tts_result_by_id**](docs/ApisApi.md#get_tts_result_by_id) | **GET** /tts/{id} | Get Tts Result
-*ApisApi* | [**get_tts_run_info_by_id**](docs/ApisApi.md#get_tts_run_info_by_id) | **GET** /tts-result/{run_id} | Get Tts Run Info
-*ApisApi* | [**list_voices**](docs/ApisApi.md#list_voices) | **GET** /list-voices | List Voices
-*ApisApi* | [**text_to_voice_task_id_get**](docs/ApisApi.md#text_to_voice_task_id_get) | **GET** /text-to-voice/{task_id} | Get Text-to-Voice Task Status
-*AudioSeparationApi* | [**create_audio_separation**](docs/AudioSeparationApi.md#create_audio_separation) | **POST** /audio-separation | Create Audio Separation
-*AudioSeparationApi* | [**get_audio_separation_run_info_by_id**](docs/AudioSeparationApi.md#get_audio_separation_run_info_by_id) | **GET** /audio-separation-result/{run_id} | Get Audio Separation Run Info
-*AudioSeparationApi* | [**get_audio_separation_status_by_id**](docs/AudioSeparationApi.md#get_audio_separation_status_by_id) | **GET** /audio-separation/{task_id} | Get Audio Separation Status
-*DictionariesApi* | [**dictionaries_get**](docs/DictionariesApi.md#dictionaries_get) | **GET** /dictionaries | Get Workspace Dictionaries
-*DubApi* | [**get_dubbed_output_in_alt_format_status_by_id**](docs/DubApi.md#get_dubbed_output_in_alt_format_status_by_id) | **GET** /dub-alt-format/{task_id} | Get Dubbed Output in Alt Format Status
-*DubApi* | [**get_dubbed_run_transcript**](docs/DubApi.md#get_dubbed_run_transcript) | **GET** /transcript/{run_id}/{language} | Get Dubbed Run Transcript
-*DubApi* | [**request_dubbed_output_in_alt_format**](docs/DubApi.md#request_dubbed_output_in_alt_format) | **POST** /dub-alt-format/{run_id}/{language} | Get Dubbed Output in Alt Format
-*StoriesApi* | [**create_story**](docs/StoriesApi.md#create_story) | **POST** /story | Create Story
-*StoriesApi* | [**create_translated_story**](docs/StoriesApi.md#create_translated_story) | **POST** /translated-story/{run_id} | Create Translated Story
-*StoriesApi* | [**get_story_run_info_by_id**](docs/StoriesApi.md#get_story_run_info_by_id) | **GET** /story-result/{run_id} | Get Story Run Info
-*StoriesApi* | [**get_translated_story_run_info**](docs/StoriesApi.md#get_translated_story_run_info) | **GET** /translated-story-result/{run_id}/{target_language} | Get Translated Story Run Info
-*StoriesApi* | [**get_translated_story_status_by_id**](docs/StoriesApi.md#get_translated_story_status_by_id) | **GET** /translated-story/{task_id} | Get Translated Story Status
-*TextToAudioApi* | [**create_text_to_sound**](docs/TextToAudioApi.md#create_text_to_sound) | **POST** /text-to-sound | Create Text to Sound
-*TextToAudioApi* | [**get_text_to_audio_status_by_id**](docs/TextToAudioApi.md#get_text_to_audio_status_by_id) | **GET** /text-to-sound/{task_id} | Get Text To Audio Status
-*TextToAudioApi* | [**get_text_to_sound_run_result_by_id**](docs/TextToAudioApi.md#get_text_to_sound_run_result_by_id) | **GET** /text-to-sound-result/{run_id} | Get Text to Sound Run Result
-*TextToSpeechApi* | [**create_tts**](docs/TextToSpeechApi.md#create_tts) | **POST** /tts | Create Tts
-*TextToSpeechApi* | [**get_tts_result_by_id**](docs/TextToSpeechApi.md#get_tts_result_by_id) | **GET** /tts/{id} | Get Tts Result
-*TextToVoiceApi* | [**create_voice_from_description**](docs/TextToVoiceApi.md#create_voice_from_description) | **POST** /text-to-voice | Create Voice from Description
-*TextToVoiceApi* | [**get_text_to_voice_run_result_by_id**](docs/TextToVoiceApi.md#get_text_to_voice_run_result_by_id) | **GET** /text-to-voice-result/{run_id} | Get Text-to-Voice Run Result
-*TextToVoiceApi* | [**text_to_voice_task_id_get**](docs/TextToVoiceApi.md#text_to_voice_task_id_get) | **GET** /text-to-voice/{task_id} | Get Text-to-Voice Task Status
-
-
-## Documentation For Models
-
- - [AudioOutputFileURLResponse](docs/AudioOutputFileURLResponse.md)
- - [AudioOutputType](docs/AudioOutputType.md)
- - [AudioSeparationRunInfoResponse](docs/AudioSeparationRunInfoResponse.md)
- - [BodyTranslateTranslatePost](docs/BodyTranslateTranslatePost.md)
- - [CreateAPIKeyRequestPayload](docs/CreateAPIKeyRequestPayload.md)
- - [CreateCustomVoiceOut](docs/CreateCustomVoiceOut.md)
- - [CreateTTSRequestPayload](docs/CreateTTSRequestPayload.md)
- - [CreateTTSStreamRequestPayload](docs/CreateTTSStreamRequestPayload.md)
- - [CreateTextToAudioRequestPayload](docs/CreateTextToAudioRequestPayload.md)
- - [CreateTextToVoiceRequestPayload](docs/CreateTextToVoiceRequestPayload.md)
- - [CreateTranslatedStoryRequestPayload](docs/CreateTranslatedStoryRequestPayload.md)
- - [CreateTranslatedTTSRequestPayload](docs/CreateTranslatedTTSRequestPayload.md)
- - [CreateTranslationStreamRequestPayload](docs/CreateTranslationStreamRequestPayload.md)
- - [DialogueItem](docs/DialogueItem.md)
- - [Dictionary](docs/Dictionary.md)
- - [DubAltFormatResponseBody](docs/DubAltFormatResponseBody.md)
- - [DubbedOutputInAltFormatRequestPayload](docs/DubbedOutputInAltFormatRequestPayload.md)
- - [EndToEndDubbingRequestPayload](docs/EndToEndDubbingRequestPayload.md)
- - [ExpireAPIKeyRequestPayload](docs/ExpireAPIKeyRequestPayload.md)
- - [Formalities](docs/Formalities.md)
- - [Gender](docs/Gender.md)
- - [HTTPValidationError](docs/HTTPValidationError.md)
- - [LanguageItem](docs/LanguageItem.md)
- - [Languages](docs/Languages.md)
- - [OrchestratorPipelineResult](docs/OrchestratorPipelineResult.md)
- - [OutputAPIKey](docs/OutputAPIKey.md)
- - [OutputFormat](docs/OutputFormat.md)
- - [OutputType](docs/OutputType.md)
- - [RequestDubbedOutputInAltFormat200Response](docs/RequestDubbedOutputInAltFormat200Response.md)
- - [RunInfoResponse](docs/RunInfoResponse.md)
- - [StoryRunInfoResponse](docs/StoryRunInfoResponse.md)
- - [TTSStreamOutputFormat](docs/TTSStreamOutputFormat.md)
- - [TaskID](docs/TaskID.md)
- - [TaskStatus](docs/TaskStatus.md)
- - [TextToVoiceRunInfoResponse](docs/TextToVoiceRunInfoResponse.md)
- - [TranscriptDataType](docs/TranscriptDataType.md)
- - [TranscriptFileFormat](docs/TranscriptFileFormat.md)
- - [TranslationResult](docs/TranslationResult.md)
- - [ValidationError](docs/ValidationError.md)
- - [ValidationErrorLocInner](docs/ValidationErrorLocInner.md)
- - [VideoOutputTypeWithoutAVI](docs/VideoOutputTypeWithoutAVI.md)
- - [VoiceItem](docs/VoiceItem.md)
-
-
-<a id="documentation-for-authorization"></a>
-## Documentation For Authorization
-
-
-Authentication schemes defined for the API:
-<a id="APIKeyHeader"></a>
-### APIKeyHeader
-
-- **Type**: API key
-- **API key parameter name**: x-api-key
-- **Location**: HTTP header
-
-
-## Author
 
 
 
