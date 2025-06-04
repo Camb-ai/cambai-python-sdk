@@ -13,6 +13,9 @@
 import os
 import time
 import warnings
+# Constants for API operations
+TIMEOUT = 60
+POLL_INTERVAL = 5
 
 from cambai.configuration import Configuration
 from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
@@ -75,7 +78,6 @@ class CambAI:
         self,
         prompt: str,
         duration: int,
-        timeout: int = 60,
         save_to_file: Optional[str] = None,
         verbose: bool = False
     ) -> Union[str, bytearray]:
@@ -117,17 +119,16 @@ class CambAI:
         
         if verbose:
             print(f"Request submitted. Task ID: {task_id_str}")
-            print(f"Waiting for processing to complete (timeout: {timeout} seconds)...")
+            print(f"Waiting for processing to complete (timeout: {TIMEOUT} seconds)...")
         
         # Set up polling with timeout
         start_time = time.time()
-        poll_interval = 5
         
         # Poll for results until timeout
-        while time.time() - start_time < timeout:
+        while time.time() - start_time < TIMEOUT:
             if verbose:
                 elapsed = time.time() - start_time
-                remaining = max(0, timeout - elapsed)
+                remaining = max(0, TIMEOUT - elapsed)
                 print(f"Checking status... (elapsed: {elapsed:.1f}s, remaining: {remaining:.1f}s)")
             
             try:
@@ -161,16 +162,15 @@ class CambAI:
                     print(f"Error checking status: {str(e)}")
             
             # Wait before next poll
-            time.sleep(poll_interval)
+            time.sleep(POLL_INTERVAL)
 
-        raise TimeoutError(f"Text-to-audio request did not complete within {timeout} seconds")
+        raise TimeoutError(f"Text-to-audio request did not complete within {TIMEOUT} seconds")
 
     @validate_call
     def text_to_voice(
         self,
         text: str,
         voice_description: str,
-        timeout: int = 60,
         verbose: bool = False
     ) -> dict:
         """Convert text to voice using a voice description and return the result.
@@ -209,17 +209,16 @@ class CambAI:
         
         if verbose:
             print(f"Request submitted. Task ID: {task_id_str}")
-            print(f"Waiting for processing to complete (timeout: {timeout} seconds)...")
+            print(f"Waiting for processing to complete (timeout: {TIMEOUT} seconds)...")
         
         # Set up polling with timeout
         start_time = time.time()
-        poll_interval = 5
         
         # Poll for results until timeout
-        while time.time() - start_time < timeout:
+        while time.time() - start_time < TIMEOUT:
             if verbose:
                 elapsed = time.time() - start_time
-                remaining = max(0, timeout - elapsed)
+                remaining = max(0, TIMEOUT - elapsed)
                 print(f"Checking status... (elapsed: {elapsed:.1f}s, remaining: {remaining:.1f}s)")
             
             try:
@@ -246,7 +245,7 @@ class CambAI:
             # Wait before next poll
             time.sleep(poll_interval)
 
-        raise TimeoutError(f"Text-to-voice request did not complete within {timeout} seconds")
+        raise TimeoutError(f"Text-to-voice request did not complete within {TIMEOUT} seconds")
      
     @validate_call
     def text_to_speech(
@@ -254,7 +253,6 @@ class CambAI:
         text: str,
         voice_id: int,
         language: int = 1,
-        timeout: int = 60,
         output_type: OutputType = OutputType.FILE_URL,
         save_to_file: Optional[str] = None,
         verbose: bool = False
@@ -298,17 +296,16 @@ class CambAI:
         
         if verbose:
             print(f"Request submitted. Task ID: {task_id_str}")
-            print(f"Waiting for processing to complete (timeout: {timeout} seconds)...")
+            print(f"Waiting for processing to complete (timeout: {TIMEOUT} seconds)...")
         
         # Set up polling with timeout
         start_time = time.time()
-        poll_interval = 5
         
         # Poll for results until timeout
-        while time.time() - start_time < timeout:
+        while time.time() - start_time < TIMEOUT:
             if verbose:
                 elapsed = time.time() - start_time
-                remaining = max(0, timeout - elapsed)
+                remaining = max(0, TIMEOUT - elapsed)
                 print(f"Checking status... (elapsed: {elapsed:.1f}s, remaining: {remaining:.1f}s)")
             
             try:
@@ -356,9 +353,9 @@ class CambAI:
                     print(f"Error checking status: {str(e)}")
             
             # Wait before next poll
-            time.sleep(poll_interval)
+            time.sleep(POLL_INTERVAL)
 
-        raise TimeoutError(f"TTS request did not complete within {timeout} seconds")
+        raise TimeoutError(f"TTS request did not complete within {TIMEOUT} seconds")
     
     @validate_call
     def create_audio_separation(
