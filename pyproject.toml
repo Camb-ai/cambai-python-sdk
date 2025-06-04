@@ -1,5 +1,5 @@
 [project]
-name = "cambai"
+name = "camb-ai"
 version = "1.0.0"
 description = "Camb AI Python SDK for Text-to-Speech, Voice Generation, and Audio APIs"
 authors = [

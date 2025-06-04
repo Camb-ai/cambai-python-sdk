@@ -24,13 +24,13 @@ You'll need **Python 3.9** or higher.
 Install the SDK using pip:
 
 ```bash
-pip install cambai
+pip install camb-ai
 ````
 
 > If the package is not yet on PyPI, you can install it directly from GitHub for now:
 >
 > ```bash
-> pip install git+https://github.com/Camb-ai/python-sdk
+> pip install git+https://github.com/Camb-ai/cambai-python-sdk
 > ```
 
 ---
@@ -42,7 +42,7 @@ To use the Camb AI SDK, you'll need an API key. You can authenticate in either o
 ### 1. Pass the API key directly
 
 ```python
-from cambai.api.apis_api import CambAI
+from cambai import CambAI
 
 client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
 ```
@@ -68,7 +68,7 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 This is useful if you want to play the audio in a web application or share a link.
 
 ```python
-from cambai.api.apis_api import CambAI
+from cambai import CambAI
 from cambai.rest import ApiException
 
 # Initialize client (ensure API key is set)
@@ -91,7 +91,7 @@ except ApiException as e:
 Generate speech and save it as an MP3 file (or other supported formats).
 
 ```python
-from cambai.api.apis_api import CambAI
+from cambai import CambAI
 from cambai.models.output_type import OutputType 
 from cambai.rest import ApiException
 
@@ -137,7 +137,7 @@ except ApiException as e:
 Create completely new and unique voices from a textual description of the desired voice characteristics.
 
 ```python
-from cambai.api.apis_api import CambAI
+from cambai import CambAI
 from cambai.rest import ApiException
 
 # Initialize client
@@ -166,7 +166,7 @@ except ApiException as e:
 Generate sound effects or ambient audio from a descriptive prompt.
 
 ```python
-from cambai.api.apis_api import CambAI
+from cambai import CambAI
 from cambai.rest import ApiException
 
 # Initialize client
@@ -202,6 +202,12 @@ The Camb AI SDK offers a wide range of capabilities beyond these examples, inclu
 * And more!
 
 Please refer to the [**Official Camb AI API Documentation**](https://docs.camb.ai/introduction) for a comprehensive list of features and advanced usage patterns.
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
