@@ -134,15 +134,16 @@ class CambAI:
             
             try:
                 result = self.get_text_to_audio_status_by_id(task_id_str)
-                
-                if result.run_id:
+
+                # Check for both run_id AND status = SUCCESS (TTA takes longer to process)
+                if result.run_id and result.status == 'SUCCESS':
                     if verbose:
                         print(f"Processing complete! Run ID: {result.run_id}")
                         print("Retrieving audio...")
-                    
+
                     # Get the audio data
                     audio_data = self.get_text_to_sound_run_result_by_id(result.run_id)
-                    
+
                     # If save_to_file is provided, save the audio to a file
                     if save_to_file:
                         try:
@@ -153,10 +154,12 @@ class CambAI:
                             return f"Audio saved to {save_to_file}"
                         except IOError as e:
                             raise IOError(f"Failed to save audio to file: {str(e)}")
-                    
+
                     return audio_data
                 elif verbose:
-                    print(f"Still processing... (status: {result.status})")
+                    status = result.status or 'UNKNOWN'
+                    run_id = result.run_id or 'none'
+                    print(f"Still processing... (status: {status}, run_id: {run_id})")
                 
             except Exception as e:
                 if verbose:
