@@ -42,11 +42,11 @@ To use the Camb AI SDK, you'll need an API key. You can authenticate in either o
 ```python
 from cambai import CambAI
 
-client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 ```
 
 ### 2. Use an environment variable
-Set your API key as an environment variable named `CAMB_AI_API_KEY`:
+Set your API key as an environment variable named `CAMB_API_KEY`:
 
    ```bash
    export CAMB_AI_API_KEY="your_actual_api_key_here"
@@ -68,7 +68,7 @@ from cambai import CambAI
 from cambai.rest import ApiException
 
 # Initialize client (ensure API key is set)
-client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 try:
     print("Generating speech and getting audio URL...")
@@ -92,7 +92,7 @@ from cambai.models.output_type import OutputType
 from cambai.rest import ApiException
 
 # Initialize client
-client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 file_path = "my_generated_speech.mp3"
 
@@ -137,7 +137,7 @@ from cambai import CambAI
 from cambai.rest import ApiException
 
 # Initialize client
-client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 output_file = "generated_voice_output.mp3"
 
@@ -166,7 +166,7 @@ from cambai import CambAI
 from cambai.rest import ApiException
 
 # Initialize client
-client = CambAI(api_key="YOUR_CAMB_AI_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 output_file = "generated_sound_effect.mp3"
 
