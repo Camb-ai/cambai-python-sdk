@@ -49,7 +49,7 @@ client = CambAI(api_key="YOUR_CAMB_API_KEY")
 Set your API key as an environment variable named `CAMB_API_KEY`:
 
    ```bash
-   export CAMB_AI_API_KEY="your_actual_api_key_here"
+   export CAMB_API_KEY="your_actual_api_key_here"
    ```
 ---
 
