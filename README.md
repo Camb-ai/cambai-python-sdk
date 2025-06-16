@@ -1,8 +1,8 @@
 # Camb AI Python SDK 🎙️
 
-[![PyPI version](https://img.shields.io/pypi/v/camb-ai-sdk.svg?style=flat-square)](https://pypi.org/project/camb-ai-sdk/)  
-[![License](https://img.shields.io/pypi/l/camb-ai-sdk.svg?style=flat-square)](https://github.com/your-org/camb-ai-python-sdk/blob/main/LICENSE)  
-[![Build Status](https://img.shields.io/github/actions/workflow/status/your-org/camb-ai-python-sdk/ci.yml?branch=main&style=flat-square)](https://github.com/your-org/camb-ai-python-sdk/actions)
+[![PyPI version](https://img.shields.io/pypi/v/camb-sdk.svg?style=flat-square)](https://pypi.org/project/camb-sdk/)  
+[![License](https://img.shields.io/pypi/l/camb-sdk.svg?style=flat-square)](https://github.com/Camb-ai/cambai-python-sdk/blob/master/LICENSE)  
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Camb-ai/cambai-python-sdk/ci.yml?branch=master&style=flat-square)](https://github.com/Camb-ai/cambai-python-sdk/actions)
 
 The official Python SDK for interacting with Camb AI's powerful voice and audio generation APIs. Create expressive speech, unique voices, and rich soundscapes with just a few lines of Python.
 
