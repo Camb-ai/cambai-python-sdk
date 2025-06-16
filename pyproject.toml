@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/Camb-ai/python-sdk"
+Repository = "https://github.com/Camb-ai/cambai-python-sdk"
 Documentation = "https://docs.camb.ai"
 
 [tool.poetry]
