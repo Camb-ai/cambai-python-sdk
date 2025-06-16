@@ -22,7 +22,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 Install the SDK using pip, ensure **Python 3.9+**:
 
 ```bash
-pip install camb-ai
+pip install camb-sdk
 ````
 
 Or through
@@ -156,7 +156,6 @@ except ApiException as e:
 ```
 
 ---
-
 ### 3. Text-to-Audio (Sound Generation)
 
 Generate sound effects or ambient audio from a descriptive prompt.
@@ -183,6 +182,43 @@ try:
 
 except ApiException as e:
     print(f"API Exception when calling text_to_audio: {e}\n")
+```
+
+---
+### 4. End-to-End Dubbing
+
+Dub videos into different languages with voice cloning and translation capabilities.
+
+```python
+from cambai import CambAI
+from cambai.rest import ApiException
+
+# Initialize client
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
+
+# Call all target languages
+print("Listing target languages...")
+target_languages = clinet.get_target_languages()
+print(f"Found {len(target_languages)} target languages:")
+for language in target_languages:
+    print(f"  - {language}")
+
+try:
+    print("Starting end-to-end dubbing process...")
+    
+    result = client.end_to_end_dubbing(
+        video_url="your_accesible_video_url",
+        source_language=cambai.Languages.NUMBER_1,  # English
+        target_languages=[cambai.Languages.NUMBER_81],  # Add more target languages as needed
+        verbose=True
+    )
+    
+    print("Dubbing completed successfully!")
+    # The result contains output_video_url, output_audio_url, and transcript information with timing and speaker details
+    print(f"Result: {result}")
+
+except ApiException as e:
+    print(f"API Exception when calling end_to_end_dubbing: {e}\n")
 ```
 
 ---
