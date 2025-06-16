@@ -67,11 +67,8 @@ class CambAI:
     def __init__(self, api_client=None, api_key: Optional[str] = None) -> None:
         if api_client is None:
             configuration = Configuration()
-            if api_key:
-                configuration.api_key['APIKeyHeader'] = api_key
-            elif os.environ.get("CAMB_API_KEY"):
-                configuration.api_key['APIKeyHeader'] = os.environ.get("CAMB_API_KEY")
-            else:
+            configuration.api_key['APIKeyHeader'] = api_key or os.environ.get("CAMB_API_KEY")
+            if configuration.api_key['APIKeyHeader'] is None:
                 raise ValueError("API key not provided. Please provide api_key or set CAMB_API_KEY environment variable.")
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
