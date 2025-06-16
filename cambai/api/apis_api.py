@@ -13,6 +13,7 @@
 import os
 import time
 import warnings
+import json
 # Constants for API operations
 TIMEOUT = 60
 POLL_INTERVAL = 5
@@ -66,10 +67,9 @@ class CambAI:
     def __init__(self, api_client=None, api_key: Optional[str] = None) -> None:
         if api_client is None:
             configuration = Configuration()
-            if api_key:
-                configuration.api_key['APIKeyHeader'] = api_key
-            else:
-                configuration.api_key['APIKeyHeader'] = os.environ.get("CAMB_API_KEY")
+            configuration.api_key['APIKeyHeader'] = api_key or os.environ.get("CAMB_API_KEY")
+            if configuration.api_key['APIKeyHeader'] is None:
+                raise ValueError("API key not provided. Please provide api_key or set CAMB_API_KEY environment variable.")
             api_client = ApiClient(configuration=configuration)
         self.api_client = api_client
 
@@ -437,7 +437,6 @@ class CambAI:
                     if verbose:
                         print(f"Processing complete! Run ID: {result.run_id}")
                         print("Retrieving dubbing result...")
-                    
                     response = self.get_dubbed_run_info_by_id(result.run_id)
                     return response
                 
@@ -5087,10 +5086,14 @@ class CambAI:
             _request_timeout=_request_timeout
         )
         response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
+        raw_data = json.loads(response_data.data.decode('utf-8'))
+        
+        from cambai.models.run_info_response import RunInfoResponse
+        return RunInfoResponse(
+            output_video_url=raw_data.get('video_url'),
+            output_audio_url=raw_data.get('audio_url'),
+            transcript=raw_data.get('transcript')
+        )
 
 
     @validate_call

@@ -12,6 +12,7 @@
 """  # noqa: E501
 
 
+import os
 import unittest
 
 from cambai.api.apis_api import CambAI
@@ -21,7 +22,8 @@ class TestApisApi(unittest.TestCase):
     """ApisApi unit test stubs"""
 
     def setUp(self) -> None:
-        self.api = CambAI()
+        api_key = "CAMB_API_KEY"
+        self.api = CambAI(api_key=api_key)
 
     def tearDown(self) -> None:
         pass
