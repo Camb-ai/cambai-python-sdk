@@ -1,5 +1,5 @@
 [project]
-name = "camb-ai"
+name = "camb-sdk"
 version = "1.0.0"
 description = "Camb AI Python SDK for Text-to-Speech, Voice Generation, and Audio APIs"
 authors = [
@@ -7,7 +7,7 @@ authors = [
 ]
 license = {text = "MIT"}
 readme = "README.md"
-keywords = ["AI", "Text-to-Speech", "Voice", "Audio", "SDK"]
+keywords = ["AI", "Dubbing", "Text-to-Speech", "Voice", "Audio", "SDK"]
 requires-python = ">=3.9"
 
 dependencies = [

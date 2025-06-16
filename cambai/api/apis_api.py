@@ -364,6 +364,97 @@ class CambAI:
         raise TimeoutError(f"TTS request did not complete within {timeout} seconds")
     
     @validate_call
+    def end_to_end_dubbing(
+        self,
+        video_url: str,
+        source_language: Languages,
+        target_languages: Optional[List[Languages]] = None,
+        selected_audio_tracks: Optional[List[int]] = None,
+        add_output_as_an_audio_track: Optional[bool] = None,
+        timeout: int = 180,
+        verbose: bool = False
+    )-> dict:
+        """Submit an end-to-end dubbing request and return the result.
+        
+        This is a convenience method that combines create_end_to_end_dubbing and
+        get_end_to_end_dubbing_run_result_by_id into a single call.
+        
+        Args:
+            video_url: The URL of the media file to be used to create the end-to-end dubbing task
+            source_language: The original language of the media file
+            target_languages: The list of desired languages that the media file will be dubbed to
+            selected_audio_tracks: Optional array of one or two zero-based audio track indices to dub. Only supported for MXF files. If omitted, the first audio track (index 0) is used by default.
+            add_output_as_an_audio_track: Whether to add the output as an audio track in the MXF file. Only supported for MXF files.
+            timeout: Maximum time to wait for processing in seconds (default: 60)
+            verbose: Whether to print status updates during processing
+            
+        Returns:
+            A dictionary with the end-to-end dubbing result (typically containing URLs to the generated audio)
+            
+        Raises:
+            ApiException: If there's an error with the API call
+            TimeoutError: If the processing doesn't complete within the timeout period
+        """
+
+        # Create the request payload
+        request_payload = EndToEndDubbingRequestPayload(
+            video_url=video_url,
+            source_language=source_language,
+            target_languages=target_languages,
+            selected_audio_tracks=selected_audio_tracks,
+            add_output_as_an_audio_track=add_output_as_an_audio_track
+        )
+        
+        # Submit the request
+        if verbose:
+            print(f"Submitting end-to-end dubbing request for video: '{video_url}'")
+            print(f"Source language: {source_language}")
+            print(f"Target languages: {target_languages}")
+            print(f"Selected audio tracks: {selected_audio_tracks}")
+            print(f"Add output as audio track: {add_output_as_an_audio_track}")
+        
+        task_id_obj = self.create_end_to_end_dubbing(request_payload)
+        task_id_str = task_id_obj.task_id
+        
+        if verbose:
+            print(f"Request submitted. Task ID: {task_id_str}")
+            print(f"Waiting for processing to complete (timeout: {timeout} seconds)...")
+        
+        # Set up polling with timeout
+        start_time = time.time()
+        
+        # Poll for results until timeout
+        while time.time() - start_time < timeout:
+            if verbose:
+                elapsed = time.time() - start_time
+                remaining = max(0, timeout - elapsed)
+                print(f"Checking status... (elapsed: {elapsed:.1f}s, remaining: {remaining:.1f}s)")
+            
+            try:
+                result = self.get_end_to_end_dubbing_status_by_id(task_id_str)
+                
+                if result.run_id and result.status == 'SUCCESS':
+                    if verbose:
+                        print(f"Processing complete! Run ID: {result.run_id}")
+                        print("Retrieving dubbing result...")
+                    
+                    response = self.get_dubbed_run_info_by_id(result.run_id)
+                    return response
+                
+                elif verbose:
+                    print(f"Still processing... (status: {result.status})")
+                    
+                
+            except Exception as e:
+                if verbose:
+                    print(f"Error checking status: {str(e)}")
+            
+            # Wait before next poll
+            time.sleep(POLL_INTERVAL)
+
+        raise TimeoutError(f"End-to-end dubbing request did not complete within {timeout} seconds")
+                    
+    @validate_call
     def create_audio_separation(
         self,
         audio_file: Annotated[Optional[Union[StrictBytes, StrictStr, Tuple[StrictStr, StrictBytes]]], Field(description="Media file to processed. AAC, FLAC, MP3 and WAV formats are supported.")] = None,
