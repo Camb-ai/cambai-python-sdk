@@ -105,12 +105,12 @@ class TestApisApi(unittest.TestCase):
         """
         pass
 
-    def test_create_tts_stream(self) -> None:
-        """Test case for create_tts_stream
+    # def test_create_tts_stream(self) -> None:
+    #     """Test case for create_tts_stream
 
-        Create TTS Stream
-        """
-        pass
+    #     Create TTS Stream
+    #     """
+    #     pass
 
     def test_create_voice_from_description(self) -> None:
         """Test case for create_voice_from_description
