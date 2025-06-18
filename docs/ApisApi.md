@@ -15,7 +15,6 @@ Method | HTTP request | Description
 [**create_translation**](ApisApi.md#create_translation) | **POST** /translate | Create Translation
 [**create_translation_stream**](ApisApi.md#create_translation_stream) | **POST** /translation/stream | Create Translation Stream
 [**create_tts**](ApisApi.md#create_tts) | **POST** /tts | Create Tts
-[**create_tts_stream**](ApisApi.md#create_tts_stream) | **POST** /tts-stream | Create TTS Stream
 [**create_voice_from_description**](ApisApi.md#create_voice_from_description) | **POST** /text-to-voice | Create Voice from Description
 [**dictionaries_get**](ApisApi.md#dictionaries_get) | **GET** /dictionaries | Get Workspace Dictionaries
 [**get_audio_separation_run_info_by_id**](ApisApi.md#get_audio_separation_run_info_by_id) | **GET** /audio-separation-result/{run_id} | Get Audio Separation Run Info
