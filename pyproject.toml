@@ -1,6 +1,6 @@
 [project]
 name = "camb-sdk"
-version = "1.0.1"
+version = "1.0.2"
 description = "Camb AI Python SDK for Text-to-Speech, Voice Generation, and Audio APIs"
 authors = [
   {name = "Camb AI", email = "support@camb.ai"},
