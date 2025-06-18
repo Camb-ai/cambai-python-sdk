@@ -198,7 +198,7 @@ client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 # Call all target languages
 print("Listing target languages...")
-target_languages = clinet.get_target_languages()
+target_languages = client.get_target_languages()
 print(f"Found {len(target_languages)} target languages:")
 for language in target_languages:
     print(f"  - {language}")
