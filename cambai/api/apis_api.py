@@ -90,7 +90,7 @@ class CambAI:
         Args:
             prompt: The text prompt to convert to audio
             duration: The desired duration of the audio in seconds
-            timeout: Maximum time to wait for processing in seconds (default: 60)
+            timeout: Maximum time to wait for processing in seconds (default: 120)
             save_to_file: Optional file path to save the audio to
             verbose: Whether to print status updates during processing
             
@@ -104,7 +104,7 @@ class CambAI:
             IOError: If there's an error saving the file
         """
         from cambai.models.create_text_to_audio_request_payload import CreateTextToAudioRequestPayload
-        
+        assert(len(prompt) <= 30)
         # Create the request payload
         request_payload = CreateTextToAudioRequestPayload(
             prompt=prompt,
@@ -186,7 +186,7 @@ class CambAI:
         Args:
             text: The text to convert to speech
             voice_description: Description of the voice to generate
-            timeout: Maximum time to wait for processing in seconds (default: 60)
+            timeout: Maximum time to wait for processing in seconds (default: 120)
             verbose: Whether to print status updates during processing
             
         Returns:
@@ -197,7 +197,7 @@ class CambAI:
             TimeoutError: If the processing doesn't complete within the timeout period
         """
         from cambai.models.create_text_to_voice_request_payload import CreateTextToVoiceRequestPayload
-        
+        assert(len(text) >= 100)
         # Create the request payload
         request_payload = CreateTextToVoiceRequestPayload(
             text=text,
@@ -272,7 +272,7 @@ class CambAI:
             text: The text to convert to speech
             voice_id: The ID of the voice to use
             language: The language ID (default: 1)
-            timeout: Maximum time to wait for processing in seconds (default: 60)
+            timeout: Maximum time to wait for processing in seconds (default: 120)
             output_type: Type of output to return (default: FILE_URL)
             save_to_file: Optional file path to save the audio to (works with BYTES output type)
             verbose: Whether to print status updates during processing
@@ -385,7 +385,7 @@ class CambAI:
             target_languages: The list of desired languages that the media file will be dubbed to
             selected_audio_tracks: Optional array of one or two zero-based audio track indices to dub. Only supported for MXF files. If omitted, the first audio track (index 0) is used by default.
             add_output_as_an_audio_track: Whether to add the output as an audio track in the MXF file. Only supported for MXF files.
-            timeout: Maximum time to wait for processing in seconds (default: 60)
+            timeout: Maximum time to wait for processing in seconds (default: 180)
             verbose: Whether to print status updates during processing
             
         Returns:
