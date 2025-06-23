@@ -15,7 +15,7 @@ import time
 import warnings
 import json
 # Constants for API operations
-TIMEOUT = 60
+TIMEOUT = 120
 POLL_INTERVAL = 5
 
 from cambai.configuration import Configuration
