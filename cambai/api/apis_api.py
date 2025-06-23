@@ -74,7 +74,7 @@ class CambAI:
         self.api_client = api_client
 
     @validate_call
-    def text_to_audio(
+    def text_to_sound(
         self,
         prompt: str,
         duration: int,

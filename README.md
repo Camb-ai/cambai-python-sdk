@@ -173,7 +173,7 @@ output_file = "generated_sound_effect.mp3"
 try:
     print(f"Generating sound effect and saving to {output_file}...")
 
-    client.text_to_audio(
+    client.text_to_sound(
         prompt="A gentle breeze rustling through autumn leaves in a quiet forest.",
         duration=10,       
         save_to_file=output_file,
@@ -182,7 +182,7 @@ try:
     print(f"Success! Sound effect saved to {output_file}")
 
 except ApiException as e:
-    print(f"API Exception when calling text_to_audio: {e}\n")
+    print(f"API Exception when calling text_to_sound: {e}\n")
 ```
 
 ---
