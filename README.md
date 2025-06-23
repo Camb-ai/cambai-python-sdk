@@ -144,9 +144,10 @@ output_file = "generated_voice_output.mp3"
 try:
     print("Generating a new voice and speech...")
     # The 'text_to_voice' method returns a dict consisting of 3 sample URLs
+    # Description and Text should be atleast 100 Characters.
     result = client.text_to_voice(
-        text="Crafting a unique voice with a hint of mystery and warmth.",
-        voice_description="A smooth, baritone voice with a slight echo, perfect for storytelling.",
+        text="Crafting a truly unique and captivating voice that carries a subtle air of mystery, depth, and gentle warmth.",
+        voice_description="A smooth, rich baritone voice layered with a soft echo, ideal for immersive storytelling and emotional depth.",
         verbose=True
     )
     print(result)
