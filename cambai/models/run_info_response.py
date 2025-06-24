@@ -92,8 +92,8 @@ class RunInfoResponse(BaseModel):
 
         _obj = cls.model_validate({
             "run_id": obj.get("run_id"),
-            "output_video_url": obj.get("output_video_url"),
-            "output_audio_url": obj.get("output_audio_url"),
+            "output_video_url": obj.get("video_url"),
+            "output_audio_url": obj.get("audio_url"),
             "transcript": [DialogueItem.from_dict(_item) for _item in obj["transcript"]] if obj.get("transcript") is not None else None
         })
         return _obj
