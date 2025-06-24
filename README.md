@@ -186,7 +186,38 @@ except ApiException as e:
 ```
 
 ---
-### 4. End-to-End Dubbing
+### 4. Getting Client Source and Target Languages
+
+Retrieve available source and target languages for translation and dubbing.
+
+```python
+from cambai import CambAI
+from cambai.rest import ApiException
+
+# Initialize client
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
+
+try:
+    # Get all available target languages
+    print("Listing target languages...")
+    target_languages = client.get_target_languages()
+    print(f"Found {len(target_languages)} target languages:")
+    for language in target_languages:
+        print(f"  - {language}")
+    
+    # Get all available source languages
+    print("\nListing source languages...")
+    source_languages = client.get_source_languages()
+    print(f"Found {len(source_languages)} source languages:")
+    for language in source_languages:
+        print(f"  - {language}")
+
+except ApiException as e:
+    print(f"API Exception when getting languages: {e}\n")
+```
+
+---
+### 5. End-to-End Dubbing
 
 Dub videos into different languages with voice cloning and translation capabilities.
 
@@ -196,13 +227,6 @@ from cambai.rest import ApiException
 
 # Initialize client
 client = CambAI(api_key="YOUR_CAMB_API_KEY")
-
-# Call all target languages
-print("Listing target languages...")
-target_languages = client.get_target_languages()
-print(f"Found {len(target_languages)} target languages:")
-for language in target_languages:
-    print(f"  - {language}")
 
 try:
     print("Starting end-to-end dubbing process...")

@@ -440,6 +440,12 @@ class CambAI:
                     response = self.get_dubbed_run_info_by_id(result.run_id)
                     return response
                 
+                elif result.status == 'FAILED' or result.status == 'ERROR':
+                    error_msg = f"End-to-end dubbing failed with status: {result.status}"
+                    if verbose:
+                        print(error_msg)
+                    raise RuntimeError(error_msg)
+                
                 elif verbose:
                     print(f"Still processing... (status: {result.status})")
                     
@@ -447,6 +453,8 @@ class CambAI:
             except Exception as e:
                 if verbose:
                     print(f"Error checking status: {str(e)}")
+                # Re-raise the exception to stop polling on error
+                raise
             
             # Wait before next poll
             time.sleep(POLL_INTERVAL)
