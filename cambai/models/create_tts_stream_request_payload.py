@@ -31,7 +31,7 @@ class CreateTTSStreamRequestPayload(BaseModel):
     """ # noqa: E501
     text: StrictStr = Field(description="The content you want converted into spoken audio. This can be anything from a single sentence to paragraphs of text, supporting punctuation for natural speech patterns.")
     voice_id: StrictInt = Field(description="The unique identifier for your selected voice profile. You can obtain available voice IDs from the `/list-voices` endpoint or create custom voices with the `/create-custom-voice` endpoint.")
-    language: Languages = Field(description="The source language of your input text. This helps the system apply the correct pronunciation rules and speech patterns.")
+    language: str = Field(description="The source language of your input text. This helps the system apply the correct pronunciation rules and speech patterns.")
     gender: Optional[Gender] = Field(default=None, description="The preferred gender characteristics of the synthesized voice (`0 = Not Specified, 1 = Male, 2 = Female, 9 = Not Applicable`). Defaults to `null`.")
     age: Optional[StrictInt] = Field(default=None, description="The approximate age (between 1-100 years) to be reflected in the voice characteristics. This parameter helps fine-tune the timbre and speech patterns to match different age groups.")
     output_format: Optional[TTSStreamOutputFormat] = Field(default=None, description="The audio file format for the generated speech stream.")
