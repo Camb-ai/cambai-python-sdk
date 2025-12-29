@@ -14,6 +14,7 @@ import os
 import time
 import warnings
 import json
+import typing
 # Constants for API operations
 TIMEOUT = 120
 POLL_INTERVAL = 5
@@ -30,7 +31,7 @@ from cambai.models.audio_separation_run_info_response import AudioSeparationRunI
 from cambai.models.body_translate_translate_post import BodyTranslateTranslatePost
 from cambai.models.create_custom_voice_out import CreateCustomVoiceOut
 from cambai.models.create_tts_request_payload import CreateTTSRequestPayload
-# from cambai.models.create_tts_stream_request_payload import CreateTTSStreamRequestPayload
+from cambai.models.create_tts_stream_request_payload import CreateTTSStreamRequestPayload
 from cambai.models.create_text_to_audio_request_payload import CreateTextToAudioRequestPayload
 from cambai.models.create_text_to_voice_request_payload import CreateTextToVoiceRequestPayload
 from cambai.models.create_translated_story_request_payload import CreateTranslatedStoryRequestPayload
@@ -363,6 +364,48 @@ class CambAI:
 
         raise TimeoutError(f"TTS request did not complete within {timeout} seconds")
     
+    def text_to_speech_stream(
+        self,
+        text: str,
+        voice_id: int,
+        language: str = "en-us",
+    ) -> typing.Iterator[bytes]:
+        """Convert text to speech and returns audio as an audio stream."""
+        body_params = CreateTTSStreamRequestPayload(
+            text=text, voice_id=voice_id, language=language
+        )
+
+        auth_settings: List[str] = ["APIKeyHeader"]
+
+        param = self.api_client.param_serialize(
+            method="POST",
+            resource_path="/tts-stream",
+            body=body_params,
+            auth_settings=auth_settings,
+        )
+
+        response_wrapper = self.api_client.call_api(*param)
+
+        # `response_wrapper.response` is the underlying urllib3 HTTPResponse.
+        http_resp = getattr(response_wrapper, "response", None)
+        if http_resp is None:
+            # Fallback: try to read and yield whole body
+            response_wrapper.read()
+            data = response_wrapper.data or b""
+            yield data
+            return
+
+        try:
+            for chunk in http_resp.stream():
+                if not chunk:
+                    continue
+                yield chunk
+        finally:
+            try:
+                http_resp.close()
+            except Exception:
+                pass
+
     @validate_call
     def end_to_end_dubbing(
         self,
