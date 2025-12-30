@@ -32,7 +32,7 @@ def stream(audio_stream: typing.Iterator[bytes]) -> bytes:
     return audio
 
 
-def capture() -> typing.Iterator[bytes]:
+def capture(sample_rate=16000) -> typing.Iterator[bytes]:
     if shutil.which("gst-launch-1.0") is None:
         message = (
             "Audio capture requires `gst-launch-1.0`, but it was not found on your system."
@@ -45,7 +45,7 @@ def capture() -> typing.Iterator[bytes]:
         "gst-launch-1.0",
         "autoaudiosrc", "!",
         "audioconvert", "!", "audioresample", "!",
-        "audio/x-raw,format=S16LE,rate=16000", "!",
+        f"audio/x-raw,format=S16LE,rate={sample_rate}", "!",
         "fdsink", "fd=1"
     ]
     
