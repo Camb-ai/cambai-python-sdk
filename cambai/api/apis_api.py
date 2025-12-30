@@ -15,6 +15,8 @@ import time
 import warnings
 import json
 import typing
+import websocket
+import threading
 # Constants for API operations
 TIMEOUT = 120
 POLL_INTERVAL = 5
@@ -405,6 +407,112 @@ class CambAI:
                 http_resp.close()
             except Exception:
                 pass
+
+    def speech_to_text_stream(
+        self,
+        audio_stream: typing.Iterator[bytes],
+        sample_rate: int,
+        model: str = "camb",
+        language: str = "en-us",
+        translate_to_language: Optional[str] = None,
+        punctuate: bool = True,
+        diarize: bool = False,
+        interim_results: bool = True,
+    ) -> typing.Iterator[Dict]:
+        """Stream audio to transcription service and yield JSON results.
+
+        This is a synchronous, blocking generator that yields parsed JSON
+        messages as dictionaries. Callers can iterate over the returned
+        generator to consume results as they arrive.
+
+        Args:
+            audio_stream: Iterator of bytes (generator) yielding audio chunks.
+            sample_rate: Sample rate in Hz (e.g., 16000).
+            model: Model to use for transcription.
+            language: Language code (e.g., "en-us").
+            translate_to_language: Target language for translation (optional).
+            punctuate: Enable punctuation.
+            diarize: Enable speaker diarization.
+            interim_results: Enable interim results.
+        """
+        params = {
+            "model": model,
+            "language": language,
+            "sample_rate": sample_rate,
+            "punctuate": str(punctuate).lower(),
+            "diarize": str(diarize).lower(),
+            "interim_results": str(interim_results).lower(),
+        }
+        if translate_to_language:
+            params["translate_to_language"] = translate_to_language
+        query_string = "&".join([f"{k}={v}" for k, v in params.items()])
+        base_url: str = self.api_client.configuration.host
+        if base_url.startswith("https://"):
+            ws_base = base_url.replace("https://", "wss://", 1)
+        elif base_url.startswith("http://"):
+            ws_base = base_url.replace("http://", "ws://", 1)
+        else:
+            ws_base = base_url
+        full_url = f"{ws_base.rstrip('/')}/transcription/listen?{query_string}"
+
+        stop_event = threading.Event()
+
+        def sender(ws):
+            try:
+                time.sleep(1)
+
+                for chunk in audio_stream:
+                    if stop_event.is_set():
+                        return
+                    ws.send(chunk, opcode=websocket.ABNF.OPCODE_BINARY)
+
+                ws.send(json.dumps({"type": "Finalize"}))
+                time.sleep(1)
+                ws.send(json.dumps({"type": "CloseStream"}))
+
+            except Exception as e:
+                print(f"Error in sender thread: {e}")
+                stop_event.set()
+
+        try:
+            api_key = self.api_client.configuration.api_key['APIKeyHeader'];
+            ws = websocket.create_connection(
+                full_url, timeout=30, header=[f"x-api-key: {api_key}"]
+            )
+
+            t = threading.Thread(target=sender, args=(ws,), daemon=True)
+            t.start()
+
+            while not stop_event.is_set():
+                try:
+                    message = ws.recv()
+                except Exception as e:
+                    print(f"Receive error: {e}")
+                    break
+
+                if message is None:
+                    break
+
+                try:
+                    if isinstance(message, (bytes, bytearray)):
+                        text = message.decode("utf-8")
+                    else:
+                        text = message
+                    data = json.loads(text)
+                    yield data
+                except json.JSONDecodeError:
+                    pass
+
+            stop_event.set()
+            try:
+                ws.close()
+            except Exception:
+                pass
+            t.join(timeout=2)
+
+        except Exception as e:
+            stop_event.set()
+            raise
 
     @validate_call
     def end_to_end_dubbing(
