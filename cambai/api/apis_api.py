@@ -459,15 +459,12 @@ class CambAI:
 
         def sender(ws):
             try:
-                time.sleep(1)
-
                 for chunk in audio_stream:
                     if stop_event.is_set():
                         return
                     ws.send(chunk, opcode=websocket.ABNF.OPCODE_BINARY)
 
                 ws.send(json.dumps({"type": "Finalize"}))
-                time.sleep(1)
                 ws.send(json.dumps({"type": "CloseStream"}))
 
             except Exception as e:
@@ -508,7 +505,7 @@ class CambAI:
                 ws.close()
             except Exception:
                 pass
-            t.join(timeout=2)
+            t.join()
 
         except Exception as e:
             stop_event.set()
