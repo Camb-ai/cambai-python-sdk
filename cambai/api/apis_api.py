@@ -58,6 +58,7 @@ from cambai.models.voice_item import VoiceItem
 from cambai.api_client import ApiClient, RequestSerialized
 from cambai.api_response import ApiResponse
 from cambai.rest import RESTResponseType
+from cambai.exceptions import ApiException
 
 
 class CambAI:
@@ -401,6 +402,13 @@ class CambAI:
             data = response_wrapper.data or b""
             yield data
             return
+
+        if http_resp.status != 200:
+            raise ApiException.from_response(
+                http_resp=http_resp,
+                body=http_resp.data.decode('utf-8') if http_resp.data else None,
+                data=None
+            )
 
         try:
             for chunk in http_resp.stream():
