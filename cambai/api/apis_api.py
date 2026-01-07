@@ -47,6 +47,9 @@ from cambai.models.language_item import LanguageItem
 from cambai.models.languages import Languages
 from cambai.models.orchestrator_pipeline_result import OrchestratorPipelineResult
 from cambai.models.output_type import OutputType
+from cambai.models.output_configuration import OutputConfiguration
+from cambai.models.voice_settings import VoiceSettings
+from cambai.models.inference_options import InferenceOptions
 from cambai.models.run_info_response import RunInfoResponse
 from cambai.models.story_run_info_response import StoryRunInfoResponse
 from cambai.models.task_id import TaskID
@@ -374,13 +377,31 @@ class CambAI:
         language: str = "en-us",
         user_instructions: Optional[str] = None,
         speech_model: str = "mars-8",
-        enhance_named_entities_pronunciation: bool = False
+        enhance_named_entities_pronunciation: bool = False,
+        output_configuration: Optional['OutputConfiguration'] = None,
+        voice_settings: Optional['VoiceSettings'] = None,
+        inference_options: Optional['InferenceOptions'] = None,
     ) -> typing.Iterator[bytes]:
-        """Convert text to speech and returns audio as an audio stream."""
+        """Convert text to speech and returns audio as an audio stream.
+        
+        Args:
+            text: The text content to convert to speech.
+            voice_id: The ID of the voice to use.
+            language: The language code (default: "en-us").
+            user_instructions: Optional instructions for the speech model.
+            speech_model: The speech model to use (default: "mars-8").
+            enhance_named_entities_pronunciation: Whether to enhance named entity pronunciation.
+            output_configuration: Optional output format and processing configuration.
+            voice_settings: Optional voice characteristics and quality settings.
+            inference_options: Optional inference behavior and model parameter settings.
+        """
         body_params = CreateTTSStreamRequestPayload(
             text=text, voice_id=voice_id, language=language,
             user_instructions=user_instructions, speech_model=speech_model,
             enhance_named_entities_pronunciation=enhance_named_entities_pronunciation,
+            output_configuration=output_configuration,
+            voice_settings=voice_settings,
+            inference_options=inference_options,
         )
 
         auth_settings: List[str] = ["APIKeyHeader"]
