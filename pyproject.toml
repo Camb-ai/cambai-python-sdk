@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cambai-sdk"
+version = "0.1.0"
+description = "The official Python SDK for the Camb.ai API"
+authors = [
+  { name = "Camb.ai", email = "support@camb.ai" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+  "httpx>=0.21.2",
+  "pydantic>=1.10.0",
+  "typing_extensions>=4.0.0",
+]
+
+
