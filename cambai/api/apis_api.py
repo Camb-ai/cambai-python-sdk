@@ -371,10 +371,15 @@ class CambAI:
         text: str,
         voice_id: int,
         language: str = "en-us",
+        user_instructions: Optional[str] = None,
+        speech_model: str = "mars-8",
+        enhance_named_entities_pronunciation: bool = False
     ) -> typing.Iterator[bytes]:
         """Convert text to speech and returns audio as an audio stream."""
         body_params = CreateTTSStreamRequestPayload(
-            text=text, voice_id=voice_id, language=language
+            text=text, voice_id=voice_id, language=language,
+            user_instructions=user_instructions, speech_model=speech_model,
+            enhance_named_entities_pronunciation=enhance_named_entities_pronunciation,
         )
 
         auth_settings: List[str] = ["APIKeyHeader"]
