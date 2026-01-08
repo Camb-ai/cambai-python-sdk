@@ -94,7 +94,7 @@ if typing.TYPE_CHECKING:
         translation,
         voice_cloning,
     )
-    from .client import AsyncCambApi, CambApi
+    from .client import AsyncCambAI, CambAI
     from .dub import (
         DubbedOutputInAltFormatRequestPayloadOutputFormat,
         GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse,
@@ -235,10 +235,10 @@ def __dir__():
 
 __all__ = [
     "AddTargetLanguageOut",
-    "AsyncCambApi",
+    "AsyncCambAI",
     "AudioOutputType",
     "AudioStream",
-    "CambApi",
+    "CambAI",
     "CambApiEnvironment",
     "ConfigStream",
     "ConfigStreamPipeline",

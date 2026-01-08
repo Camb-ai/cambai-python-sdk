@@ -32,20 +32,12 @@ pip install git+https://github.com/Camb-ai/cambai-python-sdk
 
 To use the Camb AI SDK, you'll need an API key. You can authenticate in either of the following ways:
 
-### 1. Pass the API key directly
+### Pass the API key directly
 
 ```python
-from camb.client import CambApi
+from camb.client import CambAI
 
-client = CambApi(api_key="YOUR_CAMB_API_KEY")
-```
-
-### 2. Use an environment variable
-
-Set your API key as an environment variable named `CAMB_API_KEY`:
-
-```bash
-export CAMB_API_KEY="your_actual_api_key_here"
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 ```
 
 ## 🚀 Getting Started: Examples
@@ -57,11 +49,11 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 #### a) Get an Audio URL or Save to File
 
 ```python
-from camb.client import CambApi, save_stream_to_file
+from camb.client import CambAI, save_stream_to_file
 from camb.types.stream_tts_output_configuration import StreamTtsOutputConfiguration
 
 # Initialize client (ensure API key is set)
-client = CambApi(api_key="YOUR_CAMB_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 response = client.text_to_speech.tts(
     text="Hello from Camb AI! This is a test of our Text-to-Speech API.",
@@ -92,10 +84,10 @@ for voice in voices[:5]:  # Print first 5 as an example
 Create completely new and unique voices from a textual description of the desired voice characteristics.
 
 ```python
-from camb.client import CambApi
+from camb.client import CambAI
 
 # Initialize client
-client = CambApi(api_key="YOUR_CAMB_API_KEY")
+client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 try:
     print("Generating a new voice and speech...")

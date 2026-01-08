@@ -57,7 +57,7 @@ async def save_async_stream_to_file(stream: typing.AsyncIterable[bytes], filenam
         async for chunk in stream:
             f.write(chunk)
 
-class CambApi:
+class CambAI:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -363,7 +363,7 @@ class CambApi:
         return self._deprecated_streaming
 
 
-class AsyncCambApi:
+class AsyncCambAI:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
