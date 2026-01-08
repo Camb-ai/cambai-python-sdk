@@ -28,16 +28,18 @@ Or through
 pip install git+https://github.com/Camb-ai/cambai-python-sdk
 ```
 
-## 🔑 Authentication
+## 🔑 Authentication & Accessing Clients
 
-To use the Camb AI SDK, you'll need an API key. You can authenticate in either of the following ways:
-
-### Pass the API key directly
+To use the Camb AI SDK, you'll need an API key. You can authenticate it by:
 
 ```python
-from camb.client import CambAI
+from camb.client import CambAI, AsyncCambAI
 
+# Synchronous Client
 client = CambAI(api_key="YOUR_CAMB_API_KEY")
+
+# Asynchronous Client
+async_client = AsyncCambAI(api_key="YOUR_CAMB_API_KEY")
 ```
 
 ## 🚀 Getting Started: Examples
@@ -68,7 +70,33 @@ save_stream_to_file(response, "tts_output.mp3")
 print("Success! Audio saved to tts_output.mp3")
 ```
 
-#### b) List Available Voices
+#### b) Async Text-to-Speech
+
+You can also stream audio asynchronously using `AsyncCambAI`.
+
+```python
+import asyncio
+from camb.client import AsyncCambAI, save_async_stream_to_file
+from camb.types.stream_tts_output_configuration import StreamTtsOutputConfiguration
+
+async_client = AsyncCambAI(api_key="YOUR_CAMB_API_KEY")
+
+async def main():
+    response = async_client.text_to_speech.tts(
+        text="Hello, this is a test of the text to audio streaming capabilities.",
+        language="en-us",
+        voice_id=147319,
+        output_configuration=StreamTtsOutputConfiguration(
+            format="mp3"
+        )
+    )
+    await save_async_stream_to_file(response, "text_to_audio_output.mp3")
+    print("Success! Audio saved to text_to_audio_output.mp3")
+
+asyncio.run(main())
+```
+
+#### c) List Available Voices
 
 You can list available voices to find a voice_id that suits your needs:
 
