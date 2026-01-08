@@ -40,7 +40,7 @@ class DubClient:
         """
         return self._raw_client
 
-    def end_to_end_dubbing(
+    def create_dub(
         self,
         *,
         video_url: str,
@@ -121,7 +121,7 @@ class DubClient:
         )
         return _response.data
 
-    def get_end_to_end_dubbing_status(
+    def get_dubbing_status(
         self,
         task_id: str,
         *,
@@ -150,7 +150,7 @@ class DubClient:
         client = CambApi(
             api_key="YOUR_API_KEY",
         )
-        client.dub.get_end_to_end_dubbing_status(
+        client.dub.get_dubbing_status(
             task_id="task_id",
         )
         """
@@ -192,7 +192,7 @@ class DubClient:
         _response = self._raw_client.get_dubbed_run_info(run_id, request_options=request_options)
         return _response.data
 
-    def get_dubbing_runs_results(
+    def get_dubbed_runs_results(
         self,
         *,
         run_ids: typing.Sequence[int],
@@ -224,7 +224,7 @@ class DubClient:
         client = CambApi(
             api_key="YOUR_API_KEY",
         )
-        client.dub.get_dubbing_runs_results(
+        client.dub.get_dubbed_runs_results(
             run_ids=[1],
         )
         """
@@ -361,79 +361,6 @@ class DubClient:
         )
         return _response.data
 
-    def poll_discord_dub_task(
-        self,
-        task_id: str,
-        *,
-        run_id: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> OrchestratorPipelineResult:
-        """
-        Parameters
-        ----------
-        task_id : str
-
-        run_id : typing.Optional[int]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        OrchestratorPipelineResult
-            Successful Response
-
-        Examples
-        --------
-        from camb import CambApi
-
-        client = CambApi(
-            api_key="YOUR_API_KEY",
-        )
-        client.dub.poll_discord_dub_task(
-            task_id="task_id",
-        )
-        """
-        _response = self._raw_client.poll_discord_dub_task(task_id, run_id=run_id, request_options=request_options)
-        return _response.data
-
-    def poll_twitter_dub_task(
-        self,
-        task_id: str,
-        *,
-        run_id: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> OrchestratorPipelineResult:
-        """
-        Parameters
-        ----------
-        task_id : str
-
-        run_id : typing.Optional[int]
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        OrchestratorPipelineResult
-            Successful Response
-
-        Examples
-        --------
-        from camb import CambApi
-
-        client = CambApi(
-            api_key="YOUR_API_KEY",
-        )
-        client.dub.poll_twitter_dub_task(
-            task_id="task_id",
-        )
-        """
-        _response = self._raw_client.poll_twitter_dub_task(task_id, run_id=run_id, request_options=request_options)
-        return _response.data
-
-
 class AsyncDubClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._raw_client = AsyncRawDubClient(client_wrapper=client_wrapper)
@@ -449,7 +376,7 @@ class AsyncDubClient:
         """
         return self._raw_client
 
-    async def end_to_end_dubbing(
+    async def create_dub(
         self,
         *,
         video_url: str,
@@ -513,7 +440,7 @@ class AsyncDubClient:
 
 
         async def main() -> None:
-            await client.dub.end_to_end_dubbing(
+            await client.dub.create_dub(
                 video_url="video_url",
                 source_language=1,
             )
@@ -538,7 +465,7 @@ class AsyncDubClient:
         )
         return _response.data
 
-    async def get_end_to_end_dubbing_status(
+    async def get_dubbing_status(
         self,
         task_id: str,
         *,
@@ -572,7 +499,7 @@ class AsyncDubClient:
 
 
         async def main() -> None:
-            await client.dub.get_end_to_end_dubbing_status(
+            await client.dub.get_dubbing_status(
                 task_id="task_id",
             )
 
@@ -625,7 +552,7 @@ class AsyncDubClient:
         _response = await self._raw_client.get_dubbed_run_info(run_id, request_options=request_options)
         return _response.data
 
-    async def get_dubbing_runs_results(
+    async def get_dubbed_runs_results(
         self,
         *,
         run_ids: typing.Sequence[int],
@@ -662,7 +589,7 @@ class AsyncDubClient:
 
 
         async def main() -> None:
-            await client.dub.get_dubbing_runs_results(
+            await client.dub.get_dubbed_runs_results(
                 run_ids=[1],
             )
 
