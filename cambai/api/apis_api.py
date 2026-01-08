@@ -14,6 +14,9 @@ import os
 import time
 import warnings
 import json
+import typing
+import websocket
+import threading
 # Constants for API operations
 TIMEOUT = 120
 POLL_INTERVAL = 5
@@ -30,7 +33,7 @@ from cambai.models.audio_separation_run_info_response import AudioSeparationRunI
 from cambai.models.body_translate_translate_post import BodyTranslateTranslatePost
 from cambai.models.create_custom_voice_out import CreateCustomVoiceOut
 from cambai.models.create_tts_request_payload import CreateTTSRequestPayload
-# from cambai.models.create_tts_stream_request_payload import CreateTTSStreamRequestPayload
+from cambai.models.create_tts_stream_request_payload import CreateTTSStreamRequestPayload
 from cambai.models.create_text_to_audio_request_payload import CreateTextToAudioRequestPayload
 from cambai.models.create_text_to_voice_request_payload import CreateTextToVoiceRequestPayload
 from cambai.models.create_translated_story_request_payload import CreateTranslatedStoryRequestPayload
@@ -44,6 +47,9 @@ from cambai.models.language_item import LanguageItem
 from cambai.models.languages import Languages
 from cambai.models.orchestrator_pipeline_result import OrchestratorPipelineResult
 from cambai.models.output_type import OutputType
+from cambai.models.output_configuration import OutputConfiguration
+from cambai.models.voice_settings import VoiceSettings
+from cambai.models.inference_options import InferenceOptions
 from cambai.models.run_info_response import RunInfoResponse
 from cambai.models.story_run_info_response import StoryRunInfoResponse
 from cambai.models.task_id import TaskID
@@ -55,6 +61,7 @@ from cambai.models.voice_item import VoiceItem
 from cambai.api_client import ApiClient, RequestSerialized
 from cambai.api_response import ApiResponse
 from cambai.rest import RESTResponseType
+from cambai.exceptions import ApiException
 
 
 class CambAI:
@@ -363,6 +370,183 @@ class CambAI:
 
         raise TimeoutError(f"TTS request did not complete within {timeout} seconds")
     
+    def text_to_speech_stream(
+        self,
+        text: str,
+        voice_id: int,
+        language: str = "en-us",
+        user_instructions: Optional[str] = None,
+        speech_model: str = "mars-8",
+        enhance_named_entities_pronunciation: bool = False,
+        output_configuration: Optional['OutputConfiguration'] = None,
+        voice_settings: Optional['VoiceSettings'] = None,
+        inference_options: Optional['InferenceOptions'] = None,
+    ) -> typing.Iterator[bytes]:
+        """Convert text to speech and returns audio as an audio stream.
+        
+        Args:
+            text: The text content to convert to speech.
+            voice_id: The ID of the voice to use.
+            language: The language code (default: "en-us").
+            user_instructions: Optional instructions for the speech model.
+            speech_model: The speech model to use (default: "mars-8").
+            enhance_named_entities_pronunciation: Whether to enhance named entity pronunciation.
+            output_configuration: Optional output format and processing configuration.
+            voice_settings: Optional voice characteristics and quality settings.
+            inference_options: Optional inference behavior and model parameter settings.
+        """
+        body_params = CreateTTSStreamRequestPayload(
+            text=text, voice_id=voice_id, language=language,
+            user_instructions=user_instructions, speech_model=speech_model,
+            enhance_named_entities_pronunciation=enhance_named_entities_pronunciation,
+            output_configuration=output_configuration,
+            voice_settings=voice_settings,
+            inference_options=inference_options,
+        )
+
+        auth_settings: List[str] = ["APIKeyHeader"]
+
+        param = self.api_client.param_serialize(
+            method="POST",
+            resource_path="/tts-stream",
+            body=body_params,
+            auth_settings=auth_settings,
+        )
+
+        response_wrapper = self.api_client.call_api(*param)
+
+        # `response_wrapper.response` is the underlying urllib3 HTTPResponse.
+        http_resp = getattr(response_wrapper, "response", None)
+        if http_resp is None:
+            # Fallback: try to read and yield whole body
+            response_wrapper.read()
+            data = response_wrapper.data or b""
+            yield data
+            return
+
+        if http_resp.status != 200:
+            raise ApiException.from_response(
+                http_resp=http_resp,
+                body=http_resp.data.decode('utf-8') if http_resp.data else None,
+                data=None
+            )
+
+        try:
+            for chunk in http_resp.stream():
+                if not chunk:
+                    continue
+                yield chunk
+        finally:
+            try:
+                http_resp.close()
+            except Exception:
+                pass
+
+    def speech_to_text_stream(
+        self,
+        audio_stream: typing.Iterator[bytes],
+        sample_rate: int,
+        model: str = "camb",
+        language: str = "en-us",
+        channels: int = 1,
+        translate_to_language: Optional[str] = None,
+        punctuate: bool = True,
+        diarize: bool = False,
+        interim_results: bool = True,
+    ) -> typing.Iterator[Dict]:
+        """Stream audio to transcription service and yield JSON results.
+
+        This is a synchronous, blocking generator that yields parsed JSON
+        messages as dictionaries. Callers can iterate over the returned
+        generator to consume results as they arrive.
+
+        Args:
+            audio_stream: Iterator of bytes (generator) yielding audio chunks.
+            sample_rate: Sample rate in Hz (e.g., 16000).
+            model: Model to use for transcription.
+            language: Language code (e.g., "en-us").
+            translate_to_language: Target language for translation (optional).
+            punctuate: Enable punctuation.
+            diarize: Enable speaker diarization.
+            interim_results: Enable interim results.
+        """
+        params = {
+            "model": model,
+            "language": language,
+            "sample_rate": sample_rate,
+            "channels": channels,
+            "punctuate": str(punctuate).lower(),
+            "diarize": str(diarize).lower(),
+            "interim_results": str(interim_results).lower(),
+        }
+        if translate_to_language:
+            params["translate_to_language"] = translate_to_language
+        query_string = "&".join([f"{k}={v}" for k, v in params.items()])
+        base_url: str = self.api_client.configuration.host
+        if base_url.startswith("https://"):
+            ws_base = base_url.replace("https://", "wss://", 1)
+        elif base_url.startswith("http://"):
+            ws_base = base_url.replace("http://", "ws://", 1)
+        else:
+            ws_base = base_url
+        full_url = f"{ws_base.rstrip('/')}/transcription/listen?{query_string}"
+
+        stop_event = threading.Event()
+
+        def sender(ws):
+            try:
+                for chunk in audio_stream:
+                    if stop_event.is_set():
+                        return
+                    ws.send(chunk, opcode=websocket.ABNF.OPCODE_BINARY)
+
+                ws.send(json.dumps({"type": "Finalize"}))
+                ws.send(json.dumps({"type": "CloseStream"}))
+
+            except Exception as e:
+                print(f"Error in sender thread: {e}")
+                stop_event.set()
+
+        try:
+            api_key = self.api_client.configuration.api_key['APIKeyHeader'];
+            ws = websocket.create_connection(
+                full_url, timeout=30, header=[f"x-api-key: {api_key}"]
+            )
+
+            t = threading.Thread(target=sender, args=(ws,), daemon=True)
+            t.start()
+
+            while not stop_event.is_set():
+                try:
+                    message = ws.recv()
+                except Exception as e:
+                    print(f"Receive error: {e}")
+                    break
+
+                if message is None:
+                    break
+
+                try:
+                    if isinstance(message, (bytes, bytearray)):
+                        text = message.decode("utf-8")
+                    else:
+                        text = message
+                    data = json.loads(text)
+                    yield data
+                except json.JSONDecodeError:
+                    pass
+
+            stop_event.set()
+            try:
+                ws.close()
+            except Exception:
+                pass
+            t.join()
+
+        except Exception as e:
+            stop_event.set()
+            raise
+
     @validate_call
     def end_to_end_dubbing(
         self,

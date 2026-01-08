@@ -22,6 +22,9 @@ from typing import Any, ClassVar, Dict, List, Optional
 from cambai.models.gender import Gender
 from cambai.models.languages import Languages
 from cambai.models.tts_stream_output_format import TTSStreamOutputFormat
+from cambai.models.output_configuration import OutputConfiguration
+from cambai.models.voice_settings import VoiceSettings
+from cambai.models.inference_options import InferenceOptions
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,11 +34,17 @@ class CreateTTSStreamRequestPayload(BaseModel):
     """ # noqa: E501
     text: StrictStr = Field(description="The content you want converted into spoken audio. This can be anything from a single sentence to paragraphs of text, supporting punctuation for natural speech patterns.")
     voice_id: StrictInt = Field(description="The unique identifier for your selected voice profile. You can obtain available voice IDs from the `/list-voices` endpoint or create custom voices with the `/create-custom-voice` endpoint.")
-    language: Languages = Field(description="The source language of your input text. This helps the system apply the correct pronunciation rules and speech patterns.")
+    language: str = Field(description="The source language of your input text. This helps the system apply the correct pronunciation rules and speech patterns.")
+    speech_model: Optional[str] = Field(default=None, description="The speech model to use for synthesis.")
+    user_instructions: Optional[str] = Field(default=None, description="User instructions for the speech model.")
+    enhance_named_entities_pronunciation: bool = Field(default=False, description="Whether to enhance pronunciation of named entities.")
     gender: Optional[Gender] = Field(default=None, description="The preferred gender characteristics of the synthesized voice (`0 = Not Specified, 1 = Male, 2 = Female, 9 = Not Applicable`). Defaults to `null`.")
     age: Optional[StrictInt] = Field(default=None, description="The approximate age (between 1-100 years) to be reflected in the voice characteristics. This parameter helps fine-tune the timbre and speech patterns to match different age groups.")
     output_format: Optional[TTSStreamOutputFormat] = Field(default=None, description="The audio file format for the generated speech stream.")
-    __properties: ClassVar[List[str]] = ["text", "voice_id", "language", "gender", "age", "output_format"]
+    output_configuration: Optional[OutputConfiguration] = Field(default=None, description="Configuration for audio output format and processing options.")
+    voice_settings: Optional[VoiceSettings] = Field(default=None, description="Configuration for voice characteristics and quality.")
+    inference_options: Optional[InferenceOptions] = Field(default=None, description="Configuration for inference behavior and model parameters.")
+    __properties: ClassVar[List[str]] = ["text", "voice_id", "language", "speech_model", "user_instructions", "enhance_named_entities_pronunciation", "gender", "age", "output_format", "output_configuration", "voice_settings", "inference_options"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -91,9 +100,15 @@ class CreateTTSStreamRequestPayload(BaseModel):
             "text": obj.get("text"),
             "voice_id": obj.get("voice_id"),
             "language": obj.get("language"),
+            "speech_model": obj.get("speech_model"),
+            "user_instructions": obj.get("user_instructions"),
+            "enhance_named_entities_pronunciation": obj.get("enhance_named_entities_pronunciation"),
             "gender": obj.get("gender"),
             "age": obj.get("age"),
-            "output_format": obj.get("output_format")
+            "output_format": obj.get("output_format"),
+            "output_configuration": OutputConfiguration.from_dict(obj.get("output_configuration")) if obj.get("output_configuration") is not None else None,
+            "voice_settings": VoiceSettings.from_dict(obj.get("voice_settings")) if obj.get("voice_settings") is not None else None,
+            "inference_options": InferenceOptions.from_dict(obj.get("inference_options")) if obj.get("inference_options") is not None else None
         })
         return _obj
 
