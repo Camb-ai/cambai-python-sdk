@@ -3,8 +3,9 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cambai-sdk"
-version = "1.5.0"
+name = "camb-sdk"
+version = "1.5.2"
+readme = "README.md"
 description = "The official Python SDK for the Camb.ai API"
 authors = [
   { name = "Camb.ai", email = "support@camb.ai" },
