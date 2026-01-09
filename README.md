@@ -62,7 +62,7 @@ response = client.text_to_speech.tts(
     text="Hello from Camb AI! This is a test of our Text-to-Speech API.",
     voice_id=20303,  # Example voice ID, get from client.voice_cloning.list_voices()
     language="en-us",
-    speech_model="mars-8",  # options: mars-8, mars-8-flash, mars-8-instruct, auto
+    speech_model="mars-pro",  # options: mars-pro, mars-flash, mars-instruct, auto
     output_configuration=StreamTtsOutputConfiguration(
         format="mp3"
     )
@@ -87,7 +87,7 @@ async def main():
     response = async_client.text_to_speech.tts(
         text="Hello, this is a test of the text to audio streaming capabilities.",
         language="en-us",
-        speech_model="mars-8",  # options: mars-8, mars-8-flash, mars-8-instruct, auto
+        speech_model="mars-pro",  # options: mars-pro, mars-flash, mars-instruct, auto
         voice_id=147319,
         output_configuration=StreamTtsOutputConfiguration(
             format="mp3"
