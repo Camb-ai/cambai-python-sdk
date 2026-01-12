@@ -80,6 +80,7 @@ client_with_provider = CambAI(
 ```
 
 ## 🚀 Getting Started: Examples
+NOTE: For more examples and full ready to run files refer to the examples/ directory.
 
 ### 1. Text-to-Speech (TTS)
 
