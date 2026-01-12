@@ -67,6 +67,7 @@ if typing.TYPE_CHECKING:
     from .transcription_result import TranscriptionResult
     from .translating_option import TranslatingOption
     from .translation_result import TranslationResult
+    from .tts_provider import TtsProvider
     from .validation_error import ValidationError
     from .validation_error_loc_item import ValidationErrorLocItem
     from .video_output_type_without_avi import VideoOutputTypeWithoutAvi
@@ -134,6 +135,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TranscriptionResult": ".transcription_result",
     "TranslatingOption": ".translating_option",
     "TranslationResult": ".translation_result",
+    "TtsProvider": ".tts_provider",
     "ValidationError": ".validation_error",
     "ValidationErrorLocItem": ".validation_error_loc_item",
     "VideoOutputTypeWithoutAvi": ".video_output_type_without_avi",
@@ -225,6 +227,7 @@ __all__ = [
     "TranscriptionResult",
     "TranslatingOption",
     "TranslationResult",
+    "TtsProvider",
     "ValidationError",
     "ValidationErrorLocItem",
     "VideoOutputTypeWithoutAvi",

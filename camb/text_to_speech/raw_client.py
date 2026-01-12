@@ -20,6 +20,7 @@ from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.stream_tts_inference_options import StreamTtsInferenceOptions
 from ..types.stream_tts_output_configuration import StreamTtsOutputConfiguration
 from ..types.stream_tts_voice_settings import StreamTtsVoiceSettings
+from .baseten import async_baseten_tts, baseten_tts
 from .types.create_stream_tts_request_payload_language import CreateStreamTtsRequestPayloadLanguage
 from .types.create_stream_tts_request_payload_speech_model import CreateStreamTtsRequestPayloadSpeechModel
 from .types.get_tts_results_tts_results_post_response_value import GetTtsResultsTtsResultsPostResponseValue
@@ -39,7 +40,7 @@ class RawTextToSpeechClient:
         *,
         text: str,
         language: CreateStreamTtsRequestPayloadLanguage,
-        voice_id: int,
+        voice_id: typing.Optional[int] = OMIT,
         speech_model: typing.Optional[CreateStreamTtsRequestPayloadSpeechModel] = OMIT,
         user_instructions: typing.Optional[str] = OMIT,
         enhance_named_entities_pronunciation: typing.Optional[bool] = OMIT,
@@ -77,6 +78,29 @@ class RawTextToSpeechClient:
         typing.Iterator[HttpResponse[typing.Iterator[bytes]]]
             Streaming audio response
         """
+        if self._client_wrapper.tts_provider is None and (voice_id is OMIT or voice_id is None):
+             raise ValueError("voice_id is required when using the default Camb.ai provider.")
+
+        if self._client_wrapper.tts_provider == "baseten":
+            if speech_model == "mars-pro":
+                with baseten_tts(
+                    self._client_wrapper,
+                    text=text,
+                    language=language,
+                    voice_id=voice_id,
+                    speech_model=speech_model,
+                    user_instructions=user_instructions,
+                    enhance_named_entities_pronunciation=enhance_named_entities_pronunciation,
+                    output_configuration=output_configuration,
+                    voice_settings=voice_settings,
+                    inference_options=inference_options,
+                    request_options=request_options,
+                ) as r:
+                    yield r
+                return
+            else:
+                raise ValueError(f"{self._client_wrapper.tts_provider} provider can only be used with 'mars-pro' speech model.")
+
         with self._client_wrapper.httpx_client.stream(
             "tts-stream",
             method="POST",
@@ -498,7 +522,7 @@ class AsyncRawTextToSpeechClient:
         *,
         text: str,
         language: CreateStreamTtsRequestPayloadLanguage,
-        voice_id: int,
+        voice_id: typing.Optional[int] = OMIT,
         speech_model: typing.Optional[CreateStreamTtsRequestPayloadSpeechModel] = OMIT,
         user_instructions: typing.Optional[str] = OMIT,
         enhance_named_entities_pronunciation: typing.Optional[bool] = OMIT,
@@ -536,6 +560,29 @@ class AsyncRawTextToSpeechClient:
         typing.AsyncIterator[AsyncHttpResponse[typing.AsyncIterator[bytes]]]
             Streaming audio response
         """
+        if self._client_wrapper.tts_provider is None and (voice_id is OMIT or voice_id is None):
+             raise ValueError("voice_id is required when using the default Camb.ai provider.")
+
+        if self._client_wrapper.tts_provider == "baseten":
+            if speech_model == "mars-pro":
+                async with async_baseten_tts(
+                    self._client_wrapper,
+                    text=text,
+                    language=language,
+                    voice_id=voice_id,
+                    speech_model=speech_model,
+                    user_instructions=user_instructions,
+                    enhance_named_entities_pronunciation=enhance_named_entities_pronunciation,
+                    output_configuration=output_configuration,
+                    voice_settings=voice_settings,
+                    inference_options=inference_options,
+                    request_options=request_options,
+                ) as r:
+                    yield r
+                return
+            else:
+                raise ValueError("Baseten provider can only be used with 'mars-pro' speech model.")
+
         async with self._client_wrapper.httpx_client.stream(
             "tts-stream",
             method="POST",

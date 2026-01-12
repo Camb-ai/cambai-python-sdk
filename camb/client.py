@@ -8,6 +8,7 @@ import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.request_options import RequestOptions
 from .environment import CambApiEnvironment
+from .types.tts_provider import TtsProvider
 from .raw_client import AsyncRawCambApi, RawCambApi
 
 if typing.TYPE_CHECKING:
@@ -102,12 +103,17 @@ class CambAI:
         *,
         base_url: typing.Optional[str] = None,
         environment: CambApiEnvironment = CambApiEnvironment.DEFAULT,
-        api_key: str,
+        api_key: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
+        tts_provider: typing.Optional[TtsProvider] = None,
+        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
+        if api_key is None and (tts_provider is None or provider_params is None):
+            raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
+            
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
@@ -121,6 +127,8 @@ class CambAI:
             if follow_redirects is not None
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
+            tts_provider=tts_provider,
+            provider_params=provider_params,
         )
         self._raw_client = RawCambApi(client_wrapper=self._client_wrapper)
         self._audio_separation: typing.Optional[AudioSeparationClient] = None
@@ -408,12 +416,17 @@ class AsyncCambAI:
         *,
         base_url: typing.Optional[str] = None,
         environment: CambApiEnvironment = CambApiEnvironment.DEFAULT,
-        api_key: str,
+        api_key: typing.Optional[str] = None,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
+        tts_provider: typing.Optional[TtsProvider] = None,
+        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
+        if api_key is None and (tts_provider is None or provider_params is None):
+            raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
+
         _defaulted_timeout = (
             timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
@@ -427,6 +440,8 @@ class AsyncCambAI:
             if follow_redirects is not None
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
+            tts_provider=tts_provider,
+            provider_params=provider_params,
         )
         self._raw_client = AsyncRawCambApi(client_wrapper=self._client_wrapper)
         self._audio_separation: typing.Optional[AsyncAudioSeparationClient] = None

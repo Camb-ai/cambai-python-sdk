@@ -41,6 +41,37 @@ client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
 # Asynchronous Client
 async_client = AsyncCambAI(api_key="YOUR_CAMB_API_KEY")
+
+# Client with Specific TTS Provider (e.g. Vertex, Baseten) NOTE: additional body parameters are mandatory
+
+# for Baseten
+client_baseten = CambAI(
+    tts_provider="baseten",
+    provider_params={
+        "api_key": "YOUR_BASETEN_API_KEY",
+        "mars_pro_url": "YOUR_BASETEN_URL"
+    }
+)
+
+# Call TTS with Baseten
+client_baseten.text_to_speech.tts(
+    text="Hello World",
+    language="en-us",
+    speech_model="mars-pro",
+    request_options={
+        "additional_body_parameters": {
+            "reference_audio": open("audio.wav", "rb").read(),
+            "reference_language": "en-us"  # required
+        }
+    }
+)
+
+
+# Vertex (In Progress)
+client_with_provider = CambAI(
+    tts_provider="vertex",
+    provider_params={"project_id": "my-project", "location": "us-central1"}
+)
 ```
 
 ## 🚀 Getting Started: Examples

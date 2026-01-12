@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "camb-sdk"
-version = "1.5.3"
+version = "1.5.4"
 readme = "README.md"
 description = "The official Python SDK for the Camb.ai API"
 authors = [
