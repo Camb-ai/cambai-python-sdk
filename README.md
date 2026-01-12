@@ -168,7 +168,7 @@ You can list available voices to find a voice_id that suits your needs:
 voices = client.voice_cloning.list_voices()
 print(f"Found {len(voices)} voices:")
 for voice in voices[:5]:  # Print first 5 as an example
-    print(f"  - ID: {voice.id}, Name: {voice.voice_name}, Gender: {voice.gender}, Language: {voice.language}")
+    print(f"  - ID: {voice["id"]}, Name: {voice["voice_name"]}, Gender: {voice["gender"]}, Language: {voice["language"]}")
 ```
 
 ### 2. Text-to-Voice (Generative Voice)
