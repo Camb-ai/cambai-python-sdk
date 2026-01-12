@@ -85,6 +85,14 @@ client_with_provider = CambAI(
 
 Convert text into spoken audio using one of Camb AI's high-quality voices.
 
+### Supported Models & Sample Rates
+
+| Model Name | Sample Rate | Description |
+| :--- | :--- | :--- |
+| **mars-pro** | **48kHz** | High-fidelity, professional-grade speech synthesis. Ideal for long-form content and dubbing. |
+| **mars-instruct** | **22.05kHz** | optimized for instruction-following and nuance control. |
+| **mars-flash** | **22.05kHz** | Low-latency model optimized for real-time applications and conversational AI. |
+
 #### a) Get an Audio URL or Save to File
 
 ```python
@@ -135,7 +143,23 @@ async def main():
 asyncio.run(main())
 ```
 
-#### c) List Available Voices
+#### c) Using Mars Flash (Low Latency)
+
+For applications requiring faster responses, switch to `mars-flash` (22.05kHz).
+
+```python
+response = client.text_to_speech.tts(
+    text="Hey! I can respond much faster.",
+    language="en-us",
+    speech_model="mars-flash",
+    voice_id=<id>,
+    output_configuration=StreamTtsOutputConfiguration(
+        format="wav"
+    )
+)
+```
+
+#### d) List Available Voices
 
 You can list available voices to find a voice_id that suits your needs:
 
