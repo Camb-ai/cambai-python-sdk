@@ -9,10 +9,10 @@ client = AsyncCambAI(api_key=os.getenv("CAMB_API_KEY"))
 async def main():
     # Stream the TTS generation
     voices = await client.voice_cloning.list_voices()
-    voice_id = voices[1]["id"]
+    voice_id = voices[0]["id"]
     print(f">>> using voice id: {voice_id}")
     response = client.text_to_speech.tts(
-        text="Experience ultra-low latency streaming with Camb AI.",
+        text="Experience high quality text to speech generation using MARS Pro Model.",
         language="en-us",
         speech_model="mars-pro",
         voice_id=voice_id,
