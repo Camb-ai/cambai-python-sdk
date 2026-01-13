@@ -12,9 +12,6 @@
 </div>
 
 
-![banner4_720](https://github.com/user-attachments/assets/107ebd19-2e56-4082-95de-6867d62d27e0)
-
-
 The official Python SDK for interacting with Camb AI's powerful voice and audio generation APIs. Create expressive speech, unique voices, and rich soundscapes with just a few lines of Python.
 
 ## ✨ Features
