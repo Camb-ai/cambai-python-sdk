@@ -2,7 +2,7 @@
 
 <div id="top" align="center">
 
-   ![Banner](assets/banner4_720.jpg)
+   ![Banner](assets/banner5_720.jpg)
    <h3>
    <a href="https://camb.ai/"> Camb AI Website </a></h3>
 
