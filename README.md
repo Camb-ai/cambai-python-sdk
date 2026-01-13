@@ -1,4 +1,7 @@
 # Camb.ai Python SDK
+<div id="top" align="center">
+    ![Banner](assets/banner4_720.jpg)
+</div>
 
 [![PyPI version](https://img.shields.io/pypi/v/camb-sdk.svg?style=flat-square)](https://pypi.org/project/camb-sdk/)  
 [![License](https://img.shields.io/pypi/l/camb-sdk.svg?style=flat-square)](https://github.com/Camb-ai/cambai-python-sdk/blob/main/LICENSE)  
