@@ -82,7 +82,7 @@ class RawTextToSpeechClient:
              raise ValueError("voice_id is required when using the default Camb.ai provider.")
 
         if self._client_wrapper.tts_provider == "baseten":
-            if speech_model == "mars-pro":
+            if speech_model == "mars-flash":
                 with baseten_tts(
                     self._client_wrapper,
                     text=text,
@@ -564,7 +564,7 @@ class AsyncRawTextToSpeechClient:
              raise ValueError("voice_id is required when using the default Camb.ai provider.")
 
         if self._client_wrapper.tts_provider == "baseten":
-            if speech_model == "mars-pro":
+            if speech_model == "mars-flash":
                 async with async_baseten_tts(
                     self._client_wrapper,
                     text=text,

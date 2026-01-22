@@ -59,7 +59,7 @@ client_baseten = CambAI(
     tts_provider="baseten",
     provider_params={
         "api_key": "YOUR_BASETEN_API_KEY",
-        "mars_pro_url": "YOUR_BASETEN_URL"
+        "mars_url": "YOUR_BASETEN_URL"
     }
 )
 
@@ -67,10 +67,10 @@ client_baseten = CambAI(
 client_baseten.text_to_speech.tts(
     text="Hello World and my dear friends",
     language="en-us",
-    speech_model="mars-pro",
+    speech_model="mars-flash",
     request_options={
         "additional_body_parameters": {
-            "reference_audio": base64.b64encode(open("audio.wav", "rb").read()).decode('utf-8'),
+            "reference_audio": base64.b64encode(open("audio.wav", "rb").read()).decode('utf-8'),  # also support public/signed urls
             "reference_language": "en-us"  # required
         },
         "timeout_in_seconds": 300

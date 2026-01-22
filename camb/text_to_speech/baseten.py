@@ -1,6 +1,7 @@
 import contextlib
 import typing
 
+import httpx
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.request_options import RequestOptions
@@ -28,24 +29,26 @@ def baseten_tts(
     voice_settings: typing.Optional[StreamTtsVoiceSettings] = OMIT,
     inference_options: typing.Optional[StreamTtsInferenceOptions] = OMIT,
     request_options: typing.Optional[RequestOptions] = None,
-) -> typing.Iterator[HttpResponse[typing.Iterator[bytes]]]:
+) -> typing.Iterator[httpx.Response]:
     # Retrieve API key from provider_params
     provider_params = client_wrapper.provider_params or {}
     api_key = provider_params.get("api_key", "")
-    mars_pro_url = provider_params.get("mars_pro_url")
+    mars_pro_url = provider_params.get("mars_pro_url") or provider_params.get("mars_url")
     if not mars_pro_url:
-        raise ValueError("mars_pro_url is required for using Baseten as provider")
-    
-    api_key_header_val = f"Api-Key {api_key}" if api_key else ""
-    
+        raise ValueError("mars_url is required for using Baseten as provider")
+
+    headers = {
+        "Authorization": f"Api-Key {api_key}" if api_key else "",
+        "Content-Type": "application/json",
+    }
     # Construct Payload
     # 1. Basic Fields
     payload = {
         "text": text,
         "language": str(language).lower().replace("_", "-"),
+        "output_format": "wav",
         "stream": True,
-        "output_format": "mp3",  # Default
-        "apply_ner_nlp": False, # Default based on doc
+        "apply_ner_nlp": False,
     }
 
     # 2. Output Configuration
@@ -97,17 +100,14 @@ def baseten_tts(
         "POST",
         mars_pro_url,
         json=payload,
-        headers={
-            "Authorization": api_key_header_val,
-            "content-type": "application/json",
-        },
+        headers=headers,
         timeout=timeout
     ) as _response:
         # Check status manually since we bypassed the wrapper's check
         if not (200 <= _response.status_code < 300):
-             # Try to read error body
-             _response.read()
-             raise Exception(f"Baseten API Error: {_response.status_code} - {_response.text}")
+            # Try to read error body
+            _response.read()
+            raise Exception(f"Baseten API Error: {_response.status_code} - {_response.text}")
 
         yield HttpResponse(
             response=_response,
@@ -133,9 +133,9 @@ async def async_baseten_tts(
     # Retrieve API key from provider_params
     provider_params = client_wrapper.provider_params or {}
     api_key = provider_params.get("api_key", "")
-    mars_pro_url = provider_params.get("mars_pro_url")
+    mars_pro_url = provider_params.get("mars_pro_url") or provider_params.get("mars_url")
     if not mars_pro_url:
-        raise ValueError("mars_pro_url is required for using Baseten as provider")
+        raise ValueError("mars_url is required for using Baseten as provider")
     api_key_header_val = f"Api-Key {api_key}"
 
     # Construct Payload
@@ -144,7 +144,7 @@ async def async_baseten_tts(
         "text": text,
         "language": str(language).lower().replace("_", "-"),
         "stream": True,
-        "output_format": "mp3",  # Default
+        "output_format": "wav",  # Default
         "apply_ner_nlp": False, # Default based on doc
     }
 

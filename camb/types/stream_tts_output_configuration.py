@@ -22,6 +22,7 @@ class StreamTtsOutputConfiguration(UniversalBaseModel):
     format: typing.Optional[OutputFormat] = None
     duration: typing.Optional[float] = None
     apply_enhancement: typing.Optional[bool] = None
+    sample_rate: typing.Optional[int] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
