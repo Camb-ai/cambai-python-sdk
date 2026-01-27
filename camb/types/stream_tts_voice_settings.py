@@ -17,6 +17,7 @@ class StreamTtsVoiceSettings(UniversalBaseModel):
 
     enhance_reference_audio_quality: typing.Optional[bool] = None
     maintain_source_accent: typing.Optional[bool] = None
+    apply_ref_loudness_norm: typing.Optional[bool] = False
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -27,6 +27,8 @@ class StreamTtsInferenceOptions(UniversalBaseModel):
     temperature: typing.Optional[float] = None
     inference_steps: typing.Optional[int] = None
     speaker_similarity: typing.Optional[float] = None
+    localize_speaker_weight: typing.Optional[float] = None
+    acoustic_quality_boost: typing.Optional[bool] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
