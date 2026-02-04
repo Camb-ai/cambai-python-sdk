@@ -53,7 +53,7 @@ async_client = AsyncCambAI(api_key="YOUR_CAMB_API_KEY")
 
 ### Client with Specific MARS Pro Provider (e.g. Vertex, Baseten) 
 #### Baseten
-To deploy the model go to models from baseten example: https://www.baseten.co/library/mars6/ and deploy then perform setup like below
+To deploy the model go to models from baseten example: https://app.baseten.co/deploy/mars8-flash and deploy then perform setup like below
 ```python
 client_baseten = CambAI(
     tts_provider="baseten",
