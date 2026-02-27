@@ -30,6 +30,8 @@ if typing.TYPE_CHECKING:
     from .translation.client import AsyncTranslationClient, TranslationClient
     from .voice_cloning.client import AsyncVoiceCloningClient, VoiceCloningClient
 
+DEFAULT_TIMEOUT = 300
+
 def save_stream_to_file(stream: typing.Iterable[bytes], filename: str) -> None:
     """Saves a byte stream to a file.
 
@@ -81,7 +83,7 @@ class CambAI:
         Additional headers to send with every request.
 
     timeout : typing.Optional[float]
-        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
+        The timeout to be used, in seconds, for requests. By default the timeout is 300 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
@@ -115,7 +117,7 @@ class CambAI:
             raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
             
         _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
+            timeout if timeout is not None else DEFAULT_TIMEOUT if httpx_client is None else httpx_client.timeout.read
         )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -394,7 +396,7 @@ class AsyncCambAI:
         Additional headers to send with every request.
 
     timeout : typing.Optional[float]
-        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
+        The timeout to be used, in seconds, for requests. By default the timeout is 300 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
@@ -428,7 +430,7 @@ class AsyncCambAI:
             raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
 
         _defaulted_timeout = (
-            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
+            timeout if timeout is not None else DEFAULT_TIMEOUT if httpx_client is None else httpx_client.timeout.read
         )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
