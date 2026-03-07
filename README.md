@@ -114,7 +114,7 @@ response = client.text_to_speech.tts(
     text="Hello from Camb AI! This is a test of our Text-to-Speech API.",
     voice_id=20303,  # Example voice ID, get from client.voice_cloning.list_voices()
     language="en-us",
-    speech_model="mars-pro",  # options: mars-pro, mars-flash, mars-instruct, auto
+    speech_model="mars-flash",  # options: mars-pro, mars-flash, mars-instruct, auto
     output_configuration=StreamTtsOutputConfiguration(
         format="mp3"
     )
@@ -139,7 +139,7 @@ async def main():
     response = async_client.text_to_speech.tts(
         text="Hello, this is a test of the text to audio streaming capabilities.",
         language="en-us",
-        speech_model="mars-pro",  # options: mars-pro, mars-flash, mars-instruct, auto
+        speech_model="mars-flash",  # options: mars-pro, mars-flash, mars-instruct, auto
         voice_id=147319,
         output_configuration=StreamTtsOutputConfiguration(
             format="mp3"
@@ -153,7 +153,7 @@ asyncio.run(main())
 
 #### c) Using Mars Flash (Low Latency)
 
-For applications requiring faster responses, switch to `mars-flash` (22.05kHz).
+For applications requiring faster responses, make sure you're using `mars-flash` (22.05kHz).
 
 ```python
 response = client.text_to_speech.tts(
