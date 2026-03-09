@@ -9,8 +9,8 @@ from ..core.serialization import convert_and_respect_annotation_metadata
 from ..types.stream_tts_inference_options import StreamTtsInferenceOptions
 from ..types.stream_tts_output_configuration import StreamTtsOutputConfiguration
 from ..types.stream_tts_voice_settings import StreamTtsVoiceSettings
-from .types.create_stream_tts_request_payload_language import CreateStreamTtsRequestPayloadLanguage
-from .types.create_stream_tts_request_payload_speech_model import CreateStreamTtsRequestPayloadSpeechModel
+from .types.tts_language import TtsLanguage
+from .types.speech_model import SpeechModel
 
 OMIT = typing.cast(typing.Any, ...)
 
@@ -20,9 +20,9 @@ def baseten_tts(
     client_wrapper: SyncClientWrapper,
     *,
     text: str,
-    language: CreateStreamTtsRequestPayloadLanguage,
+    language: TtsLanguage,
     voice_id: typing.Optional[int] = OMIT,
-    speech_model: typing.Optional[CreateStreamTtsRequestPayloadSpeechModel] = OMIT,
+    speech_model: typing.Optional[SpeechModel] = OMIT,
     user_instructions: typing.Optional[str] = OMIT,
     enhance_named_entities_pronunciation: typing.Optional[bool] = OMIT,
     output_configuration: typing.Optional[StreamTtsOutputConfiguration] = OMIT,
@@ -120,9 +120,9 @@ async def async_baseten_tts(
     client_wrapper: AsyncClientWrapper,
     *,
     text: str,
-    language: CreateStreamTtsRequestPayloadLanguage,
+    language: TtsLanguage,
     voice_id: typing.Optional[int] = OMIT,
-    speech_model: typing.Optional[CreateStreamTtsRequestPayloadSpeechModel] = OMIT,
+    speech_model: typing.Optional[SpeechModel] = OMIT,
     user_instructions: typing.Optional[str] = OMIT,
     enhance_named_entities_pronunciation: typing.Optional[bool] = OMIT,
     output_configuration: typing.Optional[StreamTtsOutputConfiguration] = OMIT,

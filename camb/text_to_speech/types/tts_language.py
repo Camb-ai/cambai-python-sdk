@@ -2,7 +2,7 @@
 
 import typing
 
-CreateStreamTtsRequestPayloadLanguage = typing.Union[
+TtsLanguage = typing.Union[
     typing.Literal[
         "ar-kw",
         "de-ch",

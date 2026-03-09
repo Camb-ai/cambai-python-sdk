@@ -104,8 +104,8 @@ if typing.TYPE_CHECKING:
     from .environment import CambApiEnvironment
     from .story import CreateStoryStoryPostResponse, SetupStoryStorySetupPostResponse
     from .text_to_speech import (
-        CreateStreamTtsRequestPayloadLanguage,
-        CreateStreamTtsRequestPayloadSpeechModel,
+        TtsLanguage,
+        SpeechModel,
         GetTtsResultsTtsResultsPostResponseValue,
         GetTtsRunInfoTtsResultRunIdGetResponse,
     )
@@ -124,8 +124,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateStoryStoryPostResponse": ".story",
     "CreateStreamOut": ".types",
     "CreateStreamRequestPayload": ".types",
-    "CreateStreamTtsRequestPayloadLanguage": ".text_to_speech",
-    "CreateStreamTtsRequestPayloadSpeechModel": ".text_to_speech",
+    "TtsLanguage": ".text_to_speech",
+    "SpeechModel": ".text_to_speech",
     "CreateTranslatedTtsOut": ".types",
     "CreateTtsOut": ".types",
     "DataStream": ".types",
@@ -247,8 +247,8 @@ __all__ = [
     "CreateStoryStoryPostResponse",
     "CreateStreamOut",
     "CreateStreamRequestPayload",
-    "CreateStreamTtsRequestPayloadLanguage",
-    "CreateStreamTtsRequestPayloadSpeechModel",
+    "TtsLanguage",
+    "SpeechModel",
     "CreateTranslatedTtsOut",
     "CreateTtsOut",
     "DataStream",

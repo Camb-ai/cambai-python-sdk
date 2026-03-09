@@ -6,13 +6,13 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .create_stream_tts_request_payload_language import CreateStreamTtsRequestPayloadLanguage
-    from .create_stream_tts_request_payload_speech_model import CreateStreamTtsRequestPayloadSpeechModel
+    from .tts_language import TtsLanguage
+    from .speech_model import SpeechModel
     from .get_tts_results_tts_results_post_response_value import GetTtsResultsTtsResultsPostResponseValue
     from .get_tts_run_info_tts_result_run_id_get_response import GetTtsRunInfoTtsResultRunIdGetResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateStreamTtsRequestPayloadLanguage": ".create_stream_tts_request_payload_language",
-    "CreateStreamTtsRequestPayloadSpeechModel": ".create_stream_tts_request_payload_speech_model",
+    "TtsLanguage": ".tts_language",
+    "SpeechModel": ".speech_model",
     "GetTtsResultsTtsResultsPostResponseValue": ".get_tts_results_tts_results_post_response_value",
     "GetTtsRunInfoTtsResultRunIdGetResponse": ".get_tts_run_info_tts_result_run_id_get_response",
 }
@@ -40,8 +40,8 @@ def __dir__():
 
 
 __all__ = [
-    "CreateStreamTtsRequestPayloadLanguage",
-    "CreateStreamTtsRequestPayloadSpeechModel",
+    "TtsLanguage",
+    "SpeechModel",
     "GetTtsResultsTtsResultsPostResponseValue",
     "GetTtsRunInfoTtsResultRunIdGetResponse",
 ]

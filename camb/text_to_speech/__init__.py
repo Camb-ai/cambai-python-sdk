@@ -7,14 +7,14 @@ from importlib import import_module
 
 if typing.TYPE_CHECKING:
     from .types import (
-        CreateStreamTtsRequestPayloadLanguage,
-        CreateStreamTtsRequestPayloadSpeechModel,
+        TtsLanguage,
+        SpeechModel,
         GetTtsResultsTtsResultsPostResponseValue,
         GetTtsRunInfoTtsResultRunIdGetResponse,
     )
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateStreamTtsRequestPayloadLanguage": ".types",
-    "CreateStreamTtsRequestPayloadSpeechModel": ".types",
+    "TtsLanguage": ".types",
+    "SpeechModel": ".types",
     "GetTtsResultsTtsResultsPostResponseValue": ".types",
     "GetTtsRunInfoTtsResultRunIdGetResponse": ".types",
 }
@@ -42,8 +42,8 @@ def __dir__():
 
 
 __all__ = [
-    "CreateStreamTtsRequestPayloadLanguage",
-    "CreateStreamTtsRequestPayloadSpeechModel",
+    "TtsLanguage",
+    "SpeechModel",
     "GetTtsResultsTtsResultsPostResponseValue",
     "GetTtsRunInfoTtsResultRunIdGetResponse",
 ]

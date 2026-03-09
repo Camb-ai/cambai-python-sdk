@@ -12,8 +12,8 @@ from ..types.stream_tts_inference_options import StreamTtsInferenceOptions
 from ..types.stream_tts_output_configuration import StreamTtsOutputConfiguration
 from ..types.stream_tts_voice_settings import StreamTtsVoiceSettings
 from .raw_client import AsyncRawTextToSpeechClient, RawTextToSpeechClient
-from .types.create_stream_tts_request_payload_language import CreateStreamTtsRequestPayloadLanguage
-from .types.create_stream_tts_request_payload_speech_model import CreateStreamTtsRequestPayloadSpeechModel
+from .types.tts_language import TtsLanguage
+from .types.speech_model import SpeechModel
 from .types.get_tts_results_tts_results_post_response_value import GetTtsResultsTtsResultsPostResponseValue
 from .types.get_tts_run_info_tts_result_run_id_get_response import GetTtsRunInfoTtsResultRunIdGetResponse
 
@@ -40,9 +40,9 @@ class TextToSpeechClient:
         self,
         *,
         text: str,
-        language: CreateStreamTtsRequestPayloadLanguage,
+        language: TtsLanguage,
         voice_id: typing.Optional[int] = OMIT,
-        speech_model: typing.Optional[CreateStreamTtsRequestPayloadSpeechModel] = OMIT,
+        speech_model: typing.Optional[SpeechModel] = OMIT,
         user_instructions: typing.Optional[str] = OMIT,
         enhance_named_entities_pronunciation: typing.Optional[bool] = OMIT,
         output_configuration: typing.Optional[StreamTtsOutputConfiguration] = OMIT,
@@ -55,11 +55,11 @@ class TextToSpeechClient:
         ----------
         text : str
 
-        language : CreateStreamTtsRequestPayloadLanguage
+        language : TtsLanguage
 
         voice_id : int
 
-        speech_model : typing.Optional[CreateStreamTtsRequestPayloadSpeechModel]
+        speech_model : typing.Optional[SpeechModel]
 
         user_instructions : typing.Optional[str]
 
@@ -374,9 +374,9 @@ class AsyncTextToSpeechClient:
         self,
         *,
         text: str,
-        language: CreateStreamTtsRequestPayloadLanguage,
+        language: TtsLanguage,
         voice_id: typing.Optional[int] = OMIT,
-        speech_model: typing.Optional[CreateStreamTtsRequestPayloadSpeechModel] = OMIT,
+        speech_model: typing.Optional[SpeechModel] = OMIT,
         user_instructions: typing.Optional[str] = OMIT,
         enhance_named_entities_pronunciation: typing.Optional[bool] = OMIT,
         output_configuration: typing.Optional[StreamTtsOutputConfiguration] = OMIT,
@@ -389,11 +389,11 @@ class AsyncTextToSpeechClient:
         ----------
         text : str
 
-        language : CreateStreamTtsRequestPayloadLanguage
+        language : TtsLanguage
 
         voice_id : int
 
-        speech_model : typing.Optional[CreateStreamTtsRequestPayloadSpeechModel]
+        speech_model : typing.Optional[SpeechModel]
 
         user_instructions : typing.Optional[str]
 
