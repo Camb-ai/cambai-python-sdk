@@ -6,13 +6,9 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .create_stream_tts_request_payload_language import CreateStreamTtsRequestPayloadLanguage
-    from .create_stream_tts_request_payload_speech_model import CreateStreamTtsRequestPayloadSpeechModel
     from .get_tts_results_tts_results_post_response_value import GetTtsResultsTtsResultsPostResponseValue
     from .get_tts_run_info_tts_result_run_id_get_response import GetTtsRunInfoTtsResultRunIdGetResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateStreamTtsRequestPayloadLanguage": ".create_stream_tts_request_payload_language",
-    "CreateStreamTtsRequestPayloadSpeechModel": ".create_stream_tts_request_payload_speech_model",
     "GetTtsResultsTtsResultsPostResponseValue": ".get_tts_results_tts_results_post_response_value",
     "GetTtsRunInfoTtsResultRunIdGetResponse": ".get_tts_run_info_tts_result_run_id_get_response",
 }
@@ -39,9 +35,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "CreateStreamTtsRequestPayloadLanguage",
-    "CreateStreamTtsRequestPayloadSpeechModel",
-    "GetTtsResultsTtsResultsPostResponseValue",
-    "GetTtsRunInfoTtsResultRunIdGetResponse",
-]
+__all__ = ["GetTtsResultsTtsResultsPostResponseValue", "GetTtsRunInfoTtsResultRunIdGetResponse"]

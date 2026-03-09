@@ -8,7 +8,6 @@ import httpx
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .core.request_options import RequestOptions
 from .environment import CambApiEnvironment
-from .types.tts_provider import TtsProvider
 from .raw_client import AsyncRawCambApi, RawCambApi
 
 if typing.TYPE_CHECKING:
@@ -30,37 +29,8 @@ if typing.TYPE_CHECKING:
     from .translation.client import AsyncTranslationClient, TranslationClient
     from .voice_cloning.client import AsyncVoiceCloningClient, VoiceCloningClient
 
-DEFAULT_TIMEOUT = 300
 
-def save_stream_to_file(stream: typing.Iterable[bytes], filename: str) -> None:
-    """Saves a byte stream to a file.
-
-    Parameters
-    ----------
-    stream : typing.Iterable[bytes]
-        The byte stream to save.
-    filename : str
-        The name of the file to save the stream to.
-    """
-    with open(filename, "wb") as f:
-        for chunk in stream:
-            f.write(chunk)
-        
-async def save_async_stream_to_file(stream: typing.AsyncIterable[bytes], filename: str) -> None:
-    """Saves an async byte stream to a file.
-
-    Parameters
-    ----------
-    stream : typing.AsyncIterable[bytes]
-        The async byte stream to save.
-    filename : str
-        The name of the file to save the stream to.
-    """
-    with open(filename, "wb") as f:
-        async for chunk in stream:
-            f.write(chunk)
-
-class CambAI:
+class CambApi:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -83,7 +53,7 @@ class CambAI:
         Additional headers to send with every request.
 
     timeout : typing.Optional[float]
-        The timeout to be used, in seconds, for requests. By default the timeout is 300 seconds, unless a custom httpx client is used, in which case this default is not enforced.
+        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
@@ -105,19 +75,14 @@ class CambAI:
         *,
         base_url: typing.Optional[str] = None,
         environment: CambApiEnvironment = CambApiEnvironment.DEFAULT,
-        api_key: typing.Optional[str] = None,
+        api_key: str,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
-        tts_provider: typing.Optional[TtsProvider] = None,
-        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
-        if api_key is None and (tts_provider is None or provider_params is None):
-            raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
-            
         _defaulted_timeout = (
-            timeout if timeout is not None else DEFAULT_TIMEOUT if httpx_client is None else httpx_client.timeout.read
+            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -129,8 +94,6 @@ class CambAI:
             if follow_redirects is not None
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
-            tts_provider=tts_provider,
-            provider_params=provider_params,
         )
         self._raw_client = RawCambApi(client_wrapper=self._client_wrapper)
         self._audio_separation: typing.Optional[AudioSeparationClient] = None
@@ -373,7 +336,7 @@ class CambAI:
         return self._deprecated_streaming
 
 
-class AsyncCambAI:
+class AsyncCambApi:
     """
     Use this class to access the different functions within the SDK. You can instantiate any number of clients with different configuration that will propagate to these functions.
 
@@ -396,7 +359,7 @@ class AsyncCambAI:
         Additional headers to send with every request.
 
     timeout : typing.Optional[float]
-        The timeout to be used, in seconds, for requests. By default the timeout is 300 seconds, unless a custom httpx client is used, in which case this default is not enforced.
+        The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
     follow_redirects : typing.Optional[bool]
         Whether the default httpx client follows redirects or not, this is irrelevant if a custom httpx client is passed in.
@@ -418,19 +381,14 @@ class AsyncCambAI:
         *,
         base_url: typing.Optional[str] = None,
         environment: CambApiEnvironment = CambApiEnvironment.DEFAULT,
-        api_key: typing.Optional[str] = None,
+        api_key: str,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
-        tts_provider: typing.Optional[TtsProvider] = None,
-        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
-        if api_key is None and (tts_provider is None or provider_params is None):
-            raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
-
         _defaulted_timeout = (
-            timeout if timeout is not None else DEFAULT_TIMEOUT if httpx_client is None else httpx_client.timeout.read
+            timeout if timeout is not None else 60 if httpx_client is None else httpx_client.timeout.read
         )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
@@ -442,8 +400,6 @@ class AsyncCambAI:
             if follow_redirects is not None
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
-            tts_provider=tts_provider,
-            provider_params=provider_params,
         )
         self._raw_client = AsyncRawCambApi(client_wrapper=self._client_wrapper)
         self._audio_separation: typing.Optional[AsyncAudioSeparationClient] = None

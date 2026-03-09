@@ -47,6 +47,7 @@ if typing.TYPE_CHECKING:
     from .run_i_ds_request_payload import RunIDsRequestPayload
     from .segmenting_option import SegmentingOption
     from .source_stream import SourceStream
+    from .speech_model import SpeechModel
     from .story_details import StoryDetails
     from .stream_category import StreamCategory
     from .stream_tts_inference_options import StreamTtsInferenceOptions
@@ -67,7 +68,7 @@ if typing.TYPE_CHECKING:
     from .transcription_result import TranscriptionResult
     from .translating_option import TranslatingOption
     from .translation_result import TranslationResult
-    from .tts_provider import TtsProvider
+    from .tts_language import TtsLanguage
     from .validation_error import ValidationError
     from .validation_error_loc_item import ValidationErrorLocItem
     from .video_output_type_without_avi import VideoOutputTypeWithoutAvi
@@ -115,6 +116,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RunIDsRequestPayload": ".run_i_ds_request_payload",
     "SegmentingOption": ".segmenting_option",
     "SourceStream": ".source_stream",
+    "SpeechModel": ".speech_model",
     "StoryDetails": ".story_details",
     "StreamCategory": ".stream_category",
     "StreamTtsInferenceOptions": ".stream_tts_inference_options",
@@ -135,7 +137,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TranscriptionResult": ".transcription_result",
     "TranslatingOption": ".translating_option",
     "TranslationResult": ".translation_result",
-    "TtsProvider": ".tts_provider",
+    "TtsLanguage": ".tts_language",
     "ValidationError": ".validation_error",
     "ValidationErrorLocItem": ".validation_error_loc_item",
     "VideoOutputTypeWithoutAvi": ".video_output_type_without_avi",
@@ -207,6 +209,7 @@ __all__ = [
     "RunIDsRequestPayload",
     "SegmentingOption",
     "SourceStream",
+    "SpeechModel",
     "StoryDetails",
     "StreamCategory",
     "StreamTtsInferenceOptions",
@@ -227,7 +230,7 @@ __all__ = [
     "TranscriptionResult",
     "TranslatingOption",
     "TranslationResult",
-    "TtsProvider",
+    "TtsLanguage",
     "ValidationError",
     "ValidationErrorLocItem",
     "VideoOutputTypeWithoutAvi",

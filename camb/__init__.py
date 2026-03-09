@@ -48,6 +48,7 @@ if typing.TYPE_CHECKING:
         RunIDsRequestPayload,
         SegmentingOption,
         SourceStream,
+        SpeechModel,
         StoryDetails,
         StreamCategory,
         StreamTtsInferenceOptions,
@@ -68,6 +69,7 @@ if typing.TYPE_CHECKING:
         TranscriptionResult,
         TranslatingOption,
         TranslationResult,
+        TtsLanguage,
         ValidationError,
         ValidationErrorLocItem,
         VideoOutputTypeWithoutAvi,
@@ -94,7 +96,7 @@ if typing.TYPE_CHECKING:
         translation,
         voice_cloning,
     )
-    from .client import AsyncCambAI, CambAI
+    from .client import AsyncCambApi, CambApi
     from .dub import (
         DubbedOutputInAltFormatRequestPayloadOutputFormat,
         GetDubbedOutputInAltFormatDubAltFormatRunIdLanguagePostResponse,
@@ -103,12 +105,7 @@ if typing.TYPE_CHECKING:
     )
     from .environment import CambApiEnvironment
     from .story import CreateStoryStoryPostResponse, SetupStoryStorySetupPostResponse
-    from .text_to_speech import (
-        CreateStreamTtsRequestPayloadLanguage,
-        CreateStreamTtsRequestPayloadSpeechModel,
-        GetTtsResultsTtsResultsPostResponseValue,
-        GetTtsRunInfoTtsResultRunIdGetResponse,
-    )
+    from .text_to_speech import GetTtsResultsTtsResultsPostResponseValue, GetTtsRunInfoTtsResultRunIdGetResponse
     from .voice_cloning import ListVoicesListVoicesGetResponseItem
 _dynamic_imports: typing.Dict[str, str] = {
     "AddTargetLanguageOut": ".types",
@@ -124,8 +121,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "CreateStoryStoryPostResponse": ".story",
     "CreateStreamOut": ".types",
     "CreateStreamRequestPayload": ".types",
-    "CreateStreamTtsRequestPayloadLanguage": ".text_to_speech",
-    "CreateStreamTtsRequestPayloadSpeechModel": ".text_to_speech",
     "CreateTranslatedTtsOut": ".types",
     "CreateTtsOut": ".types",
     "DataStream": ".types",
@@ -166,6 +161,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "SegmentingOption": ".types",
     "SetupStoryStorySetupPostResponse": ".story",
     "SourceStream": ".types",
+    "SpeechModel": ".types",
     "StoryDetails": ".types",
     "StreamCategory": ".types",
     "StreamTtsInferenceOptions": ".types",
@@ -186,6 +182,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TranscriptionResult": ".types",
     "TranslatingOption": ".types",
     "TranslationResult": ".types",
+    "TtsLanguage": ".types",
     "UnprocessableEntityError": ".errors",
     "ValidationError": ".types",
     "ValidationErrorLocItem": ".types",
@@ -235,10 +232,10 @@ def __dir__():
 
 __all__ = [
     "AddTargetLanguageOut",
-    "AsyncCambAI",
+    "AsyncCambApi",
     "AudioOutputType",
     "AudioStream",
-    "CambAI",
+    "CambApi",
     "CambApiEnvironment",
     "ConfigStream",
     "ConfigStreamPipeline",
@@ -247,8 +244,6 @@ __all__ = [
     "CreateStoryStoryPostResponse",
     "CreateStreamOut",
     "CreateStreamRequestPayload",
-    "CreateStreamTtsRequestPayloadLanguage",
-    "CreateStreamTtsRequestPayloadSpeechModel",
     "CreateTranslatedTtsOut",
     "CreateTtsOut",
     "DataStream",
@@ -289,6 +284,7 @@ __all__ = [
     "SegmentingOption",
     "SetupStoryStorySetupPostResponse",
     "SourceStream",
+    "SpeechModel",
     "StoryDetails",
     "StreamCategory",
     "StreamTtsInferenceOptions",
@@ -309,6 +305,7 @@ __all__ = [
     "TranscriptionResult",
     "TranslatingOption",
     "TranslationResult",
+    "TtsLanguage",
     "UnprocessableEntityError",
     "ValidationError",
     "ValidationErrorLocItem",

@@ -3,7 +3,6 @@
 import typing
 
 import httpx
-from ..types.tts_provider import TtsProvider
 from .http_client import AsyncHttpClient, HttpClient
 
 
@@ -11,30 +10,22 @@ class BaseClientWrapper:
     def __init__(
         self,
         *,
-        api_key: typing.Optional[str] = None,
+        api_key: str,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
-        tts_provider: typing.Optional[TtsProvider] = None,
-        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
         self.api_key = api_key
         self._headers = headers
         self._base_url = base_url
         self._timeout = timeout
-        self.tts_provider = tts_provider
-        self.provider_params = provider_params
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
             "X-Fern-Language": "Python",
             **(self.get_custom_headers() or {}),
         }
-        if self.api_key is not None:
-            headers["x-api-key"] = self.api_key
-        if self.tts_provider:
-             headers["tts_provider"] = self.tts_provider
-        # provider_params are not automatically added to headers
+        headers["x-api-key"] = self.api_key
         return headers
 
     def get_custom_headers(self) -> typing.Optional[typing.Dict[str, str]]:
@@ -51,22 +42,13 @@ class SyncClientWrapper(BaseClientWrapper):
     def __init__(
         self,
         *,
-        api_key: typing.Optional[str] = None,
+        api_key: str,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
         httpx_client: httpx.Client,
-        tts_provider: typing.Optional[TtsProvider] = None,
-        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
-        super().__init__(
-            api_key=api_key, 
-            headers=headers, 
-            base_url=base_url, 
-            timeout=timeout, 
-            tts_provider=tts_provider, 
-            provider_params=provider_params
-        )
+        super().__init__(api_key=api_key, headers=headers, base_url=base_url, timeout=timeout)
         self.httpx_client = HttpClient(
             httpx_client=httpx_client,
             base_headers=self.get_headers,
@@ -79,23 +61,14 @@ class AsyncClientWrapper(BaseClientWrapper):
     def __init__(
         self,
         *,
-        api_key: typing.Optional[str] = None,
+        api_key: str,
         headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
         async_token: typing.Optional[typing.Callable[[], typing.Awaitable[str]]] = None,
         httpx_client: httpx.AsyncClient,
-        tts_provider: typing.Optional[TtsProvider] = None,
-        provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
-        super().__init__(
-            api_key=api_key, 
-            headers=headers, 
-            base_url=base_url, 
-            timeout=timeout, 
-            tts_provider=tts_provider, 
-            provider_params=provider_params
-        )
+        super().__init__(api_key=api_key, headers=headers, base_url=base_url, timeout=timeout)
         self._async_token = async_token
         self.httpx_client = AsyncHttpClient(
             httpx_client=httpx_client,

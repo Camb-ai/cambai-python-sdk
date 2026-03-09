@@ -6,15 +6,8 @@ import typing
 from importlib import import_module
 
 if typing.TYPE_CHECKING:
-    from .types import (
-        CreateStreamTtsRequestPayloadLanguage,
-        CreateStreamTtsRequestPayloadSpeechModel,
-        GetTtsResultsTtsResultsPostResponseValue,
-        GetTtsRunInfoTtsResultRunIdGetResponse,
-    )
+    from .types import GetTtsResultsTtsResultsPostResponseValue, GetTtsRunInfoTtsResultRunIdGetResponse
 _dynamic_imports: typing.Dict[str, str] = {
-    "CreateStreamTtsRequestPayloadLanguage": ".types",
-    "CreateStreamTtsRequestPayloadSpeechModel": ".types",
     "GetTtsResultsTtsResultsPostResponseValue": ".types",
     "GetTtsRunInfoTtsResultRunIdGetResponse": ".types",
 }
@@ -41,9 +34,4 @@ def __dir__():
     return sorted(lazy_attrs)
 
 
-__all__ = [
-    "CreateStreamTtsRequestPayloadLanguage",
-    "CreateStreamTtsRequestPayloadSpeechModel",
-    "GetTtsResultsTtsResultsPostResponseValue",
-    "GetTtsRunInfoTtsResultRunIdGetResponse",
-]
+__all__ = ["GetTtsResultsTtsResultsPostResponseValue", "GetTtsRunInfoTtsResultRunIdGetResponse"]
