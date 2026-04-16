@@ -257,12 +257,13 @@ while True:
 The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
 
 - Voice Cloning
+- Translations
 - Translated TTS
 - Audio Dubbing
 - Transcription
 - And more!
 
-Please refer to the Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.
+Please refer to [examples](examples/) for direct runnable examples and Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.
 
 ## License
 
