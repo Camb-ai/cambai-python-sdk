@@ -3,5 +3,12 @@
 import typing
 
 CreateStreamTtsRequestPayloadSpeechModel = typing.Union[
-    typing.Literal["mars-pro", "mars-flash", "mars-instruct"], typing.Any
+    typing.Literal[
+        "mars-pro",
+        "mars-flash",
+        "mars-instruct",
+        "mars-8.1-pro-beta",
+        "mars-8.1-flash-beta",
+    ],
+    typing.Any,
 ]
