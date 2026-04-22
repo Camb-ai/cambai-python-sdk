@@ -99,6 +99,7 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 | :--- | :--- | :--- |
 | **mars-pro** | **48kHz** | High-fidelity, professional-grade speech synthesis. Ideal for long-form content and dubbing. |
 | **mars-8.1-pro-beta** | **48kHz** | Beta MARS Pro model. Try this model with the same source references, as it may perform much better for pronunciation, expressiveness with high-pitch references, overall prosody, accent control, and coverage. |
+| **mars-8.1-flash-beta** | **48kHz** | Beta MARS Pro model with faster speed. Try this model with the same source references, as it may perform much better for pronunciation, expressiveness with high-pitch references, overall prosody, accent control, and coverage. |
 | **mars-instruct** | **22.05kHz** | optimized for instruction-following and nuance control. |
 | **mars-flash** | **22.05kHz** | Low-latency model optimized for real-time applications and conversational AI. |
 
@@ -115,7 +116,7 @@ response = client.text_to_speech.tts(
     text="Hello from Camb AI! This is a test of our Text-to-Speech API.",
     voice_id=20303,  # Example voice ID, get from client.voice_cloning.list_voices()
     language="en-us",
-    speech_model="mars-flash",  # options: mars-pro, mars-8.1-pro-beta, mars-flash, mars-instruct, auto
+    speech_model="mars-8.1-flash-beta",  # options: mars-pro, mars-8.1-pro-beta, mars-flash, mars-instruct, auto
     output_configuration=StreamTtsOutputConfiguration(
         format="mp3"
     )
@@ -140,7 +141,7 @@ async def main():
     response = async_client.text_to_speech.tts(
         text="Hello, this is a test of the text to audio streaming capabilities.",
         language="en-us",
-        speech_model="mars-flash",  # options: mars-pro, mars-8.1-pro-beta, mars-flash, mars-instruct, auto
+        speech_model="mars-8.1-flash-beta",  # options: mars-pro, mars-8.1-pro-beta, mars-flash, mars-instruct, auto
         voice_id=147319,
         output_configuration=StreamTtsOutputConfiguration(
             format="mp3"
