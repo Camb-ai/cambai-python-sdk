@@ -34,12 +34,6 @@ Requires Python 3.8+.
 pip install camb-sdk
 ```
 
-Optional extras for running the examples (`python-dotenv`):
-
-```bash
-pip install "camb-sdk[examples]"
-```
-
 ## Authentication
 
 Create an API key in [Camb.ai Studio](https://studio.camb.ai), then pass it from the environment:
