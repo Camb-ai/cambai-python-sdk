@@ -1,24 +1,34 @@
 import os
-from camb.client import CambAI
 import time
+from dotenv import load_dotenv
+from camb.client import CambAI
 from camb.types.language_enums import Languages
 
-client = CambAI(api_key=os.getenv("CAMB_API_KEY"))  
+load_dotenv()
 
-def perform_dubbing():
+# Seconds between status polls (tune for your job size and rate limits).
+POLL_INTERVAL = 5
+
+
+def main() -> None:
+    client = CambAI(api_key=os.environ["CAMB_API_KEY"])
     response = client.dub.create_dub(
-        video_url="https://www.youtube.com/...link...",
+        video_url=os.environ["VIDEO_URL"],
         source_language=Languages.EN_US,
-        target_language=Languages.HI_IN
+        target_language=Languages.HI_IN,
     )
     task_id = response.task_id
-    print(f"Dub Task created with ID: {task_id}")
+    assert task_id is not None
     while True:
         status_response = client.dub.get_dubbing_status(task_id=task_id)
-        print(f"Current Status: {status_response.status}")
         if status_response.status == "SUCCESS":
-            print(client.dub.get_dubbed_run_info(status_response.run_id))
-            break
-        time.sleep(5)
+            info = client.dub.get_dubbed_run_info(status_response.run_id)
+            if info.video_url:
+                print(info.video_url)
+            print(info.audio_url)
+            return
+        time.sleep(POLL_INTERVAL)
 
-perform_dubbing()
+
+if __name__ == "__main__":
+    main()

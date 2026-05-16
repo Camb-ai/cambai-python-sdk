@@ -2,271 +2,93 @@
 
 <div id="top" align="center">
 
-   ![Banner](assets/banner5_720.jpg)
-   <h3>
-   <a href="https://camb.ai/"> Camb AI Website </a></h3>
+![Banner](assets/banner5_720.jpg)
 
-[![PyPI version](https://img.shields.io/pypi/v/camb-sdk.svg?style=flat-square)](https://pypi.org/project/camb-sdk/)  
-[![License](https://img.shields.io/pypi/l/camb-sdk.svg?style=flat-square)](https://github.com/Camb-ai/cambai-python-sdk/blob/main/LICENSE)  
+<h3><a href="https://camb.ai/">Camb.ai</a></h3>
+
+[![PyPI version](https://img.shields.io/pypi/v/camb-sdk.svg?style=flat-square)](https://pypi.org/project/camb-sdk/)
+[![License](https://img.shields.io/pypi/l/camb-sdk.svg?style=flat-square)](https://github.com/Camb-ai/cambai-python-sdk/blob/main/LICENSE)
 [![Build status](https://github.com/Camb-ai/cambai-python-sdk/actions/workflows/python.yml/badge.svg)](https://github.com/Camb-ai/cambai-python-sdk/actions/workflows/python.yml)
+
 </div>
 
+Official Python client for Camb.ai APIs: text-to-speech, dubbing, translation, transcription, voice tools, and more. Full API behavior, models, and patterns are documented on **[docs.camb.ai](https://docs.camb.ai/sdk-guides/python-sdk)**. This repository holds the SDK source and **runnable examples** in [`examples/`](examples/).
 
-The official Python SDK for interacting with Camb AI's powerful voice and audio generation APIs. Create expressive speech, unique voices, and rich soundscapes with just a few lines of Python.
+## Installation
 
-## ✨ Features
-
-- **Dubbing**: Dub your videos into multiple languages with voice cloning!
-- **Expressive Text-to-Speech**: Convert text into natural-sounding speech using a wide range of pre-existing voices.
-- **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
-- **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
-- Access to voice cloning, translation, and more (refer to full API documentation).
-
-## 📦 Installation
-
-Install the SDK using pip, ensure Python 3.9+:
+Requires Python 3.9+.
 
 ```bash
 pip install camb-sdk
 ```
 
-Or through
+Install from GitHub:
 
 ```bash
 pip install git+https://github.com/Camb-ai/cambai-python-sdk
 ```
 
-## 🔑 Authentication & Accessing Clients
+## Authentication
 
-To use the Camb AI SDK, you'll need an API key. You can authenticate it by:
+Create an API key in [Camb.ai Studio](https://studio.camb.ai). Pass it from the environment so it does not live in source code:
 
 ```python
+import os
 from camb.client import CambAI, AsyncCambAI
 
-# Synchronous Client
-client = CambAI(api_key="YOUR_CAMB_API_KEY")
-
-# Asynchronous Client
-async_client = AsyncCambAI(api_key="YOUR_CAMB_API_KEY")
+client = CambAI(api_key=os.environ["CAMB_API_KEY"])
+async_client = AsyncCambAI(api_key=os.environ["CAMB_API_KEY"])
 ```
 
+Use `CambAI` for synchronous scripts and `AsyncCambAI` for async frameworks.
 
-### Client with Specific MARS Pro Provider (e.g. Vertex, Baseten) 
-#### Baseten
-To deploy the model go to models from baseten example: https://app.baseten.co/deploy/mars8-flash and deploy then perform setup like below
-```python
-client_baseten = CambAI(
-    tts_provider="baseten",
-    provider_params={
-        "api_key": "YOUR_BASETEN_API_KEY",
-        "mars_url": "YOUR_BASETEN_URL"
-    }
-)
+Do **not** name your entry script `camb.py`. Python will import your file instead of the installed `camb` package and raise import errors.
 
-# Call TTS with Baseten
-client_baseten.text_to_speech.tts(
-    text="Hello World and my dear friends",
-    language="en-us",
-    speech_model="mars-flash",
-    request_options={
-        "additional_body_parameters": {
-            "reference_audio": base64.b64encode(open("audio.wav", "rb").read()).decode('utf-8'),  # also support public/signed urls
-            "reference_language": "en-us"  # required
-        },
-        "timeout_in_seconds": 300
-    }
-)
-```
-
-#### Vertex Support (In Progress)
-```python
-client_with_provider = CambAI(
-    tts_provider="vertex",
-    provider_params={"project_id": "my-project", "location": "us-central1"}
-)
-```
-
-## 🚀 Getting Started: Examples
-NOTE: For more examples and full ready to run files refer to the examples/ directory.
-
-### 1. Text-to-Speech (TTS)
-
-Convert text into spoken audio using one of Camb AI's high-quality voices.
-
-### Supported Models & Sample Rates
-
-| Model Name | Sample Rate | Description |
-| :--- | :--- | :--- |
-| **mars-pro** | **48kHz** | High-fidelity, professional-grade speech synthesis. Ideal for long-form content and dubbing. |
-| **mars-8.1-pro-beta** | **48kHz** | Beta MARS Pro model. Try this model with the same source references, as it may perform much better for pronunciation, expressiveness with high-pitch references, overall prosody, accent control, and coverage. |
-| **mars-8.1-flash-beta** | **48kHz** | Beta MARS Pro model with faster speed. Try this model with the same source references, as it may perform much better for pronunciation, expressiveness with high-pitch references, overall prosody, accent control, and coverage. |
-| **mars-instruct** | **22.05kHz** | optimized for instruction-following and nuance control. |
-| **mars-flash** | **22.05kHz** | Low-latency model optimized for real-time applications and conversational AI. |
-
-#### a) Get an Audio URL or Save to File
+## Quick start (streaming TTS)
 
 ```python
+import os
 from camb.client import CambAI, save_stream_to_file
-from camb.types.stream_tts_output_configuration import StreamTtsOutputConfiguration
 
-# Initialize client (ensure API key is set)
-client = CambAI(api_key="YOUR_CAMB_API_KEY")
-
-response = client.text_to_speech.tts(
-    text="Hello from Camb AI! This is a test of our Text-to-Speech API.",
-    voice_id=20303,  # Example voice ID, get from client.voice_cloning.list_voices()
+client = CambAI(api_key=os.environ["CAMB_API_KEY"])
+stream = client.text_to_speech.tts(
+    text="Hello from Camb.ai.",
     language="en-us",
-    speech_model="mars-8.1-flash-beta",  # options: mars-pro, mars-8.1-pro-beta, mars-flash, mars-instruct, auto
-    output_configuration=StreamTtsOutputConfiguration(
-        format="mp3"
-    )
-)
-
-save_stream_to_file(response, "tts_output.mp3")
-print("Success! Audio saved to tts_output.mp3")
-```
-
-#### b) Async Text-to-Speech
-
-You can also stream audio asynchronously using `AsyncCambAI`.
-
-```python
-import asyncio
-from camb.client import AsyncCambAI, save_async_stream_to_file
-from camb.types.stream_tts_output_configuration import StreamTtsOutputConfiguration
-
-async_client = AsyncCambAI(api_key="YOUR_CAMB_API_KEY")
-
-async def main():
-    response = async_client.text_to_speech.tts(
-        text="Hello, this is a test of the text to audio streaming capabilities.",
-        language="en-us",
-        speech_model="mars-8.1-flash-beta",  # options: mars-pro, mars-8.1-pro-beta, mars-flash, mars-instruct, auto
-        voice_id=147319,
-        output_configuration=StreamTtsOutputConfiguration(
-            format="mp3"
-        )
-    )
-    await save_async_stream_to_file(response, "text_to_audio_output.mp3")
-    print("Success! Audio saved to text_to_audio_output.mp3")
-
-asyncio.run(main())
-```
-
-#### c) Using Mars Flash (Low Latency)
-
-For applications requiring faster responses, make sure you're using `mars-flash` (22.05kHz).
-
-```python
-response = client.text_to_speech.tts(
-    text="Hey! I can respond much faster.",
-    language="en-us",
+    voice_id=147320,
     speech_model="mars-flash",
-    voice_id=<id>,
-    output_configuration=StreamTtsOutputConfiguration(
-        format="wav"
-    )
 )
+save_stream_to_file(stream, "output.wav")
 ```
 
-#### d) List Available Voices
+Use a real `voice_id` from your account (for example from `client.voice_cloning.list_voices()`). See the [Python SDK guide](https://docs.camb.ai/sdk-guides/python-sdk) for models, languages, async streaming, and error handling.
 
-You can list available voices to find a voice_id that suits your needs:
+## Capabilities
 
-```python
-voices = client.voice_cloning.list_voices()
-print(f"Found {len(voices)} voices:")
-for voice in voices[:5]:  # Print first 5 as an example
-    print(f"  - ID: {voice["id"]}, Name: {voice["voice_name"]}, Gender: {voice["gender"]}, Language: {voice["language"]}")
-```
+| Capability | Docs | Example |
+| ---------- | ---- | ------- |
+| Streaming TTS (sync / async) | [Quick start & models](https://docs.camb.ai/sdk-guides/python-sdk#quick-start) | [`examples/tts_stream_sync.py`](examples/tts_stream_sync.py), [`examples/async_tts_call.py`](examples/async_tts_call.py) |
+| Text-to-audio (sound / music) | [Text-to-Audio](https://docs.camb.ai/sdk-guides/python-sdk#text-to-audio) | [`examples/text_to_audio.py`](examples/text_to_audio.py) |
+| Translation | [Translation](https://docs.camb.ai/sdk-guides/python-sdk#translation) | [`examples/translation.py`](examples/translation.py) |
+| Dubbing | [Dubbing](https://docs.camb.ai/sdk-guides/python-sdk#dubbing) | [`examples/perform_dubbing.py`](examples/perform_dubbing.py) |
+| Transcription | [Transcription](https://docs.camb.ai/sdk-guides/python-sdk#transcription) | [`examples/transcription.py`](examples/transcription.py) |
+| Translated TTS | [Translated TTS](https://docs.camb.ai/sdk-guides/python-sdk#translated-tts) | [`examples/translated_tts.py`](examples/translated_tts.py) |
+| Text-to-voice | [Text-to-Voice](https://docs.camb.ai/sdk-guides/python-sdk#text-to-voice) | [`examples/text_to_voice.py`](examples/text_to_voice.py) |
+| Custom TTS provider (Baseten) | [Custom provider](https://docs.camb.ai/sdk-guides/python-sdk#custom-provider) | [`examples/baseten_provider_example.py`](examples/baseten_provider_example.py) |
 
-### 2. Text-to-Voice (Generative Voice)
+Voice cloning, stories, dictionaries, audio separation, and other endpoints are covered in the [same guide](https://docs.camb.ai/sdk-guides/python-sdk). For REST details, see the [API reference](https://docs.camb.ai/api-reference/endpoint/create-tts-stream).
 
-Create completely new and unique voices from a textual description of the desired voice characteristics.
+`provider_params` accepts `mars_url` or `mars_pro_url` for Baseten (see [`camb/text_to_speech/baseten.py`](camb/text_to_speech/baseten.py)). Other self-hosted or cloud provider setups are described under [Custom Cloud Providers](https://docs.camb.ai/custom-cloud-providers).
 
-```python
-from camb.client import CambAI
+## Examples
 
-# Initialize client
-client = CambAI(api_key="YOUR_CAMB_API_KEY")
+See [`examples/README.md`](examples/README.md) for environment variables, `python-dotenv` / `.env` setup (`pip install -e ".[examples]"` or `pip install python-dotenv`), and how to run each script.
 
-try:
-    print("Generating a new voice and speech...")
-    # Returns 3 sample URLs
-    result = client.text_to_voice.create_text_to_voice(
-        text="Crafting a truly unique and captivating voice that carries a subtle air of mystery, depth, and gentle warmth.",
-        voice_description="A smooth, rich baritone voice layered with a soft echo, ideal for immersive storytelling and emotional depth.",
-    )
-    print(result)
+## Resources
 
-except Exception as e:
-    print(f"Exception when calling text_to_voice: {e}\n")
-```
-
-### 3. Text-to-Audio (Sound Generation)
-
-Generate sound effects or ambient audio from a descriptive prompt.
-
-```python
-from camb.client save_stream_to_file
-import time
-
-response = client.text_to_audio.create_text_to_audio(
-    prompt="A gentle breeze rustling through autumn leaves in a quiet forest.",
-    duration=10,
-    audio_type="sound"
-)
-task_id = response.task_id
-if task_id:
-    while True:
-        status = client.text_to_audio.get_text_to_audio_status(task_id=task_id)
-        if status.status == "SUCCESS":
-            result = client.text_to_audio.get_text_to_audio_result(status.run_id)
-            save_stream_to_file(result, "sound_effect.mp3")
-            print("Success! Sound effect saved to sound_effect.mp3")
-            break
-        time.sleep(2)
-```
-
-### 4. End-to-End Dubbing
-
-Dub videos into different languages with voice cloning and translation capabilities.
-
-```python
-from camb.types.language_enums import Languages
-
-result = client.dub.create_dub(
-    video_url="your_accessible_video_url",
-    source_language=Languages.EN_US,  # English (Or Check client.languages.get_source_languages())
-    target_languages=[Languages.HI_IN],  # list of Languages like [Languages.HI_IN, Languages.FR_FR] or if you want single language then can use target_language=Languages.HI_IN
-)
-task_id = response.task_id
-print(f"Dub Task created with ID: {task_id}")
-while True:
-    status_response = client.dub.get_dubbing_status(task_id=task_id)
-    print(f"Current Status: {status_response.status}")
-    if status_response.status == "SUCCESS":
-        dubbed_run_info = client.dub.get_dubbed_run_info(status_response.run_id)
-        print(f"Dubbed Video URL: {dubbed_run_info.audio_url}")
-        print(f"Dubbed Video URL: {dubbed_run_info.transcript}")
-        print(f"Dubbed Video URL: {dubbed_run_info.video_url}")
-        break
-    time.sleep(5)
-```
-
-## ⚙️ Advanced Usage & Other Features
-
-The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
-
-- Voice Cloning
-- Translations
-- Translated TTS
-- Audio Dubbing
-- Transcription
-- And more!
-
-Please refer to [examples](examples/) for direct runnable examples and Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.
+- [Python SDK guide](https://docs.camb.ai/sdk-guides/python-sdk)
+- [PyPI: camb-sdk](https://pypi.org/project/camb-sdk/)
+- [GitHub: camb-ai/cambai-python-sdk](https://github.com/camb-ai/cambai-python-sdk)
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT. See [LICENSE](LICENSE).

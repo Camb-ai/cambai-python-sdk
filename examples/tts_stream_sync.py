@@ -1,7 +1,6 @@
-import asyncio
 import os
 from dotenv import load_dotenv
-from camb.client import AsyncCambAI, save_async_stream_to_file
+from camb.client import CambAI, save_stream_to_file
 from camb.types.stream_tts_output_configuration import StreamTtsOutputConfiguration
 
 load_dotenv()
@@ -12,25 +11,26 @@ def first_voice_id(voices: list) -> int:
     return int(v["id"]) if isinstance(v, dict) else int(v.id)
 
 
-async def main() -> None:
-    client = AsyncCambAI(api_key=os.environ["CAMB_API_KEY"])
+def main() -> None:
+    client = CambAI(api_key=os.environ["CAMB_API_KEY"])
     voice_id_raw = os.getenv("TTS_VOICE_ID")
     if voice_id_raw:
         voice_id = int(voice_id_raw)
     else:
-        voices = await client.voice_cloning.list_voices()
+        voices = client.voice_cloning.list_voices()
         voice_id = first_voice_id(voices)
 
+    # format: e.g. mp3, wav; speech_model matches models in the docs
     stream = client.text_to_speech.tts(
-        text="Streaming TTS with the async client.",
+        text="Hello from the Camb Python SDK.",
         language="en-us",
-        speech_model="mars-pro",
         voice_id=voice_id,
-        output_configuration=StreamTtsOutputConfiguration(format="wav"),
+        speech_model="mars-flash",
+        output_configuration=StreamTtsOutputConfiguration(format="mp3"),
     )
-    out_path = os.getenv("TTS_OUT_PATH", "async_stream_output.wav")
-    await save_async_stream_to_file(stream, out_path)
+    out_path = os.getenv("TTS_OUT_PATH", "tts_output.mp3")
+    save_stream_to_file(stream, out_path)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
