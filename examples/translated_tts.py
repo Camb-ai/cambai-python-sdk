@@ -1,5 +1,6 @@
 import os
 import time
+
 from dotenv import load_dotenv
 from camb.client import CambAI
 from camb.types.get_tts_result_out_file_url import GetTtsResultOutFileUrl
@@ -10,23 +11,11 @@ load_dotenv()
 POLL_INTERVAL_SECONDS = 3
 
 
-def first_voice_id(voices: list) -> int:
-    v = voices[0]
-    return int(v["id"]) if isinstance(v, dict) else int(v.id)
-
-
 def main() -> None:
     client = CambAI(api_key=os.environ["CAMB_API_KEY"])
-    voice_id_raw = os.getenv("VOICE_ID")
-    if voice_id_raw:
-        voice_id = int(voice_id_raw)
-    else:
-        voices = client.voice_cloning.list_voices()
-        voice_id = first_voice_id(voices)
-
     create_out = client.translated_tts.create_translated_tts(
         text="Good morning, welcome to our service.",
-        voice_id=voice_id,
+        voice_id=147320, # more voices: client.voice_cloning.list_voices()
         source_language=Languages.EN_US,
         target_language=Languages.HI_IN,
     )

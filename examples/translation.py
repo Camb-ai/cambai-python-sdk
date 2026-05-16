@@ -12,8 +12,8 @@ TEXTS = [
     "Hello, how are you today?",
     "This translation was created with the Camb Python SDK.",
 ]
-# Seconds between polls while the translation job runs.
-POLL_INTERVAL_SECONDS = 2
+
+POLL_INTERVAL_SECONDS = 3
 
 
 def main() -> None:

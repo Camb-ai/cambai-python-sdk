@@ -1,18 +1,18 @@
 # Camb.ai Python SDK
 
-<div id="top" align="center">
 
-![Banner](assets/banner5_720.jpg)
 
-<h3><a href="https://camb.ai/">Camb.ai</a></h3>
+Banner
 
-[![PyPI version](https://img.shields.io/pypi/v/camb-sdk.svg?style=flat-square)](https://pypi.org/project/camb-sdk/)
-[![License](https://img.shields.io/pypi/l/camb-sdk.svg?style=flat-square)](https://github.com/Camb-ai/cambai-python-sdk/blob/main/LICENSE)
-[![Build status](https://github.com/Camb-ai/cambai-python-sdk/actions/workflows/python.yml/badge.svg)](https://github.com/Camb-ai/cambai-python-sdk/actions/workflows/python.yml)
+### [Camb.ai](https://camb.ai/)
 
-</div>
+[PyPI version](https://pypi.org/project/camb-sdk/)
+[License](https://github.com/Camb-ai/cambai-python-sdk/blob/main/LICENSE)
+[Build status](https://github.com/Camb-ai/cambai-python-sdk/actions/workflows/python.yml)
 
-Official Python client for Camb.ai APIs: text-to-speech, dubbing, translation, transcription, voice tools, and more. Full API behavior, models, and patterns are documented on **[docs.camb.ai](https://docs.camb.ai/sdk-guides/python-sdk)**. This repository holds the SDK source and **runnable examples** in [`examples/`](examples/).
+
+
+Official Python client for Camb.ai APIs: text-to-speech, dubbing, translation, transcription, voice tools, and more. Full API behavior, models, and patterns are documented on **[docs.camb.ai](https://docs.camb.ai/sdk-guides/python-sdk)**. 
 
 ## Installation
 
@@ -60,28 +60,30 @@ stream = client.text_to_speech.tts(
 save_stream_to_file(stream, "output.wav")
 ```
 
-Use a real `voice_id` from your account (for example from `client.voice_cloning.list_voices()`). See the [Python SDK guide](https://docs.camb.ai/sdk-guides/python-sdk) for models, languages, async streaming, and error handling.
+Use `voice_id` **147320** to match the docs quick start, or discover more with `client.voice_cloning.list_voices()`. See the [Python SDK guide](https://docs.camb.ai/sdk-guides/python-sdk) for models, languages, async streaming, and error handling.
 
 ## Capabilities
 
-| Capability | Docs | Example |
-| ---------- | ---- | ------- |
-| Streaming TTS (sync / async) | [Quick start & models](https://docs.camb.ai/sdk-guides/python-sdk#quick-start) | [`examples/tts_stream_sync.py`](examples/tts_stream_sync.py), [`examples/async_tts_call.py`](examples/async_tts_call.py) |
-| Text-to-audio (sound / music) | [Text-to-Audio](https://docs.camb.ai/sdk-guides/python-sdk#text-to-audio) | [`examples/text_to_audio.py`](examples/text_to_audio.py) |
-| Translation | [Translation](https://docs.camb.ai/sdk-guides/python-sdk#translation) | [`examples/translation.py`](examples/translation.py) |
-| Dubbing | [Dubbing](https://docs.camb.ai/sdk-guides/python-sdk#dubbing) | [`examples/perform_dubbing.py`](examples/perform_dubbing.py) |
-| Transcription | [Transcription](https://docs.camb.ai/sdk-guides/python-sdk#transcription) | [`examples/transcription.py`](examples/transcription.py) |
-| Translated TTS | [Translated TTS](https://docs.camb.ai/sdk-guides/python-sdk#translated-tts) | [`examples/translated_tts.py`](examples/translated_tts.py) |
-| Text-to-voice | [Text-to-Voice](https://docs.camb.ai/sdk-guides/python-sdk#text-to-voice) | [`examples/text_to_voice.py`](examples/text_to_voice.py) |
-| Custom TTS provider (Baseten) | [Custom provider](https://docs.camb.ai/sdk-guides/python-sdk#custom-provider) | [`examples/baseten_provider_example.py`](examples/baseten_provider_example.py) |
+
+| Capability                    | Docs                                                                           | Example                                                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| Streaming TTS (sync / async)  | [Quick start & models](https://docs.camb.ai/sdk-guides/python-sdk#quick-start) | `[examples/tts_stream_sync.py](examples/tts_stream_sync.py)`, `[examples/async_tts_call.py](examples/async_tts_call.py)` |
+| Text-to-audio (sound / music) | [Text-to-Audio](https://docs.camb.ai/sdk-guides/python-sdk#text-to-audio)      | `[examples/text_to_audio.py](examples/text_to_audio.py)`                                                                 |
+| Translation                   | [Translation](https://docs.camb.ai/sdk-guides/python-sdk#translation)          | `[examples/translation.py](examples/translation.py)`                                                                     |
+| Dubbing                       | [Dubbing](https://docs.camb.ai/sdk-guides/python-sdk#dubbing)                  | `[examples/perform_dubbing.py](examples/perform_dubbing.py)`                                                             |
+| Transcription                 | [Transcription](https://docs.camb.ai/sdk-guides/python-sdk#transcription)      | `[examples/transcription.py](examples/transcription.py)`                                                                 |
+| Translated TTS                | [Translated TTS](https://docs.camb.ai/sdk-guides/python-sdk#translated-tts)    | `[examples/translated_tts.py](examples/translated_tts.py)`                                                               |
+| Text-to-voice                 | [Text-to-Voice](https://docs.camb.ai/sdk-guides/python-sdk#text-to-voice)      | `[examples/text_to_voice.py](examples/text_to_voice.py)`                                                                 |
+| Custom TTS provider (Baseten) | [Custom provider](https://docs.camb.ai/sdk-guides/python-sdk#custom-provider)  | `[examples/baseten_provider_example.py](examples/baseten_provider_example.py)`                                           |
+
 
 Voice cloning, stories, dictionaries, audio separation, and other endpoints are covered in the [same guide](https://docs.camb.ai/sdk-guides/python-sdk). For REST details, see the [API reference](https://docs.camb.ai/api-reference/endpoint/create-tts-stream).
 
-`provider_params` accepts `mars_url` or `mars_pro_url` for Baseten (see [`camb/text_to_speech/baseten.py`](camb/text_to_speech/baseten.py)). Other self-hosted or cloud provider setups are described under [Custom Cloud Providers](https://docs.camb.ai/custom-cloud-providers).
+`provider_params` accepts `mars_url` or `mars_pro_url` for Baseten (see `[camb/text_to_speech/baseten.py](camb/text_to_speech/baseten.py)`). Other self-hosted or cloud provider setups are described under [Custom Cloud Providers](https://docs.camb.ai/custom-cloud-providers).
 
 ## Examples
 
-See [`examples/README.md`](examples/README.md) for environment variables, `python-dotenv` / `.env` setup (`pip install -e ".[examples]"` or `pip install python-dotenv`), and how to run each script.
+See `[examples/README.md](examples/README.md)` for environment variables, `python-dotenv` / `.env` setup (`pip install -e ".[examples]"` or `pip install python-dotenv`), and how to run each script.
 
 ## Resources
 

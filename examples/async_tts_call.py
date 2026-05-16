@@ -6,26 +6,13 @@ from camb.types.stream_tts_output_configuration import StreamTtsOutputConfigurat
 
 load_dotenv()
 
-
-def first_voice_id(voices: list) -> int:
-    v = voices[0]
-    return int(v["id"]) if isinstance(v, dict) else int(v.id)
-
-
 async def main() -> None:
     client = AsyncCambAI(api_key=os.environ["CAMB_API_KEY"])
-    voice_id_raw = os.getenv("TTS_VOICE_ID")
-    if voice_id_raw:
-        voice_id = int(voice_id_raw)
-    else:
-        voices = await client.voice_cloning.list_voices()
-        voice_id = first_voice_id(voices)
-
     stream = client.text_to_speech.tts(
         text="Streaming TTS with the async client.",
         language="en-us",
         speech_model="mars-pro",
-        voice_id=voice_id,
+        voice_id=147320, # more voices: await client.voice_cloning.list_voices()
         output_configuration=StreamTtsOutputConfiguration(format="wav"),
     )
     out_path = os.getenv("TTS_OUT_PATH", "async_stream_output.wav")

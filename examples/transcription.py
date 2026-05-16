@@ -1,6 +1,8 @@
+import json
 import os
 import time
 from dotenv import load_dotenv
+
 from camb.client import CambAI
 from camb.types.language_enums import Languages
 
@@ -28,10 +30,13 @@ def main() -> None:
         time.sleep(POLL_INTERVAL_SECONDS)
 
     assert run_id is not None
-    client.transcription.get_transcription_result(
+    result = client.transcription.get_transcription_result(
         run_id=run_id,
         word_level_timestamps=True,
     )
+    payload = result.model_dump() if hasattr(result, "model_dump") else result.dict()
+    with open("transcription_result.json", "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, default=str)
 
 
 if __name__ == "__main__":
