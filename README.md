@@ -21,7 +21,6 @@ See the [Python SDK guide](https://docs.camb.ai/sdk-guides/python-sdk) for full 
 - **Dubbing** — Localize video with translated speech matched to the original speaker.
 - **Translation** — Batch-translate strings across supported language pairs.
 - **Transcription** — Transcribe audio or video from a URL or upload.
-- **Voice cloning** — Create custom voices and browse your voice library.
 - **Audio separation** — Split a mix into stems such as vocals and background.
 - **Stories & folders** — Build long-form narration from documents and organize projects.
 - **Custom providers** — Point TTS at your own MARS deployment (for example on Baseten) via `provider_params`.
@@ -136,6 +135,8 @@ while True:
 | Dubbing | [Guide](https://docs.camb.ai/sdk-guides/python-sdk#dubbing) | [`examples/perform_dubbing.py`](examples/perform_dubbing.py) |
 | Translation | [Guide](https://docs.camb.ai/sdk-guides/python-sdk#translation) | [`examples/translation.py`](examples/translation.py) |
 | Transcription | [Guide](https://docs.camb.ai/sdk-guides/python-sdk#transcription) | [`examples/transcription.py`](examples/transcription.py) |
+| Audio separation | [Guide](https://docs.camb.ai/sdk-guides/python-sdk#audio-separation) | [`examples/audio_separation.py`](examples/audio_separation.py) |
+| Stories | [Guide](https://docs.camb.ai/sdk-guides/python-sdk#stories) | [`examples/story.py`](examples/story.py) |
 | Custom provider (Baseten) | [Guide](https://docs.camb.ai/sdk-guides/python-sdk#custom-provider) | [`examples/baseten_provider_example.py`](examples/baseten_provider_example.py) |
 
 Self-hosted MARS deployments are covered in [Custom Cloud Providers](https://docs.camb.ai/custom-cloud-providers).
