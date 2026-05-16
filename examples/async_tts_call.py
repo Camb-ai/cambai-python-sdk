@@ -12,7 +12,7 @@ async def main() -> None:
         text="Streaming TTS with the async client.",
         language="en-us",
         speech_model="mars-pro",
-        voice_id=147320, # more voices: await client.voice_cloning.list_voices()
+        voice_id=147320,  # GET /list-voices: await client.voice_cloning.list_voices()
         output_configuration=StreamTtsOutputConfiguration(format="wav"),
     )
     out_path = os.getenv("TTS_OUT_PATH", "async_stream_output.wav")

@@ -15,7 +15,7 @@ def main() -> None:
     client = CambAI(api_key=os.environ["CAMB_API_KEY"])
     create_out = client.translated_tts.create_translated_tts(
         text="Good morning, welcome to our service.",
-        voice_id=147320, # more voices: client.voice_cloning.list_voices()
+        voice_id=147320,  # GET /list-voices: client.voice_cloning.list_voices()
         source_language=Languages.EN_US,
         target_language=Languages.HI_IN,
     )

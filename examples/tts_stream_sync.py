@@ -10,7 +10,7 @@ def main() -> None:
     stream = client.text_to_speech.tts(
         text="Hello from the Camb Python SDK.",
         language="en-us",
-        voice_id=147320, # more voices: client.voice_cloning.list_voices()
+        voice_id=147320,  # GET /list-voices: client.voice_cloning.list_voices()
         speech_model="mars-flash",
         output_configuration=StreamTtsOutputConfiguration(format="mp3"),
     )
