@@ -108,17 +108,20 @@ from camb.types.language_enums import Languages
 client = CambAI(api_key=os.environ["CAMB_API_KEY"])
 
 response = client.dub.create_dub(
-    video_url=os.environ["VIDEO_URL"],
+    video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",  # Replace with your video URL
     source_language=Languages.EN_US,
     target_language=Languages.HI_IN,
 )
 task_id = response.task_id
+print(f"Dub Task created with ID: {task_id}")
 
 while True:
     status = client.dub.get_dubbing_status(task_id=task_id)
+    print(f"Current Status: {status.status}")
     if status.status == "SUCCESS":
         info = client.dub.get_dubbed_run_info(status.run_id)
-        print(info.video_url or info.audio_url)
+        print(info.video_url)
+        print(info.audio_url)
         break
     time.sleep(5)
 ```

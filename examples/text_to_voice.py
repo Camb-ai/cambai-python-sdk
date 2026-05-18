@@ -1,5 +1,6 @@
 import os
 import time
+
 from dotenv import load_dotenv
 from camb.client import CambAI
 
@@ -25,15 +26,15 @@ VOICE_DESCRIPTION = (
     "and a soft, natural smile in the voice without sounding cheerful or salesy."
 )
 
+client = CambAI(api_key=os.getenv("CAMB_API_KEY"))
+
 
 def main() -> None:
-    client = CambAI(api_key=os.environ["PROD"])
     create_out = client.text_to_voice.create_text_to_voice(
         text=SPEECH_TEXT,
         voice_description=VOICE_DESCRIPTION,
     )
     task_id = create_out.task_id
-    assert task_id is not None
 
     run_id = None
     while True:
@@ -43,8 +44,7 @@ def main() -> None:
             break
         time.sleep(POLL_INTERVAL_SECONDS)
 
-    assert run_id is not None
-    result=client.text_to_voice.get_text_to_voice_result(run_id)
+    result = client.text_to_voice.get_text_to_voice_result(run_id)
     print(result)
 
 

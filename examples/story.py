@@ -1,24 +1,29 @@
 import os
 import time
+from pathlib import Path
+
 from dotenv import load_dotenv
 from camb.client import CambAI
 from camb.types.language_enums import Languages
 
 load_dotenv()
 
+RESOURCES_DIR = Path(__file__).resolve().parent / "resources"
+STORY_FILE = RESOURCES_DIR / "sample_story.txt"
+
 POLL_INTERVAL_SECONDS = 5
+
+client = CambAI(api_key=os.getenv("CAMB_API_KEY"))
 
 
 def main() -> None:
-    client = CambAI(api_key=os.environ["CAMB_API_KEY"])
-    with open(os.environ["STORY_FILE_PATH"], "rb") as f:
+    with open(STORY_FILE, "rb") as f:
         response = client.story.create_story(
             file=f,
             source_language=Languages.EN_US,
-            title=os.getenv("STORY_TITLE", "My Story"),
+            title="My Story",
         )
     task_id = response.task_id
-    assert task_id is not None
 
     while True:
         status = client.story.get_story_status(task_id=task_id)
