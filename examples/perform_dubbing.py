@@ -12,7 +12,7 @@ client = CambAI(api_key=os.getenv("CAMB_API_KEY"))
 
 def perform_dubbing() -> None:
     response = client.dub.create_dub(
-        video_url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",  # Replace with your video URL
+        video_url="https://www.youtube.com/watch?v=.....",  # Replace with your video URL
         source_language=Languages.EN_US,
         target_language=Languages.HI_IN,
     )
