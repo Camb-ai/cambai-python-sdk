@@ -1,15 +1,20 @@
 import os
-from camb.client import CambAI
 import time
+
+from dotenv import load_dotenv
+from camb.client import CambAI
 from camb.types.language_enums import Languages
 
-client = CambAI(api_key=os.getenv("CAMB_API_KEY"))  
+load_dotenv()
 
-def perform_dubbing():
+client = CambAI(api_key=os.getenv("CAMB_API_KEY"))
+
+
+def perform_dubbing() -> None:
     response = client.dub.create_dub(
-        video_url="https://www.youtube.com/...link...",
+        video_url="https://www.youtube.com/watch?v=.....",  # Replace with your video URL
         source_language=Languages.EN_US,
-        target_language=Languages.HI_IN
+        target_language=Languages.HI_IN,
     )
     task_id = response.task_id
     print(f"Dub Task created with ID: {task_id}")
@@ -21,4 +26,6 @@ def perform_dubbing():
             break
         time.sleep(5)
 
-perform_dubbing()
+
+if __name__ == "__main__":
+    perform_dubbing()

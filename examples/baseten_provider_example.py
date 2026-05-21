@@ -1,29 +1,39 @@
 import base64
-from camb.client import CambAI, AsyncCambAI, save_stream_to_file, save_async_stream_to_file
+import os
+
+from dotenv import load_dotenv
+from camb.client import CambAI, save_stream_to_file
+
+load_dotenv()
 
 client = CambAI(
     tts_provider="baseten",
     provider_params={
-        "api_key": "xyz",
-        "mars_url": "https://model-xyz.api.baseten.co/environments/production/predict"
-    }
+        "api_key": os.environ["BASETEN_API_KEY"],
+        "mars_url": os.getenv("BASETEN_MARS_URL") or os.getenv("BASETEN_MARS_PRO_URL"),
+    },
 )
 
-def main():
-    response = client.text_to_speech.tts(
-        text="Hello World and my dear friends",
+
+def main() -> None:
+    with open("audio.wav", "rb") as f:
+        reference_audio = base64.b64encode(f.read()).decode("utf-8")
+
+    stream = client.text_to_speech.tts(
+        text="Hello from a Baseten-hosted MARS deployment.",
         language="en-us",
         speech_model="mars-flash",
         request_options={
             "additional_body_parameters": {
-                "reference_audio": base64.b64encode(open("audio.wav", "rb").read()).decode('utf-8'),
-                "reference_language": "en-us"  # required
+                "reference_audio": reference_audio,
+                "reference_language": "en-us",  # required
             },
-            "timeout_in_seconds": 300
-        }
+            "timeout_in_seconds": 300,
+        },
     )
-    save_stream_to_file(response, "tts_output.wav")
+    save_stream_to_file(stream, "tts_output.wav")
     print("Success! Audio saved to tts_output.wav")
+
 
 if __name__ == "__main__":
     main()
