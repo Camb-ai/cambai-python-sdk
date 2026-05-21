@@ -60,13 +60,25 @@ from camb.client import CambAI, save_stream_to_file
 client = CambAI(api_key=os.environ["CAMB_API_KEY"])
 
 stream = client.text_to_speech.tts(
-    text="Hello from the Camb Python SDK.",
+    text="[laughter] Welcome to the Camb Python SDK.",
     language="en-us",
     voice_id=147320,  # browse voices: client.voice_cloning.list_voices()
-    speech_model="mars-flash",
+    speech_model="mars-8.1-flash-beta",
 )
 save_stream_to_file(stream, "output.wav")
 ```
+
+**Available models**
+
+| Model | Sample rate | Best for |
+| :-- | :-- | :-- |
+| `mars-8.1-flash-beta` | 48kHz | Best all-around: stronger pronunciation, accent coverage, and prosody. Faster than pro-beta. Good starting point. |
+| `mars-8.1-pro-beta` | 48kHz | Same quality improvements as flash-beta; use when fidelity matters more than speed. |
+| `mars-flash` | 22.05–48kHz | Real-time agents and call centers. Lowest latency (~150ms TTFB on Blackwell GPUs). |
+| `mars-pro` | 48kHz | Expressive dubbing, audiobooks, and digital media where TTFB is less critical. |
+| `mars-instruct` | 22.05kHz | Emotion and prosody control via embedded text tags — film/broadcast post-production. |
+
+See [Choosing a Model](https://docs.camb.ai/choosing-a-model) for a detailed comparison.
 
 ### Translation
 

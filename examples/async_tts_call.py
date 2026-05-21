@@ -9,9 +9,9 @@ load_dotenv()
 async def main() -> None:
     client = AsyncCambAI(api_key=os.environ["CAMB_API_KEY"])
     stream = client.text_to_speech.tts(
-        text="Streaming TTS with the async client.",
+        text="[surprise] Great news—your account has been approved and is ready to use.",
         language="en-us",
-        speech_model="mars-pro",
+        speech_model="mars-8.1-flash-beta",
         voice_id=147320,  # GET /list-voices: await client.voice_cloning.list_voices()
         output_configuration=StreamTtsOutputConfiguration(format="wav"),
     )

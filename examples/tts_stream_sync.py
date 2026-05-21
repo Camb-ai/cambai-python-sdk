@@ -8,10 +8,10 @@ load_dotenv()
 def main() -> None:
     client = CambAI(api_key=os.environ["CAMB_API_KEY"])
     stream = client.text_to_speech.tts(
-        text="Hello from the Camb Python SDK.",
+        text="[laughter] Welcome to the Camb Python SDK.",
         language="en-us",
-        voice_id=147320,  # GET /list-voices: client.voice_cloning.list_voices()
-        speech_model="mars-flash",
+        voice_id=147320,  # browse voices: client.voice_cloning.list_voices()
+        speech_model="mars-8.1-flash-beta",
         output_configuration=StreamTtsOutputConfiguration(format="mp3"),
     )
     out_path = os.getenv("TTS_OUT_PATH", "tts_output.mp3")
