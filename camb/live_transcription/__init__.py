@@ -30,7 +30,6 @@ from .errors import (
     LiveTranscriptionConnectError,
     LiveTranscriptionError,
     LiveTranscriptionProtocolError,
-    MicrophoneUnavailableError,
 )
 from .events import (
     Alternative,
@@ -67,7 +66,6 @@ __all__ = [
     "LiveTranscriptionSession",
     "Metadata",
     "Microphone",
-    "MicrophoneUnavailableError",
     "ModelInfo",
     "PARSER_REGISTRY",
     "ReadyEvent",

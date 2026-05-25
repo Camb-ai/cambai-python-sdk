@@ -2,7 +2,7 @@
 
 Run with:
 
-    pip install "camb-sdk[microphone]"
+    pip install camb-sdk
     CAMB_API_KEY=... python examples/live_transcription_microphone.py
 """
 

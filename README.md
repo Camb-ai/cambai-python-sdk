@@ -37,13 +37,6 @@ Or through
 pip install git+https://github.com/Camb-ai/cambai-python-sdk
 ```
 
-Optional extras:
-
-```bash
-# Enables the live transcription Microphone helper (uses sounddevice).
-pip install "camb-sdk[microphone]"
-```
-
 ## 🔑 Authentication & Accessing Clients
 
 To use the Camb AI SDK, you'll need an API key. You can authenticate it by:

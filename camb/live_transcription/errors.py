@@ -11,7 +11,3 @@ class LiveTranscriptionConnectError(LiveTranscriptionError):
 
 class LiveTranscriptionProtocolError(LiveTranscriptionError):
     """The server sent a frame the client could not decode or validate."""
-
-
-class MicrophoneUnavailableError(LiveTranscriptionError):
-    """A microphone helper was used but its optional audio dependency is missing."""

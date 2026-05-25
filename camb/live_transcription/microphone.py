@@ -1,13 +1,4 @@
-"""Microphone helper backed by :mod:`sounddevice` (optional extra).
-
-Install with::
-
-    pip install "camb-sdk[microphone]"
-
-The dependency is loaded lazily; importing this module without
-``sounddevice`` installed succeeds and only raises if you instantiate
-:class:`Microphone`.
-"""
+"""Microphone helper backed by :mod:`sounddevice`."""
 
 from __future__ import annotations
 
@@ -15,7 +6,7 @@ import asyncio
 import queue
 import typing
 
-from .errors import MicrophoneUnavailableError
+import sounddevice as sd
 
 
 class Microphone:
@@ -32,14 +23,6 @@ class Microphone:
         chunk_size: int = 1600,
         device: typing.Optional[typing.Union[int, str]] = None,
     ) -> None:
-        try:
-            import sounddevice  # noqa: F401
-        except ImportError as exc:
-            raise MicrophoneUnavailableError(
-                "The 'sounddevice' package is required for the Microphone helper. "
-                "Install it with: pip install 'camb-sdk[microphone]'"
-            ) from exc
-
         self._sample_rate = sample_rate
         self._chunk_size = chunk_size
         self._device = device
@@ -56,8 +39,6 @@ class Microphone:
         return self._chunk_size
 
     def start(self) -> None:
-        import sounddevice as sd
-
         if self._running:
             return
 
