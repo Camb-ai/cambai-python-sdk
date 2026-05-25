@@ -205,6 +205,10 @@ class LiveTranscriptionSession:
         code = self._transport.close_code or 1000
         reason = self._transport.close_reason or ""
         payload = ClosedEvent(code=code, reason=reason)
+        # Unblock anyone awaiting Ready: if we close without ever becoming
+        # ready, set the event so callers fail fast rather than hanging.
+        if not self._ready.is_set():
+            self._ready.set()
         await self._fan_out(ServerMessageType.CLOSED, payload)
         await self._fan_out_wildcard(ServerMessageType.CLOSED, payload)
         self._closed.set()
