@@ -28,12 +28,17 @@ async def main() -> None:
 
     @session.on(ServerMessageType.RESULTS)
     def _results(msg):
-        # Cumulative transcript: replace the previous line in the UI rather
-        # than concatenating successive Results events.
-        print(f"\r{msg.transcript}", end="", flush=True)
+        text = msg.transcript.strip()
+        if not text:
+            return
+        if not msg.is_final:
+            print(f"[Interim] {text}\n", end="", flush=True)
+        else:
+            print(f"\r\033[K{text}\n", end="", flush=True)
 
     @session.on(ServerMessageType.ERROR)
     def _error(err):
+        # Leading newline: an interim line may be in progress (no newline yet).
         print(f"\nServer error: {err.code} {err.message}")
 
     @session.on(ServerMessageType.CLOSED)
