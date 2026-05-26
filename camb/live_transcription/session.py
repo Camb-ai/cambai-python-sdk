@@ -65,6 +65,14 @@ class LiveTranscriptionSession:
         await self.close()
 
     async def _open(self) -> None:
+        # Idempotent: the resource client's connect() already opens the
+        # session before handing it back, and users typically wrap the
+        # returned session in `async with session:` for cleanup. Re-running
+        # _open here would spawn a second reader task on the same socket,
+        # causing every event to fan out twice and races to wedge the
+        # consumer iterator after a few frames.
+        if self._reader_task is not None:
+            return
         await self._transport.connect(self._url, self._headers)
         self._reader_task = asyncio.create_task(self._read_loop())
 
