@@ -48,6 +48,7 @@ from .events import (
 from .microphone import Microphone
 from .options import ConnectOptions, Encoding
 from .session import LiveTranscriptionSession, connect
+from .transcript_printer import TranscriptPrinter, bind_transcript_printer, create_transcript_printer
 
 __all__ = [
     "Alternative",
@@ -71,6 +72,9 @@ __all__ = [
     "ReadyEvent",
     "ResultsEvent",
     "ServerMessageType",
+    "TranscriptPrinter",
     "Word",
+    "bind_transcript_printer",
     "connect",
+    "create_transcript_printer",
 ]

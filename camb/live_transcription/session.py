@@ -160,16 +160,25 @@ class LiveTranscriptionSession:
 
     # ----------------------------- internals ---------------------------
 
+    @staticmethod
+    def _frame_to_text(frame: typing.Union[str, bytes, bytearray]) -> typing.Optional[str]:
+        if isinstance(frame, str):
+            return frame
+        if isinstance(frame, (bytes, bytearray)):
+            # Some WebSocket clients deliver JSON text frames as bytes.
+            return bytes(frame).decode("utf-8")
+        return None
+
     async def _read_loop(self) -> None:
         try:
             async for frame in self._transport:
-                if isinstance(frame, (bytes, bytearray)):
-                    # Server does not send binary frames today; ignore.
+                text = self._frame_to_text(frame)
+                if text is None:
                     continue
                 try:
-                    data = json.loads(frame)
+                    data = json.loads(text)
                 except json.JSONDecodeError:
-                    _log.warning("Discarding non-JSON server frame: %r", frame)
+                    _log.warning("Discarding non-JSON server frame: %r", text)
                     continue
                 await self._dispatch(data)
         finally:

@@ -16,7 +16,7 @@ import os
 import sys
 
 from camb.client import CambAI
-from camb.live_transcription import FileAudioSource, ServerMessageType
+from camb.live_transcription import FileAudioSource, ServerMessageType, bind_transcript_printer
 
 
 async def main(path: str) -> None:
@@ -35,21 +35,21 @@ async def main(path: str) -> None:
         channels=channels,
     )
 
+    printer = bind_transcript_printer(session)
+
     @session.on(ServerMessageType.READY)
     def _(_):
         print(f"Streaming {path} at {sample_rate} Hz...")
 
-    @session.on(ServerMessageType.RESULTS)
-    def _(msg):
-        print(f"\r{msg.transcript}", end="", flush=True)
-
     @session.on(ServerMessageType.ERROR)
     def _(err):
-        print(f"\n[error] {err.code}: {err.message}")
+        printer.newline()
+        print(f"[error] {err.code}: {err.message}")
 
     @session.on(ServerMessageType.CLOSED)
     def _(info):
-        print(f"\nClosed: code={info.code} reason={info.reason!r}")
+        printer.newline()
+        print(f"Closed: code={info.code} reason={info.reason!r}")
 
     async with session:
         await session.wait_until_ready(timeout=10)
