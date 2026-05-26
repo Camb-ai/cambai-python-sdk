@@ -150,6 +150,7 @@ class CambAI:
         self._dictionaries: typing.Optional[DictionariesClient] = None
         self._project_setup: typing.Optional[ProjectSetupClient] = None
         self._deprecated_streaming: typing.Optional[DeprecatedStreamingClient] = None
+        self._live_transcription: typing.Optional[typing.Any] = None
 
     @property
     def with_raw_response(self) -> RawCambApi:
@@ -372,6 +373,14 @@ class CambAI:
             self._deprecated_streaming = DeprecatedStreamingClient(client_wrapper=self._client_wrapper)
         return self._deprecated_streaming
 
+    @property
+    def live_transcription(self):
+        if self._live_transcription is None:
+            from .live_transcription.client import LiveTranscriptionClient  # noqa: E402
+
+            self._live_transcription = LiveTranscriptionClient(client_wrapper=self._client_wrapper)
+        return self._live_transcription
+
 
 class AsyncCambAI:
     """
@@ -463,6 +472,7 @@ class AsyncCambAI:
         self._dictionaries: typing.Optional[AsyncDictionariesClient] = None
         self._project_setup: typing.Optional[AsyncProjectSetupClient] = None
         self._deprecated_streaming: typing.Optional[AsyncDeprecatedStreamingClient] = None
+        self._live_transcription: typing.Optional[typing.Any] = None
 
     @property
     def with_raw_response(self) -> AsyncRawCambApi:
@@ -708,6 +718,16 @@ class AsyncCambAI:
 
             self._deprecated_streaming = AsyncDeprecatedStreamingClient(client_wrapper=self._client_wrapper)
         return self._deprecated_streaming
+
+    @property
+    def live_transcription(self):
+        if self._live_transcription is None:
+            from .live_transcription.client import LiveTranscriptionClient  # noqa: E402
+
+            # The live transcription client is transport-agnostic; the sync
+            # wrapper carries the same api_key/base_url state we need.
+            self._live_transcription = LiveTranscriptionClient(client_wrapper=self._client_wrapper)
+        return self._live_transcription
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: CambApiEnvironment) -> str:

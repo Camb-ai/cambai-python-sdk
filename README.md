@@ -20,6 +20,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 - **Expressive Text-to-Speech**: Convert text into natural-sounding speech using a wide range of pre-existing voices.
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
+- **Live Transcription**: Stream microphone or file audio over a WebSocket and receive cumulative interim transcripts, word-level timing, and typed events.
 - Access to voice cloning, translation, and more (refer to full API documentation).
 
 ## 📦 Installation
@@ -254,6 +255,54 @@ while True:
     time.sleep(5)
 ```
 
+### 5. Live Transcription (Streaming WebSocket)
+
+Stream audio over a single WebSocket and receive cumulative interim
+transcripts, word-level timing, and typed events. The session exposes a
+microphone helper, a file source for tests, and the same `on(event)`
+dispatcher in both SDKs.
+
+```python
+import asyncio
+import os
+
+from camb.client import CambAI
+from camb.live_transcription import Microphone, ServerMessageType
+
+
+async def main():
+    client = CambAI(api_key=os.environ["CAMB_API_KEY"])
+    session = await client.live_transcription.connect(
+        model="boli-v5",
+        language="en-us",
+        sample_rate=16000,
+    )
+
+    @session.on(ServerMessageType.RESULTS)
+    def _(msg):
+        # Cumulative transcript: replace the previous interim rather
+        # than concatenating successive Results events.
+        print(f"\r{msg.transcript}", end="", flush=True)
+
+    @session.on(ServerMessageType.CLOSED)
+    def _(info):
+        print(f"\nClosed: code={info.code} reason={info.reason!r}")
+
+    async with session:
+        mic = Microphone(sample_rate=16000, chunk_size=1600)
+        await session.stream_audio(mic)
+
+
+asyncio.run(main())
+```
+
+Prefer streaming a file (no audio device dependency)? See
+[`examples/live_transcription_file.py`](examples/live_transcription_file.py).
+For the full event catalog (`Ready`, `Results`, `Final`, `Error`,
+`Closed`), configuration options, and extensibility notes, see the
+[Live Transcription tutorial](https://docs.camb.ai/tutorials/live-transcription-with-sdk)
+and [SDK guide](https://docs.camb.ai/sdk-guides/live-transcription).
+
 ## ⚙️ Advanced Usage & Other Features
 
 The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
@@ -262,7 +311,8 @@ The Camb AI SDK offers a wide range of capabilities beyond these examples, inclu
 - Translations
 - Translated TTS
 - Audio Dubbing
-- Transcription
+- Transcription (async file/URL jobs)
+- Live Transcription (streaming WebSocket — see Example 5 above)
 - And more!
 
 Please refer to [examples](examples/) for direct runnable examples and Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.

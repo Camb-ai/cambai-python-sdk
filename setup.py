@@ -8,7 +8,7 @@ setup(
     name="camb-sdk",
     long_description=long_description,
     long_description_content_type='text/markdown',
-    version="1.5.11",
+    version="1.5.12",
     packages=find_packages(where="."),
     package_dir={"": "."},
     install_requires=[
@@ -17,6 +17,7 @@ setup(
         "typing_extensions>=4.0.0",
         "websockets>=11.0.3",
         "websocket-client>=1.6.0",
+        "sounddevice>=0.4.6",
     ],
     package_data={"camb": ["py.typed"]},
     include_package_data=True,
