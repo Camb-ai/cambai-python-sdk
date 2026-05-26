@@ -28,17 +28,15 @@ async def main() -> None:
 
     @session.on(ServerMessageType.RESULTS)
     def _results(msg):
-        # Cumulative transcript: replace the previous line in the UI rather
-        # than concatenating successive Results events.
-        print(f"\r{msg.transcript}", end="", flush=True)
+        print(msg.transcript)
 
     @session.on(ServerMessageType.ERROR)
     def _error(err):
-        print(f"\nServer error: {err.code} {err.message}")
+        print(f"Server error: {err.code} {err.message}")
 
     @session.on(ServerMessageType.CLOSED)
     def _closed(info):
-        print(f"\nClosed: code={info.code} reason={info.reason!r}")
+        print(f"Closed: code={info.code} reason={info.reason!r}")
 
     async with session:
         mic = Microphone(sample_rate=16000, chunk_size=1600)

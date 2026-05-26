@@ -41,15 +41,15 @@ async def main(path: str) -> None:
 
     @session.on(ServerMessageType.RESULTS)
     def _(msg):
-        print(f"\r{msg.transcript}", end="", flush=True)
+        print(msg.transcript)
 
     @session.on(ServerMessageType.ERROR)
     def _(err):
-        print(f"\n[error] {err.code}: {err.message}")
+        print(f"[error] {err.code}: {err.message}")
 
     @session.on(ServerMessageType.CLOSED)
     def _(info):
-        print(f"\nClosed: code={info.code} reason={info.reason!r}")
+        print(f"Closed: code={info.code} reason={info.reason!r}")
 
     async with session:
         await session.wait_until_ready(timeout=10)
