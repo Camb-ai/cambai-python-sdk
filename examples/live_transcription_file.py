@@ -41,15 +41,25 @@ async def main(path: str) -> None:
 
     @session.on(ServerMessageType.RESULTS)
     def _(msg):
-        print(msg.transcript)
+        text = msg.transcript.strip()
+        if not text:
+            return
+        # Interim frames refine the current utterance; print them as they
+        # arrive. On is_final the utterance is done — commit it on its own
+        # line so the next utterance starts fresh instead of overwriting it.
+        if not msg.is_final:
+            print(f"[Interim] {text}\n", end="", flush=True)
+        else:
+            print(f"\r\033[K{text}\n", end="", flush=True)
 
     @session.on(ServerMessageType.ERROR)
     def _(err):
-        print(f"[error] {err.code}: {err.message}")
+        # Leading newline: an interim line may be in progress (no newline yet).
+        print(f"\n[error] {err.code}: {err.message}")
 
     @session.on(ServerMessageType.CLOSED)
     def _(info):
-        print(f"Closed: code={info.code} reason={info.reason!r}")
+        print(f"\nClosed: code={info.code} reason={info.reason!r}")
 
     async with session:
         await session.wait_until_ready(timeout=10)

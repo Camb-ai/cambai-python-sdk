@@ -28,15 +28,22 @@ async def main() -> None:
 
     @session.on(ServerMessageType.RESULTS)
     def _results(msg):
-        print(msg.transcript)
+        text = msg.transcript.strip()
+        if not text:
+            return
+        if not msg.is_final:
+            print(f"[Interim] {text}\n", end="", flush=True)
+        else:
+            print(f"\r\033[K{text}\n", end="", flush=True)
 
     @session.on(ServerMessageType.ERROR)
     def _error(err):
-        print(f"Server error: {err.code} {err.message}")
+        # Leading newline: an interim line may be in progress (no newline yet).
+        print(f"\nServer error: {err.code} {err.message}")
 
     @session.on(ServerMessageType.CLOSED)
     def _closed(info):
-        print(f"Closed: code={info.code} reason={info.reason!r}")
+        print(f"\nClosed: code={info.code} reason={info.reason!r}")
 
     async with session:
         mic = Microphone(sample_rate=16000, chunk_size=1600)

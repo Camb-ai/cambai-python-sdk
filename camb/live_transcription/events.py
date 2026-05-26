@@ -63,10 +63,14 @@ class Metadata(_LiveModel):
 
 
 class ResultsEvent(_LiveModel):
-    """Cumulative interim transcript for the current utterance.
+    """Cumulative transcript for the current utterance.
 
-    Replace your UI state with the latest ``transcript`` rather than
-    concatenating; each event carries the full transcript so far.
+    Each event carries the full transcript so far, so replace your
+    in-progress UI state with ``transcript`` rather than concatenating.
+    ``is_final`` is ``False`` for interim refinements and ``True`` on the
+    frame that finalizes the utterance; after a final the next event
+    begins a new utterance from scratch, so commit the text when
+    ``is_final`` is ``True`` to keep finished utterances.
     """
 
     is_final: bool = False
