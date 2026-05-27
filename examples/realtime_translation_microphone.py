@@ -75,8 +75,6 @@ async def main(source_language: str, target_language: str) -> None:
     session = await client.realtime.connect(
         source_language=source_language,
         target_language=target_language,
-        # iris is the low-latency model (no cold-boot wait).
-        model="iris",
     )
 
     speaker = Speaker()
