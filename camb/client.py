@@ -151,6 +151,7 @@ class CambAI:
         self._project_setup: typing.Optional[ProjectSetupClient] = None
         self._deprecated_streaming: typing.Optional[DeprecatedStreamingClient] = None
         self._live_transcription: typing.Optional[typing.Any] = None
+        self._realtime: typing.Optional[typing.Any] = None
 
     @property
     def with_raw_response(self) -> RawCambApi:
@@ -381,6 +382,14 @@ class CambAI:
             self._live_transcription = LiveTranscriptionClient(client_wrapper=self._client_wrapper)
         return self._live_transcription
 
+    @property
+    def realtime(self):
+        if self._realtime is None:
+            from .realtime.client import RealtimeClient  # noqa: E402
+
+            self._realtime = RealtimeClient(client_wrapper=self._client_wrapper)
+        return self._realtime
+
 
 class AsyncCambAI:
     """
@@ -473,6 +482,7 @@ class AsyncCambAI:
         self._project_setup: typing.Optional[AsyncProjectSetupClient] = None
         self._deprecated_streaming: typing.Optional[AsyncDeprecatedStreamingClient] = None
         self._live_transcription: typing.Optional[typing.Any] = None
+        self._realtime: typing.Optional[typing.Any] = None
 
     @property
     def with_raw_response(self) -> AsyncRawCambApi:
@@ -728,6 +738,14 @@ class AsyncCambAI:
             # wrapper carries the same api_key/base_url state we need.
             self._live_transcription = LiveTranscriptionClient(client_wrapper=self._client_wrapper)
         return self._live_transcription
+
+    @property
+    def realtime(self):
+        if self._realtime is None:
+            from .realtime.client import RealtimeClient  # noqa: E402
+
+            self._realtime = RealtimeClient(client_wrapper=self._client_wrapper)
+        return self._realtime
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: CambApiEnvironment) -> str:
