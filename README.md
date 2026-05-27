@@ -21,6 +21,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
 - **Live Transcription**: Stream microphone or file audio over a WebSocket and receive cumulative interim transcripts, word-level timing, and typed events.
+- **Realtime Speech-to-Speech Translation**: Stream speech over a WebSocket and receive the translation as live text and synthesized speech.
 - Access to voice cloning, translation, and more (refer to full API documentation).
 
 ## 📦 Installation
@@ -303,6 +304,56 @@ For the full event catalog (`Ready`, `Results`, `Final`, `Error`,
 [Live Transcription tutorial](https://docs.camb.ai/tutorials/live-transcription-with-sdk)
 and [SDK guide](https://docs.camb.ai/sdk-guides/live-transcription).
 
+### 6. Realtime Speech-to-Speech Translation (Streaming WebSocket)
+
+Speak (or stream a file) in one language and receive the translation as live
+text and synthesized speech over a single WebSocket. Audio is PCM16 mono at
+24 kHz in both directions. Use `iris` for low latency (no cold-boot wait);
+`lilac`, `violet`, and `orchid` cold-boot for ~30s+ on the first connection.
+
+```python
+import asyncio
+import os
+
+from camb.client import CambAI
+from camb.live_transcription import Microphone
+from camb.realtime import ServerEventType
+
+
+async def main():
+    client = CambAI(api_key=os.environ["CAMB_API_KEY"])
+    session = await client.realtime.connect(
+        source_language="en-us",
+        target_language="de-de",
+        model="iris",  # low-latency; lilac/violet/orchid cold-boot ~30s+
+    )
+
+    @session.on(ServerEventType.TEXT_DONE)
+    def _(event):
+        print(f"[translation] {event.text}")
+
+    @session.on(ServerEventType.AUDIO_DELTA)
+    def _(event):
+        ...  # event.data is raw PCM16 mono 24 kHz — play it through your speakers
+
+    async with session:
+        await session.wait_until_ready()
+        mic = Microphone(sample_rate=24000, chunk_size=2400)
+        await session.stream_audio(mic)
+
+
+asyncio.run(main())
+```
+
+Runnable examples:
+[`examples/realtime_translation_microphone.py`](examples/realtime_translation_microphone.py)
+(mic in, translated speech out) and
+[`examples/realtime_translation_file.py`](examples/realtime_translation_file.py)
+(WAV in, translated WAV out — no audio device needed). For the full event
+list and configuration, see the
+[Realtime Speech Translation tutorial](https://docs.camb.ai/tutorials/realtime-translation-with-sdk)
+and the [WebSocket API reference](https://docs.camb.ai/api-reference/websockets/realtime).
+
 ## ⚙️ Advanced Usage & Other Features
 
 The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
@@ -313,6 +364,7 @@ The Camb AI SDK offers a wide range of capabilities beyond these examples, inclu
 - Audio Dubbing
 - Transcription (async file/URL jobs)
 - Live Transcription (streaming WebSocket — see Example 5 above)
+- Realtime Speech-to-Speech Translation (streaming WebSocket — see Example 6 above)
 - And more!
 
 Please refer to [examples](examples/) for direct runnable examples and Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.
