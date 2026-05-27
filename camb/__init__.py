@@ -112,10 +112,10 @@ if typing.TYPE_CHECKING:
     from .voice_cloning import ListVoicesListVoicesGetResponseItem
 _dynamic_imports: typing.Dict[str, str] = {
     "AddTargetLanguageOut": ".types",
-    "AsyncCambApi": ".client",
+    "AsyncCambAI": ".client",
     "AudioOutputType": ".types",
     "AudioStream": ".types",
-    "CambApi": ".client",
+    "CambAI": ".client",
     "CambApiEnvironment": ".environment",
     "ConfigStream": ".types",
     "ConfigStreamPipeline": ".types",
