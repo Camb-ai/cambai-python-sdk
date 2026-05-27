@@ -29,7 +29,7 @@ class ConnectOptions(pydantic.BaseModel):
     Language values use IETF BCP-47 tags (e.g. ``"en-US"``, ``"de-DE"``).
     """
 
-    model: RealtimeModel = RealtimeModel.LILAC
+    model: RealtimeModel = RealtimeModel.IRIS
     source_language: str
     target_language: str
     output_modalities: typing.List[OutputModality] = pydantic.Field(

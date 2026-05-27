@@ -308,8 +308,7 @@ and [SDK guide](https://docs.camb.ai/sdk-guides/live-transcription).
 
 Speak (or stream a file) in one language and receive the translation as live
 text and synthesized speech over a single WebSocket. Audio is PCM16 mono at
-24 kHz in both directions. Use `iris` for low latency (no cold-boot wait);
-`lilac`, `violet`, and `orchid` cold-boot for ~30s+ on the first connection.
+24 kHz in both directions.
 
 ```python
 import asyncio
@@ -325,7 +324,6 @@ async def main():
     session = await client.realtime.connect(
         source_language="en-us",
         target_language="de-de",
-        model="iris",  # low-latency; lilac/violet/orchid cold-boot ~30s+
     )
 
     @session.on(ServerEventType.TEXT_DONE)
