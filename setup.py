@@ -8,7 +8,7 @@ setup(
     name="camb-sdk",
     long_description=long_description,
     long_description_content_type='text/markdown',
-    version="1.5.12",
+    version="1.5.13",
     packages=find_packages(where="."),
     package_dir={"": "."},
     install_requires=[
