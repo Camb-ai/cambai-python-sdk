@@ -303,6 +303,69 @@ For the full event catalog (`Ready`, `Results`, `Final`, `Error`,
 [Live Transcription tutorial](https://docs.camb.ai/tutorials/live-transcription-with-sdk)
 and [SDK guide](https://docs.camb.ai/sdk-guides/live-transcription).
 
+### 6. Realtime Speech-to-Speech Translation (Streaming WebSocket)
+
+Speak (or stream a file) in one language and receive the translation as live
+text and synthesized speech over a single WebSocket. Audio is PCM16 mono at
+24 kHz in both directions.
+
+```python
+import asyncio
+import os
+
+from camb.client import CambAI
+from camb.live_transcription import Microphone
+from camb.realtime import ServerEventType
+
+
+async def main():
+    client = CambAI(api_key=os.environ["CAMB_API_KEY"])
+    session = await client.realtime.connect(
+        source_language="en-us",
+        target_language="de-de",
+    )
+
+    @session.on(ServerEventType.TEXT_DONE)
+    def _(event):
+        print(f"[translation] {event.text}")
+
+    @session.on(ServerEventType.AUDIO_DELTA)
+    def _(event):
+        ...  # event.data is raw PCM16 mono 24 kHz — play it through your speakers
+
+    async with session:
+        await session.wait_until_ready()
+        mic = Microphone(sample_rate=24000, chunk_size=2400)
+        await session.stream_audio(mic)
+
+
+asyncio.run(main())
+```
+
+By default the translation is synthesized with a built-in voice for the target
+language. Pass `voice_id` to use one of your cloned voices instead (get the ID
+from `client.voice_cloning.list_voices()`):
+
+```python
+session = await client.realtime.connect(
+    source_language="en-us",
+    target_language="de-de",
+    voice_id=147320,  # one of your cloned voices
+)
+```
+
+For the most natural-sounding results, choose a voice whose reference language
+matches `target_language`.
+
+Runnable examples:
+[`examples/realtime_translation_microphone.py`](examples/realtime_translation_microphone.py)
+(mic in, translated speech out) and
+[`examples/realtime_translation_file.py`](examples/realtime_translation_file.py)
+(WAV in, translated WAV out — no audio device needed). For the full event
+list and configuration, see the
+[Realtime Speech Translation tutorial](https://docs.camb.ai/tutorials/realtime-translation-with-sdk)
+and the [WebSocket API reference](https://docs.camb.ai/api-reference/websockets/realtime).
+
 ## ⚙️ Advanced Usage & Other Features
 
 The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
