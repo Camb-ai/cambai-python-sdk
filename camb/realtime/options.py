@@ -35,6 +35,16 @@ class ConnectOptions(pydantic.BaseModel):
     output_modalities: typing.List[OutputModality] = pydantic.Field(
         default_factory=lambda: [OutputModality.TEXT, OutputModality.AUDIO]
     )
+    voice_id: typing.Optional[int] = None
+    """Synthesize the translation with one of your cloned voices.
+
+    Pass the ID of a voice you own (from ``client.voice_cloning.list_voices()``
+    or a custom voice you created). When omitted, a built-in voice for
+    ``target_language`` is used.
+
+    For the most natural-sounding results, choose a voice whose reference
+    language matches ``target_language``.
+    """
 
     def to_query(self) -> typing.Dict[str, str]:
         """Query-string parameters sent on the WebSocket upgrade URL."""
@@ -42,9 +52,12 @@ class ConnectOptions(pydantic.BaseModel):
 
     def to_session_payload(self) -> typing.Dict[str, typing.Any]:
         """Body of the ``session.update`` message sent after the WS handshake."""
-        return {
+        session: typing.Dict[str, typing.Any] = {
             "model": self.model.value,
             "source_language": self.source_language,
             "target_language": self.target_language,
             "output_modalities": [m.value for m in self.output_modalities],
         }
+        if self.voice_id is not None:
+            session["voice"] = {"type": "cloned", "voice_id": self.voice_id}
+        return session
