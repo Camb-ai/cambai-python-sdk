@@ -343,6 +343,21 @@ async def main():
 asyncio.run(main())
 ```
 
+By default the translation is synthesized with a built-in voice for the target
+language. Pass `voice_id` to use one of your cloned voices instead (get the ID
+from `client.voice_cloning.list_voices()`):
+
+```python
+session = await client.realtime.connect(
+    source_language="en-us",
+    target_language="de-de",
+    voice_id=147320,  # one of your cloned voices
+)
+```
+
+For the most natural-sounding results, choose a voice whose reference language
+matches `target_language`.
+
 Runnable examples:
 [`examples/realtime_translation_microphone.py`](examples/realtime_translation_microphone.py)
 (mic in, translated speech out) and
