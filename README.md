@@ -104,6 +104,33 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 | **mars-instruct** | **22.05kHz** | optimized for instruction-following and nuance control. |
 | **mars-flash** | **22.05kHz** | Low-latency model optimized for real-time applications and conversational AI. |
 
+#### TTS request options
+
+`client.text_to_speech.tts(...)` accepts the core request fields plus optional controls for model behavior and output format:
+
+| Option | Description |
+| :--- | :--- |
+| `text` | Text to synthesize. For `mars-instruct`, you can include inline emotion or pacing tags. |
+| `language` | BCP-47 locale such as `en-us`. |
+| `voice_id` | Voice profile ID from `client.voice_cloning.list_voices()`. |
+| `speech_model` | Model to use, such as `mars-8.1-flash-beta`, `mars-pro`, or `mars-instruct`. |
+| `user_instructions` | Adds style, tone, pronunciation, or delivery guidance for the request. Available only with `speech_model="mars-instruct"`. |
+| `output_configuration` | Output settings such as audio format. |
+| `voice_settings` | Voice behavior controls such as speaking rate, reference enhancement, or accent preservation. |
+| `inference_options` | Advanced generation controls for supported models. |
+| `enhance_named_entities_pronunciation` | Improves pronunciation for names and other named entities when supported. |
+
+```python
+response = client.text_to_speech.tts(
+    text="[warm, friendly] Great to meet you!",
+    voice_id=20303,
+    language="en-us",
+    speech_model="mars-instruct",
+    user_instructions="Speak warmly and with enthusiasm.",
+    output_configuration=StreamTtsOutputConfiguration(format="wav"),
+)
+```
+
 #### a) Get an Audio URL or Save to File
 
 ```python
