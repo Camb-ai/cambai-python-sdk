@@ -123,7 +123,7 @@ Convert text into spoken audio using one of Camb AI's high-quality voices.
 ```python
 response = client.text_to_speech.tts(
     text="[warm, friendly] Great to meet you!",
-    voice_id=20303,
+    voice_id=147320,
     language="en-us",
     speech_model="mars-instruct",
     user_instructions="Speak warmly and with enthusiasm.",
