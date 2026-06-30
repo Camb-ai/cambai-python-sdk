@@ -257,8 +257,14 @@ class LiveTranscriptionSession:
                     _log.exception("Error-handler also raised; dropping")
 
 
+# Live transcription runs on the dedicated realtime host, independent of the
+# REST API base URL. Mirrors camb.realtime's DEFAULT_REALTIME_BASE_URL.
+DEFAULT_LIVE_TRANSCRIPTION_BASE_URL = "wss://realtime.camb.ai"
+_LIVE_TRANSCRIPTION_PATH = "/streaming-transcription/listen"
+
+
 def _build_url(base_url: str, options: ConnectOptions) -> str:
-    """Convert the SDK's HTTP base URL into the live transcription WSS URL."""
+    """Build the live transcription WSS URL from its base URL."""
     from urllib.parse import urlencode
 
     base = base_url.rstrip("/")
@@ -267,13 +273,13 @@ def _build_url(base_url: str, options: ConnectOptions) -> str:
     elif base.startswith("http://"):
         base = "ws://" + base[len("http://"):]
     query = urlencode(options.to_query())
-    return f"{base}/transcription/listen?{query}"
+    return f"{base}{_LIVE_TRANSCRIPTION_PATH}?{query}"
 
 
 async def connect(
     api_key: str,
     *,
-    base_url: str = "https://client.camb.ai/apis",
+    base_url: str = DEFAULT_LIVE_TRANSCRIPTION_BASE_URL,
     transport: typing.Optional[Transport] = None,
     extra_headers: typing.Optional[typing.Dict[str, str]] = None,
     **options: typing.Any,
