@@ -1,7 +1,8 @@
 """Live transcription WebSocket client.
 
-This package wraps the ``/apis/transcription/listen`` WebSocket endpoint
-documented in ``public_docs/api-reference/websockets/listen.mdx``.
+This package wraps the ``wss://realtime.camb.ai/streaming-transcription/listen``
+WebSocket endpoint documented in
+``public_docs/api-reference/websockets/listen.mdx``.
 
 Quick start::
 

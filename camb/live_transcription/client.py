@@ -6,7 +6,11 @@ import typing
 
 from ..core.client_wrapper import SyncClientWrapper
 from .errors import LiveTranscriptionConnectError
-from .session import LiveTranscriptionSession, connect as _connect
+from .session import (
+    DEFAULT_LIVE_TRANSCRIPTION_BASE_URL,
+    LiveTranscriptionSession,
+    connect as _connect,
+)
 
 
 class LiveTranscriptionClient:
@@ -36,7 +40,7 @@ class LiveTranscriptionClient:
             )
         return await _connect(
             api_key=api_key,
-            base_url=self._client_wrapper.get_base_url(),
+            base_url=DEFAULT_LIVE_TRANSCRIPTION_BASE_URL,
             extra_headers=self._client_wrapper.get_custom_headers(),
             **options,
         )
