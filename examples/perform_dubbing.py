@@ -9,7 +9,8 @@ def perform_dubbing():
     response = client.dub.create_dub(
         video_url="https://www.youtube.com/...link...",
         source_language=Languages.EN_US,
-        target_language=Languages.HI_IN
+        target_language=Languages.HI_IN,
+        transcription_mode="fast",  # fast (default) or slow for a more thorough transcription pass
     )
     task_id = response.task_id
     print(f"Dub Task created with ID: {task_id}")

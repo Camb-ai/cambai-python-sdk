@@ -37,6 +37,7 @@ class RawTranscriptionClient:
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineCallResult]:
         """
@@ -65,6 +66,9 @@ class RawTranscriptionClient:
 
         folder_id : typing.Optional[int]
 
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -86,6 +90,7 @@ class RawTranscriptionClient:
                 "project_name": project_name,
                 "project_description": project_description,
                 "folder_id": folder_id,
+                "transcription_mode": transcription_mode,
             },
             files={
                 **({"media_file": media_file} if media_file is not None else {}),
@@ -320,6 +325,7 @@ class AsyncRawTranscriptionClient:
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineCallResult]:
         """
@@ -348,6 +354,9 @@ class AsyncRawTranscriptionClient:
 
         folder_id : typing.Optional[int]
 
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -369,6 +378,7 @@ class AsyncRawTranscriptionClient:
                 "project_name": project_name,
                 "project_description": project_description,
                 "folder_id": folder_id,
+                "transcription_mode": transcription_mode,
             },
             files={
                 **({"media_file": media_file} if media_file is not None else {}),
