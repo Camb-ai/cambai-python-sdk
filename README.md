@@ -231,7 +231,7 @@ if task_id:
 
 ### 4. End-to-End Dubbing
 
-Dub videos into different languages with voice cloning and translation capabilities.
+Dub videos into different languages with voice cloning and translation capabilities. `transcription_mode` defaults to `fast`; pass `"slow"` when you want a more thorough transcription pass.
 
 ```python
 from camb.types.language_enums import Languages
@@ -240,6 +240,7 @@ result = client.dub.create_dub(
     video_url="your_accessible_video_url",
     source_language=Languages.EN_US,  # English (Or Check client.languages.get_source_languages())
     target_languages=[Languages.HI_IN],  # list of Languages like [Languages.HI_IN, Languages.FR_FR] or if you want single language then can use target_language=Languages.HI_IN
+    transcription_mode="fast",  # fast (default) or slow for a more thorough transcription pass
 )
 task_id = response.task_id
 print(f"Dub Task created with ID: {task_id}")
