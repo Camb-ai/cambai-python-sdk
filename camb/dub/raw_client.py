@@ -51,6 +51,7 @@ class RawDubClient:
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
         ai_optimization: typing.Optional[bool] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineCallResult]:
         """
@@ -80,6 +81,9 @@ class RawDubClient:
 
         ai_optimization : typing.Optional[bool]
 
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -106,6 +110,7 @@ class RawDubClient:
                 "add_output_as_an_audio_track": add_output_as_an_audio_track,
                 "chosen_dictionaries": chosen_dictionaries,
                 "ai_optimization": ai_optimization,
+                "transcription_mode": transcription_mode,
             },
             headers={
                 "content-type": "application/json",
@@ -632,6 +637,7 @@ class AsyncRawDubClient:
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
         ai_optimization: typing.Optional[bool] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineCallResult]:
         """
@@ -661,6 +667,9 @@ class AsyncRawDubClient:
 
         ai_optimization : typing.Optional[bool]
 
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -687,6 +696,7 @@ class AsyncRawDubClient:
                 "add_output_as_an_audio_track": add_output_as_an_audio_track,
                 "chosen_dictionaries": chosen_dictionaries,
                 "ai_optimization": ai_optimization,
+                "transcription_mode": transcription_mode,
             },
             headers={
                 "content-type": "application/json",

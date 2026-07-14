@@ -42,6 +42,7 @@ class TranscriptionClient:
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -69,6 +70,9 @@ class TranscriptionClient:
         project_description : typing.Optional[str]
 
         folder_id : typing.Optional[int]
+
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -99,6 +103,7 @@ class TranscriptionClient:
             project_name=project_name,
             project_description=project_description,
             folder_id=folder_id,
+            transcription_mode=transcription_mode,
             request_options=request_options,
         )
         return _response.data
@@ -251,6 +256,7 @@ class AsyncTranscriptionClient:
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -278,6 +284,9 @@ class AsyncTranscriptionClient:
         project_description : typing.Optional[str]
 
         folder_id : typing.Optional[int]
+
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -316,6 +325,7 @@ class AsyncTranscriptionClient:
             project_name=project_name,
             project_description=project_description,
             folder_id=folder_id,
+            transcription_mode=transcription_mode,
             request_options=request_options,
         )
         return _response.data

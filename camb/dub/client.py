@@ -55,6 +55,7 @@ class DubClient:
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
         ai_optimization: typing.Optional[bool] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -83,6 +84,9 @@ class DubClient:
         chosen_dictionaries : typing.Optional[typing.Sequence[int]]
 
         ai_optimization : typing.Optional[bool]
+
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -117,6 +121,7 @@ class DubClient:
             add_output_as_an_audio_track=add_output_as_an_audio_track,
             chosen_dictionaries=chosen_dictionaries,
             ai_optimization=ai_optimization,
+            transcription_mode=transcription_mode,
             request_options=request_options,
         )
         return _response.data
@@ -391,6 +396,7 @@ class AsyncDubClient:
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
         ai_optimization: typing.Optional[bool] = OMIT,
+        transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -419,6 +425,9 @@ class AsyncDubClient:
         chosen_dictionaries : typing.Optional[typing.Sequence[int]]
 
         ai_optimization : typing.Optional[bool]
+
+        transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
+            Transcription mode: `fast` (default) or `slow`.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -461,6 +470,7 @@ class AsyncDubClient:
             add_output_as_an_audio_track=add_output_as_an_audio_track,
             chosen_dictionaries=chosen_dictionaries,
             ai_optimization=ai_optimization,
+            transcription_mode=transcription_mode,
             request_options=request_options,
         )
         return _response.data
