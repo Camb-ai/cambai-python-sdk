@@ -230,6 +230,8 @@ class SubtitlesClient:
         Parameters
         ----------
         run_ids : typing.Sequence[int]
+            Between 2 and 5 unique run IDs. For a single run, use
+            ``get_subtitle_result`` instead.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -253,7 +255,7 @@ class SubtitlesClient:
             api_key="YOUR_API_KEY",
         )
         client.subtitles.get_subtitle_results(
-            run_ids=[1],
+            run_ids=[12345, 12346],
         )
         """
         _response = self._raw_client.get_subtitle_results(
@@ -512,6 +514,8 @@ class AsyncSubtitlesClient:
         Parameters
         ----------
         run_ids : typing.Sequence[int]
+            Between 2 and 5 unique run IDs. For a single run, use
+            ``get_subtitle_result`` instead.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -540,7 +544,7 @@ class AsyncSubtitlesClient:
 
         async def main() -> None:
             await client.subtitles.get_subtitle_results(
-                run_ids=[1],
+                run_ids=[12345, 12346],
             )
 
 

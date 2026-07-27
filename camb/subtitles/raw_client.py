@@ -300,6 +300,8 @@ class RawSubtitlesClient:
         Parameters
         ----------
         run_ids : typing.Sequence[int]
+            Between 2 and 5 unique run IDs. For a single run, use
+            ``get_subtitle_result`` instead.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -639,6 +641,8 @@ class AsyncRawSubtitlesClient:
         Parameters
         ----------
         run_ids : typing.Sequence[int]
+            Between 2 and 5 unique run IDs. For a single run, use
+            ``get_subtitle_result`` instead.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
