@@ -20,6 +20,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 - **Expressive Text-to-Speech**: Convert text into natural-sounding speech using a wide range of pre-existing voices.
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
+- **Transcripts & Subtitles**: Create async transcription/subtitle jobs and export TXT, SRT, or VTT results as raw data or files.
 - **Live Transcription**: Stream microphone or file audio over a WebSocket and receive cumulative interim transcripts, word-level timing, and typed events.
 - Access to voice cloning, translation, and more (refer to full API documentation).
 
@@ -88,7 +89,7 @@ client_with_provider = CambAI(
 ```
 
 ## 🚀 Getting Started: Examples
-NOTE: For more examples and full ready to run files refer to the examples/ directory.
+NOTE: For more examples and full ready to run files refer to the `examples/` directory.
 
 ### 1. Text-to-Speech (TTS)
 
@@ -367,6 +368,71 @@ list and configuration, see the
 [Realtime Speech Translation tutorial](https://docs.camb.ai/tutorials/realtime-translation-with-sdk)
 and the [WebSocket API reference](https://docs.camb.ai/api-reference/websockets/realtime).
 
+### 7. Transcription and Subtitles
+
+Create transcription and subtitle jobs with formatting controls. You can pass
+`SubtitleFormattingOptions` or a plain dict.
+
+```python
+from camb.types.language_enums import Languages
+from camb.types.subtitle_formatting_options import SubtitleFormattingOptions
+
+transcription = client.transcription.create_transcription(
+    language=Languages.EN_US,
+    media_url="https://example.com/video.mp4",
+    formatting_options=SubtitleFormattingOptions(
+        max_segment_duration_in_seconds=6,
+        max_characters_in_segment=42,
+    ),
+)
+print(f"Transcription task: {transcription.task_id}")
+
+transcription_with_dict = client.transcription.create_transcription(
+    language=Languages.EN_US,
+    media_url="https://example.com/video.mp4",
+    formatting_options={"max_reading_speed_in_cps": 18},
+)
+```
+
+Generate subtitles for one or more target languages, then poll, fetch, or export
+the result. Subtitle create requires a media URL (local file upload is not supported).
+
+```python
+import time
+
+from camb.types.language_enums import Languages
+from camb.types.subtitle_formatting_options import SubtitleFormattingOptions
+
+subtitle = client.subtitles.create_subtitle(
+    source_language=Languages.EN_US,
+    target_languages=[Languages.ES_ES, Languages.FR_FR],
+    media_url="https://example.com/video.mp4",
+    formatting_options=SubtitleFormattingOptions(
+        min_segment_duration_in_seconds=1,
+        max_characters_in_segment=42,
+    ),
+)
+
+while True:
+    status = client.subtitles.get_subtitle_task_status(task_id=subtitle.task_id)
+    if status.status == "SUCCESS":
+        break
+    time.sleep(5)
+
+result = client.subtitles.get_subtitle_result(status.run_id)
+spanish_result = client.subtitles.get_subtitle_result_for_language(
+    status.run_id,
+    Languages.ES_ES,
+)
+
+srt_file = client.subtitles.get_subtitle_result_for_language(
+    status.run_id,
+    Languages.ES_ES,
+    format_type="srt",
+    data_type="file",
+)
+```
+
 ## ⚙️ Advanced Usage & Other Features
 
 The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
@@ -375,11 +441,27 @@ The Camb AI SDK offers a wide range of capabilities beyond these examples, inclu
 - Translations
 - Translated TTS
 - Audio Dubbing
-- Transcription (async file/URL jobs)
+- Transcription (async file/URL jobs) and subtitles (media URL jobs) with TXT/SRT/VTT exports
 - Live Transcription (streaming WebSocket — see Example 5 above)
 - And more!
 
 Please refer to [examples](examples/) for direct runnable examples and Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.
+
+## 📖 Examples
+
+Check out the `examples/` directory for complete, runnable examples:
+
+- `async_tts_call.py` - Async text-to-speech example
+- `text_to_audio.py` - Sound generation example
+- `perform_dubbing.py` - Video dubbing workflow
+- `transcription_formatting.py` - Async transcription with formatting options and TXT/SRT/VTT exports
+- `subtitles.py` - Subtitle job creation, polling, and language-specific TXT/SRT/VTT exports
+- `translation.py` - Text translation workflow
+- `baseten_provider_example.py` - Using custom hosting providers
+- `live_transcription_microphone.py` - Stream microphone audio over the WebSocket
+- `live_transcription_file.py` - Stream a local audio file over the WebSocket
+- `realtime_translation_microphone.py` - Realtime speech translation from microphone input
+- `realtime_translation_file.py` - Realtime speech translation from file input
 
 ## License
 

@@ -54,6 +54,7 @@ if typing.TYPE_CHECKING:
     from .stream_tts_voice_settings import StreamTtsVoiceSettings
     from .stream_type import StreamType
     from .stream_url_for_languages import StreamUrlForLanguages
+    from .subtitle_formatting_options import SubtitleFormattingOptions
     from .target_stream import TargetStream
     from .task_status import TaskStatus
     from .term_translation_input import TermTranslationInput
@@ -63,6 +64,7 @@ if typing.TYPE_CHECKING:
     from .transcribing_option import TranscribingOption
     from .transcript import Transcript
     from .transcript_data_type import TranscriptDataType
+    from .transcript_export_result import TranscriptExportResult
     from .transcript_file_format import TranscriptFileFormat
     from .transcription_result import TranscriptionResult
     from .translating_option import TranslatingOption
@@ -122,6 +124,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StreamTtsVoiceSettings": ".stream_tts_voice_settings",
     "StreamType": ".stream_type",
     "StreamUrlForLanguages": ".stream_url_for_languages",
+    "SubtitleFormattingOptions": ".subtitle_formatting_options",
     "TargetStream": ".target_stream",
     "TaskStatus": ".task_status",
     "TermTranslationInput": ".term_translation_input",
@@ -131,6 +134,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "TranscribingOption": ".transcribing_option",
     "Transcript": ".transcript",
     "TranscriptDataType": ".transcript_data_type",
+    "TranscriptExportResult": ".transcript_export_result",
     "TranscriptFileFormat": ".transcript_file_format",
     "TranscriptionResult": ".transcription_result",
     "TranslatingOption": ".translating_option",
@@ -214,6 +218,7 @@ __all__ = [
     "StreamTtsVoiceSettings",
     "StreamType",
     "StreamUrlForLanguages",
+    "SubtitleFormattingOptions",
     "TargetStream",
     "TaskStatus",
     "TermTranslationInput",
@@ -223,6 +228,7 @@ __all__ = [
     "TranscribingOption",
     "Transcript",
     "TranscriptDataType",
+    "TranscriptExportResult",
     "TranscriptFileFormat",
     "TranscriptionResult",
     "TranslatingOption",
