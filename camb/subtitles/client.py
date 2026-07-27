@@ -2,7 +2,6 @@
 
 import typing
 
-from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.languages import Languages
@@ -10,39 +9,34 @@ from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallRe
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.subtitle_formatting_options import SubtitleFormattingOptions
 from ..types.transcript_data_type import TranscriptDataType
-from ..types.transcript_export_result import TranscriptExportResult
 from ..types.transcript_file_format import TranscriptFileFormat
-from ..types.transcription_result import TranscriptionResult
-from .raw_client import AsyncRawTranscriptionClient, RawTranscriptionClient
+from .raw_client import AsyncRawSubtitlesClient, RawSubtitlesClient
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
 
 
-class TranscriptionClient:
+class SubtitlesClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
-        self._raw_client = RawTranscriptionClient(client_wrapper=client_wrapper)
+        self._raw_client = RawSubtitlesClient(client_wrapper=client_wrapper)
 
     @property
-    def with_raw_response(self) -> RawTranscriptionClient:
+    def with_raw_response(self) -> RawSubtitlesClient:
         """
         Retrieves a raw implementation of this client that returns raw responses.
 
         Returns
         -------
-        RawTranscriptionClient
+        RawSubtitlesClient
         """
         return self._raw_client
 
-    def create_transcription(
+    def create_subtitle(
         self,
         *,
-        language: Languages,
-        run_id: typing.Optional[int] = None,
-        media_file: typing.Optional[core.File] = OMIT,
-        media_url: typing.Optional[str] = OMIT,
-        file: typing.Optional[core.File] = OMIT,
-        audio_url: typing.Optional[str] = OMIT,
+        media_url: str,
+        source_language: Languages,
+        target_languages: typing.Sequence[Languages],
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -53,22 +47,11 @@ class TranscriptionClient:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        media_url : str
 
-        run_id : typing.Optional[int]
+        source_language : Languages
 
-        media_file : typing.Optional[core.File]
-            See core.File for more documentation
-
-        media_url : typing.Optional[str]
-            Signed URL to media file for transcription
-
-        file : typing.Optional[core.File]
-            See core.File for more documentation
-
-        audio_url : typing.Optional[str]
-            [DEPRECATED] Use 'audio_url' instead
+        target_languages : typing.Sequence[Languages]
 
         project_name : typing.Optional[str]
 
@@ -96,17 +79,16 @@ class TranscriptionClient:
         client = CambApi(
             api_key="YOUR_API_KEY",
         )
-        client.transcription.create_transcription(
-            language=1,
+        client.subtitles.create_subtitle(
+            media_url="https://example.com/video.mp4",
+            source_language=1,
+            target_languages=[1],
         )
         """
-        _response = self._raw_client.create_transcription(
-            language=language,
-            run_id=run_id,
-            media_file=media_file,
+        _response = self._raw_client.create_subtitle(
             media_url=media_url,
-            file=file,
-            audio_url=audio_url,
+            source_language=source_language,
+            target_languages=target_languages,
             project_name=project_name,
             project_description=project_description,
             folder_id=folder_id,
@@ -116,19 +98,16 @@ class TranscriptionClient:
         )
         return _response.data
 
-    def get_transcription_task_status(
+    def get_subtitle_task_status(
         self,
         task_id: str,
         *,
-        run_id: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineResult:
         """
         Parameters
         ----------
         task_id : str
-
-        run_id : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -145,33 +124,25 @@ class TranscriptionClient:
         client = CambApi(
             api_key="YOUR_API_KEY",
         )
-        client.transcription.get_transcription_task_status(
+        client.subtitles.get_subtitle_task_status(
             task_id="task_id",
         )
         """
-        _response = self._raw_client.get_transcription_task_status(
-            task_id, run_id=run_id, request_options=request_options
-        )
+        _response = self._raw_client.get_subtitle_task_status(task_id, request_options=request_options)
         return _response.data
 
-    def get_transcription_result(
+    def get_subtitle_result(
         self,
         run_id: typing.Optional[int],
         *,
-        word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Union[TranscriptionResult, TranscriptExportResult]:
+    ) -> typing.Any:
         """
-        NOTE: This endpoint should be called only by the users to get values for their runs via API.
-        Further we need to validate if the user has access to the run_id, otherwise we should not return the output urls.
-
         Parameters
         ----------
         run_id : typing.Optional[int]
-
-        word_level_timestamps : typing.Optional[bool]
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -182,7 +153,7 @@ class TranscriptionClient:
 
         Returns
         -------
-        typing.Union[TranscriptionResult, TranscriptExportResult]
+        typing.Any
             Successful Response
 
         Examples
@@ -192,33 +163,77 @@ class TranscriptionClient:
         client = CambApi(
             api_key="YOUR_API_KEY",
         )
-        client.transcription.get_transcription_result(
+        client.subtitles.get_subtitle_result(
             run_id=1,
         )
         """
-        _response = self._raw_client.get_transcription_result(
-            run_id,
-            word_level_timestamps=word_level_timestamps,
-            format_type=format_type,
-            data_type=data_type,
-            request_options=request_options,
+        _response = self._raw_client.get_subtitle_result(
+            run_id, format_type=format_type, data_type=data_type, request_options=request_options
         )
         return _response.data
 
-    def get_transcription_results(
+    def get_subtitle_result_for_language(
+        self,
+        run_id: typing.Optional[int],
+        language: Languages,
+        *,
+        format_type: typing.Optional[TranscriptFileFormat] = None,
+        data_type: typing.Optional[TranscriptDataType] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Any:
+        """
+        Parameters
+        ----------
+        run_id : typing.Optional[int]
+
+        language : Languages
+
+        format_type : typing.Optional[TranscriptFileFormat]
+
+        data_type : typing.Optional[TranscriptDataType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Any
+            Successful Response
+
+        Examples
+        --------
+        from camb import CambApi
+
+        client = CambApi(
+            api_key="YOUR_API_KEY",
+        )
+        client.subtitles.get_subtitle_result_for_language(
+            run_id=1,
+            language=1,
+        )
+        """
+        _response = self._raw_client.get_subtitle_result_for_language(
+            run_id, language, format_type=format_type, data_type=data_type, request_options=request_options
+        )
+        return _response.data
+
+    def get_subtitle_results(
         self,
         *,
         run_ids: typing.Sequence[int],
-        run_id: typing.Optional[int] = None,
+        format_type: typing.Optional[TranscriptFileFormat] = None,
+        data_type: typing.Optional[TranscriptDataType] = None,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, TranscriptionResult]:
+    ) -> typing.Dict[str, typing.Any]:
         """
         Parameters
         ----------
         run_ids : typing.Sequence[int]
 
-        run_id : typing.Optional[int]
+        format_type : typing.Optional[TranscriptFileFormat]
+
+        data_type : typing.Optional[TranscriptDataType]
 
         traceparent : typing.Optional[str]
 
@@ -227,7 +242,7 @@ class TranscriptionClient:
 
         Returns
         -------
-        typing.Dict[str, TranscriptionResult]
+        typing.Dict[str, typing.Any]
             Successful Response
 
         Examples
@@ -237,40 +252,41 @@ class TranscriptionClient:
         client = CambApi(
             api_key="YOUR_API_KEY",
         )
-        client.transcription.get_transcription_results(
+        client.subtitles.get_subtitle_results(
             run_ids=[1],
         )
         """
-        _response = self._raw_client.get_transcription_results(
-            run_ids=run_ids, run_id=run_id, traceparent=traceparent, request_options=request_options
+        _response = self._raw_client.get_subtitle_results(
+            run_ids=run_ids,
+            format_type=format_type,
+            data_type=data_type,
+            traceparent=traceparent,
+            request_options=request_options,
         )
         return _response.data
 
 
-class AsyncTranscriptionClient:
+class AsyncSubtitlesClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
-        self._raw_client = AsyncRawTranscriptionClient(client_wrapper=client_wrapper)
+        self._raw_client = AsyncRawSubtitlesClient(client_wrapper=client_wrapper)
 
     @property
-    def with_raw_response(self) -> AsyncRawTranscriptionClient:
+    def with_raw_response(self) -> AsyncRawSubtitlesClient:
         """
         Retrieves a raw implementation of this client that returns raw responses.
 
         Returns
         -------
-        AsyncRawTranscriptionClient
+        AsyncRawSubtitlesClient
         """
         return self._raw_client
 
-    async def create_transcription(
+    async def create_subtitle(
         self,
         *,
-        language: Languages,
-        run_id: typing.Optional[int] = None,
-        media_file: typing.Optional[core.File] = OMIT,
-        media_url: typing.Optional[str] = OMIT,
-        file: typing.Optional[core.File] = OMIT,
-        audio_url: typing.Optional[str] = OMIT,
+        media_url: str,
+        source_language: Languages,
+        target_languages: typing.Sequence[Languages],
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -281,22 +297,11 @@ class AsyncTranscriptionClient:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        media_url : str
 
-        run_id : typing.Optional[int]
+        source_language : Languages
 
-        media_file : typing.Optional[core.File]
-            See core.File for more documentation
-
-        media_url : typing.Optional[str]
-            Signed URL to media file for transcription
-
-        file : typing.Optional[core.File]
-            See core.File for more documentation
-
-        audio_url : typing.Optional[str]
-            [DEPRECATED] Use 'audio_url' instead
+        target_languages : typing.Sequence[Languages]
 
         project_name : typing.Optional[str]
 
@@ -329,20 +334,19 @@ class AsyncTranscriptionClient:
 
 
         async def main() -> None:
-            await client.transcription.create_transcription(
-                language=1,
+            await client.subtitles.create_subtitle(
+                media_url="https://example.com/video.mp4",
+                source_language=1,
+                target_languages=[1],
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_transcription(
-            language=language,
-            run_id=run_id,
-            media_file=media_file,
+        _response = await self._raw_client.create_subtitle(
             media_url=media_url,
-            file=file,
-            audio_url=audio_url,
+            source_language=source_language,
+            target_languages=target_languages,
             project_name=project_name,
             project_description=project_description,
             folder_id=folder_id,
@@ -352,19 +356,16 @@ class AsyncTranscriptionClient:
         )
         return _response.data
 
-    async def get_transcription_task_status(
+    async def get_subtitle_task_status(
         self,
         task_id: str,
         *,
-        run_id: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineResult:
         """
         Parameters
         ----------
         task_id : str
-
-        run_id : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -386,36 +387,28 @@ class AsyncTranscriptionClient:
 
 
         async def main() -> None:
-            await client.transcription.get_transcription_task_status(
+            await client.subtitles.get_subtitle_task_status(
                 task_id="task_id",
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_transcription_task_status(
-            task_id, run_id=run_id, request_options=request_options
-        )
+        _response = await self._raw_client.get_subtitle_task_status(task_id, request_options=request_options)
         return _response.data
 
-    async def get_transcription_result(
+    async def get_subtitle_result(
         self,
         run_id: typing.Optional[int],
         *,
-        word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Union[TranscriptionResult, TranscriptExportResult]:
+    ) -> typing.Any:
         """
-        NOTE: This endpoint should be called only by the users to get values for their runs via API.
-        Further we need to validate if the user has access to the run_id, otherwise we should not return the output urls.
-
         Parameters
         ----------
         run_id : typing.Optional[int]
-
-        word_level_timestamps : typing.Optional[bool]
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -426,7 +419,7 @@ class AsyncTranscriptionClient:
 
         Returns
         -------
-        typing.Union[TranscriptionResult, TranscriptExportResult]
+        typing.Any
             Successful Response
 
         Examples
@@ -441,36 +434,88 @@ class AsyncTranscriptionClient:
 
 
         async def main() -> None:
-            await client.transcription.get_transcription_result(
+            await client.subtitles.get_subtitle_result(
                 run_id=1,
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_transcription_result(
-            run_id,
-            word_level_timestamps=word_level_timestamps,
-            format_type=format_type,
-            data_type=data_type,
-            request_options=request_options,
+        _response = await self._raw_client.get_subtitle_result(
+            run_id, format_type=format_type, data_type=data_type, request_options=request_options
         )
         return _response.data
 
-    async def get_transcription_results(
+    async def get_subtitle_result_for_language(
+        self,
+        run_id: typing.Optional[int],
+        language: Languages,
+        *,
+        format_type: typing.Optional[TranscriptFileFormat] = None,
+        data_type: typing.Optional[TranscriptDataType] = None,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> typing.Any:
+        """
+        Parameters
+        ----------
+        run_id : typing.Optional[int]
+
+        language : Languages
+
+        format_type : typing.Optional[TranscriptFileFormat]
+
+        data_type : typing.Optional[TranscriptDataType]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Any
+            Successful Response
+
+        Examples
+        --------
+        import asyncio
+
+        from camb import AsyncCambApi
+
+        client = AsyncCambApi(
+            api_key="YOUR_API_KEY",
+        )
+
+
+        async def main() -> None:
+            await client.subtitles.get_subtitle_result_for_language(
+                run_id=1,
+                language=1,
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_subtitle_result_for_language(
+            run_id, language, format_type=format_type, data_type=data_type, request_options=request_options
+        )
+        return _response.data
+
+    async def get_subtitle_results(
         self,
         *,
         run_ids: typing.Sequence[int],
-        run_id: typing.Optional[int] = None,
+        format_type: typing.Optional[TranscriptFileFormat] = None,
+        data_type: typing.Optional[TranscriptDataType] = None,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> typing.Dict[str, TranscriptionResult]:
+    ) -> typing.Dict[str, typing.Any]:
         """
         Parameters
         ----------
         run_ids : typing.Sequence[int]
 
-        run_id : typing.Optional[int]
+        format_type : typing.Optional[TranscriptFileFormat]
+
+        data_type : typing.Optional[TranscriptDataType]
 
         traceparent : typing.Optional[str]
 
@@ -479,7 +524,7 @@ class AsyncTranscriptionClient:
 
         Returns
         -------
-        typing.Dict[str, TranscriptionResult]
+        typing.Dict[str, typing.Any]
             Successful Response
 
         Examples
@@ -494,14 +539,18 @@ class AsyncTranscriptionClient:
 
 
         async def main() -> None:
-            await client.transcription.get_transcription_results(
+            await client.subtitles.get_subtitle_results(
                 run_ids=[1],
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.get_transcription_results(
-            run_ids=run_ids, run_id=run_id, traceparent=traceparent, request_options=request_options
+        _response = await self._raw_client.get_subtitle_results(
+            run_ids=run_ids,
+            format_type=format_type,
+            data_type=data_type,
+            traceparent=traceparent,
+            request_options=request_options,
         )
         return _response.data

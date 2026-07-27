@@ -21,6 +21,7 @@ if typing.TYPE_CHECKING:
     from .project_setup.client import AsyncProjectSetupClient, ProjectSetupClient
     from .story.client import AsyncStoryClient, StoryClient
     from .streaming.client import AsyncStreamingClient, StreamingClient
+    from .subtitles.client import AsyncSubtitlesClient, SubtitlesClient
     from .text_to_audio.client import AsyncTextToAudioClient, TextToAudioClient
     from .text_to_speech.client import AsyncTextToSpeechClient, TextToSpeechClient
     from .text_to_voice.client import AsyncTextToVoiceClient, TextToVoiceClient
@@ -138,6 +139,7 @@ class CambAI:
         self._folders: typing.Optional[FoldersClient] = None
         self._languages: typing.Optional[LanguagesClient] = None
         self._story: typing.Optional[StoryClient] = None
+        self._subtitles: typing.Optional[SubtitlesClient] = None
         self._translated_story: typing.Optional[TranslatedStoryClient] = None
         self._text_to_audio: typing.Optional[TextToAudioClient] = None
         self._text_to_voice: typing.Optional[TextToVoiceClient] = None
@@ -277,6 +279,14 @@ class CambAI:
 
             self._story = StoryClient(client_wrapper=self._client_wrapper)
         return self._story
+
+    @property
+    def subtitles(self):
+        if self._subtitles is None:
+            from .subtitles.client import SubtitlesClient  # noqa: E402
+
+            self._subtitles = SubtitlesClient(client_wrapper=self._client_wrapper)
+        return self._subtitles
 
     @property
     def translated_story(self):
@@ -469,6 +479,7 @@ class AsyncCambAI:
         self._folders: typing.Optional[AsyncFoldersClient] = None
         self._languages: typing.Optional[AsyncLanguagesClient] = None
         self._story: typing.Optional[AsyncStoryClient] = None
+        self._subtitles: typing.Optional[AsyncSubtitlesClient] = None
         self._translated_story: typing.Optional[AsyncTranslatedStoryClient] = None
         self._text_to_audio: typing.Optional[AsyncTextToAudioClient] = None
         self._text_to_voice: typing.Optional[AsyncTextToVoiceClient] = None
@@ -632,6 +643,14 @@ class AsyncCambAI:
 
             self._story = AsyncStoryClient(client_wrapper=self._client_wrapper)
         return self._story
+
+    @property
+    def subtitles(self):
+        if self._subtitles is None:
+            from .subtitles.client import AsyncSubtitlesClient  # noqa: E402
+
+            self._subtitles = AsyncSubtitlesClient(client_wrapper=self._client_wrapper)
+        return self._subtitles
 
     @property
     def translated_story(self):
