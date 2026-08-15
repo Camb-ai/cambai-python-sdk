@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import typing
 
 import httpx
@@ -79,7 +80,10 @@ class CambAI:
 
 
 
-    api_key : str
+    api_key : typing.Optional[str]
+        Your Camb AI API key. If not provided, the ``CAMB_API_KEY`` environment
+        variable is used.
+
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -114,8 +118,13 @@ class CambAI:
         tts_provider: typing.Optional[TtsProvider] = None,
         provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
+        if api_key is None:
+            api_key = os.environ.get("CAMB_API_KEY") or None
         if api_key is None and (tts_provider is None or provider_params is None):
-            raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
+            raise ValueError(
+                "Please provide 'api_key', set the CAMB_API_KEY environment variable, "
+                "or provide both 'tts_provider' and 'provider_params'."
+            )
             
         _defaulted_timeout = (
             timeout if timeout is not None else DEFAULT_TIMEOUT if httpx_client is None else httpx_client.timeout.read
@@ -419,7 +428,10 @@ class AsyncCambAI:
 
 
 
-    api_key : str
+    api_key : typing.Optional[str]
+        Your Camb AI API key. If not provided, the ``CAMB_API_KEY`` environment
+        variable is used.
+
     headers : typing.Optional[typing.Dict[str, str]]
         Additional headers to send with every request.
 
@@ -454,8 +466,13 @@ class AsyncCambAI:
         tts_provider: typing.Optional[TtsProvider] = None,
         provider_params: typing.Optional[typing.Dict[str, typing.Any]] = None,
     ):
+        if api_key is None:
+            api_key = os.environ.get("CAMB_API_KEY") or None
         if api_key is None and (tts_provider is None or provider_params is None):
-            raise ValueError("Please provide either 'api_key' or both 'tts_provider' and 'provider_params'.")
+            raise ValueError(
+                "Please provide 'api_key', set the CAMB_API_KEY environment variable, "
+                "or provide both 'tts_provider' and 'provider_params'."
+            )
 
         _defaulted_timeout = (
             timeout if timeout is not None else DEFAULT_TIMEOUT if httpx_client is None else httpx_client.timeout.read

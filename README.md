@@ -45,6 +45,12 @@ To use the Camb AI SDK, you'll need an API key. You can authenticate it by:
 ```python
 from camb.client import CambAI, AsyncCambAI
 
+# The SDK automatically reads the CAMB_API_KEY environment variable:
+#   export CAMB_API_KEY=your_key_here
+#   client = CambAI()
+
+# Or pass the key explicitly:
+
 # Synchronous Client
 client = CambAI(api_key="YOUR_CAMB_API_KEY")
 
