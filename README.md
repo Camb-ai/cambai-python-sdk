@@ -237,7 +237,7 @@ except Exception as e:
 Generate sound effects or ambient audio from a descriptive prompt.
 
 ```python
-from camb.client save_stream_to_file
+from camb.client import save_stream_to_file
 import time
 
 response = client.text_to_audio.create_text_to_audio(
@@ -270,7 +270,7 @@ result = client.dub.create_dub(
     target_languages=[Languages.HI_IN],  # list of Languages like [Languages.HI_IN, Languages.FR_FR] or if you want single language then can use target_language=Languages.HI_IN
     transcription_mode="fast",  # fast (default) or slow for a more thorough transcription pass
 )
-task_id = response.task_id
+task_id = result.task_id
 print(f"Dub Task created with ID: {task_id}")
 while True:
     status_response = client.dub.get_dubbing_status(task_id=task_id)
@@ -278,8 +278,8 @@ while True:
     if status_response.status == "SUCCESS":
         dubbed_run_info = client.dub.get_dubbed_run_info(status_response.run_id)
         print(f"Dubbed Video URL: {dubbed_run_info.audio_url}")
-        print(f"Dubbed Video URL: {dubbed_run_info.transcript}")
-        print(f"Dubbed Video URL: {dubbed_run_info.video_url}")
+        print(f"Transcript: {dubbed_run_info.transcript}")
+        print(f"Video URL: {dubbed_run_info.video_url}")
         break
     time.sleep(5)
 ```
