@@ -65,7 +65,7 @@ class RawTranscriptionClient:
             See core.File for more documentation
 
         audio_url : typing.Optional[str]
-            [DEPRECATED] Use 'audio_url' instead
+            [DEPRECATED] Use 'media_url' instead
 
         project_name : typing.Optional[str]
 
@@ -365,7 +365,7 @@ class AsyncRawTranscriptionClient:
             See core.File for more documentation
 
         audio_url : typing.Optional[str]
-            [DEPRECATED] Use 'audio_url' instead
+            [DEPRECATED] Use 'media_url' instead
 
         project_name : typing.Optional[str]
 
