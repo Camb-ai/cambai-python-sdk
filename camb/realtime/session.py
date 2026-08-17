@@ -76,6 +76,7 @@ class RealtimeSession:
         self._reader_task: typing.Optional[asyncio.Task[None]] = None
         self._closed = asyncio.Event()
         self._ready = asyncio.Event()
+        self._was_ready = False
         self._send_lock = asyncio.Lock()
         self._is_closing = False
 
@@ -123,7 +124,7 @@ class RealtimeSession:
             raise RealtimeConnectError(
                 f"Timed out waiting for session.created after {timeout}s"
             )
-        if self._closed.is_set():
+        if self._closed.is_set() and not self._was_ready:
             raise RealtimeConnectError(
                 "WebSocket closed before the session became ready"
             )
@@ -267,6 +268,7 @@ class RealtimeSession:
 
         if event_type is ServerEventType.SESSION_CREATED and not self._ready.is_set():
             self._ready.set()
+            self._was_ready = True
 
         await self._fan_out(event_type, payload)
         await self._fan_out_wildcard(event_type, payload)
