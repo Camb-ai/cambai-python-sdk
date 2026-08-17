@@ -164,6 +164,12 @@ class CambAI:
         self._live_transcription: typing.Optional[typing.Any] = None
         self._realtime: typing.Optional[typing.Any] = None
 
+    def __enter__(self) -> "CambAI":
+        return self
+
+    def __exit__(self, *exc: typing.Any) -> None:
+        self._client_wrapper.httpx_client.close()
+
     @property
     def with_raw_response(self) -> RawCambApi:
         """
@@ -511,6 +517,12 @@ class AsyncCambAI:
         self._deprecated_streaming: typing.Optional[AsyncDeprecatedStreamingClient] = None
         self._live_transcription: typing.Optional[typing.Any] = None
         self._realtime: typing.Optional[typing.Any] = None
+
+    async def __aenter__(self) -> "AsyncCambAI":
+        return self
+
+    async def __aexit__(self, *exc: typing.Any) -> None:
+        await self._client_wrapper.httpx_client.aclose()
 
     @property
     def with_raw_response(self) -> AsyncRawCambApi:
