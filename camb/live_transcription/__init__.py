@@ -25,6 +25,10 @@ Quick start::
     asyncio.run(main())
 """
 
+from __future__ import annotations
+
+import typing
+
 from .audio_source import AudioSource, FileAudioSource
 from .client import LiveTranscriptionClient
 from .errors import (
@@ -46,9 +50,23 @@ from .events import (
     ServerMessageType,
     Word,
 )
-from .microphone import Microphone
 from .options import ConnectOptions, Encoding
 from .session import LiveTranscriptionSession, connect
+
+
+def __getattr__(attr_name: str) -> typing.Any:
+    # Imported lazily: ``Microphone`` requires ``sounddevice`` (and PortAudio),
+    # so only pull it in when actually referenced. Importing the package must
+    # work on machines without audio hardware (e.g. CI, file-streaming servers).
+    if attr_name == "Microphone":
+        from .microphone import Microphone
+
+        return Microphone
+    raise AttributeError(f"module {__name__!r} has no attribute {attr_name!r}")
+
+
+def __dir__() -> typing.List[str]:
+    return sorted(set(globals()) | {"Microphone"})
 
 __all__ = [
     "Alternative",
