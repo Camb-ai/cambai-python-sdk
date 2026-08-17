@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import os
 import typing
 
@@ -58,9 +59,13 @@ async def save_async_stream_to_file(stream: typing.AsyncIterable[bytes], filenam
     filename : str
         The name of the file to save the stream to.
     """
-    with open(filename, "wb") as f:
+    # File I/O is run via asyncio.to_thread so the event loop is never blocked.
+    f = await asyncio.to_thread(open, filename, "wb")
+    try:
         async for chunk in stream:
-            f.write(chunk)
+            await asyncio.to_thread(f.write, chunk)
+    finally:
+        await asyncio.to_thread(f.close)
 
 class CambAI:
     """
