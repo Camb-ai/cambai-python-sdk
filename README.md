@@ -480,6 +480,27 @@ The Camb AI SDK offers a wide range of capabilities beyond these examples, inclu
 
 Please refer to [examples](examples/) for direct runnable examples and Official Camb AI API Documentation for a comprehensive list of features and advanced usage patterns.
 
+### Polling task status
+
+Long-running workflows (dubbing, transcription, subtitles, text-to-audio)
+expose their progress through a status endpoint returning
+`SUCCESS` / `PENDING` / `ERROR`. Instead of hand-writing the polling loop,
+use the helpers in `camb.polling`:
+
+```python
+from camb.polling import PollTimeoutError, poll_dubbing
+
+status = poll_dubbing(client.dub, task_id=task_id, interval=5, timeout=600)
+result = client.dub.get_dubbed_run_info(status.run_id)
+```
+
+- `poll_dubbing(client.dub, task_id, ...)` / `poll_transcription(client.transcription, ...)` /
+  `poll_subtitle(client.subtitles, ...)` / `poll_text_to_audio(client.text_to_audio, ...)`
+- Async equivalents `apoll_*` for the `Async*` clients
+- `status` is the `SUCCESS` status object; use `status.run_id` to fetch the result
+- Raises `PollFailureError` immediately if the task reports `ERROR`, and
+  `PollTimeoutError` if it does not succeed within `timeout` (`None` polls forever)
+
 ## 📖 Examples
 
 Check out the `examples/` directory for complete, runnable examples:
