@@ -45,8 +45,9 @@ async def main(in_path: str, out_path: str, source_language: str, target_languag
     session = await client.realtime.connect(
         source_language=source_language,
         target_language=target_language,
-        # iris is the low-latency model (no cold-boot wait).
-        model="iris",
+        # fast is the low-latency mode (no cold-boot wait). It is also the default; passed
+        # explicitly here to show where the choice goes.
+        mode="fast",
     )
 
     out_audio = bytearray()

@@ -58,8 +58,15 @@ from .events import (
     TextDeltaEvent,
     TextDoneEvent,
     TranscriptCompletedEvent,
+    TranscriptDeltaEvent,
 )
-from .options import ConnectOptions, OutputModality, RealtimeModel
+from .options import (
+    LEGACY_ENGINE_CODENAMES,
+    ConnectOptions,
+    OutputModality,
+    RealtimeMode,
+    resolve_mode,
+)
 from .session import RealtimeSession, connect
 
 __all__ = [
@@ -68,12 +75,13 @@ __all__ = [
     "ClosedEvent",
     "ConnectOptions",
     "ErrorEvent",
+    "LEGACY_ENGINE_CODENAMES",
     "OutputModality",
     "PARSER_REGISTRY",
     "RealtimeClient",
     "RealtimeConnectError",
     "RealtimeError",
-    "RealtimeModel",
+    "RealtimeMode",
     "RealtimeProtocolError",
     "RealtimeSession",
     "ServerEventType",
@@ -85,5 +93,7 @@ __all__ = [
     "TextDeltaEvent",
     "TextDoneEvent",
     "TranscriptCompletedEvent",
+    "TranscriptDeltaEvent",
     "connect",
+    "resolve_mode",
 ]
