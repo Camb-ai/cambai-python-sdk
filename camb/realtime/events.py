@@ -23,10 +23,14 @@ class ServerEventType(str, enum.Enum):
     SESSION_STARTING = "session.starting"
     SESSION_CREATED = "session.created"
     SESSION_UPDATED = "session.updated"
+    TRANSCRIPT_DELTA = "conversation.item.input_audio_transcription.delta"
     TRANSCRIPT_COMPLETED = "conversation.item.input_audio_transcription.completed"
     TEXT_DELTA = "response.text.delta"
     TEXT_DONE = "response.text.done"
-    # AUDIO_DELTA is handled manually in _dispatch (binary frame or base64 JSON).
+    # Synthetic, like CLOSED: the server frames output audio as raw binary WebSocket frames, never
+    # as a JSON event. The read loop turns each binary frame into this event. _dispatch also accepts
+    # a base64 JSON form under this name, which no server version sends — kept only so a future
+    # server could introduce it without breaking older clients.
     AUDIO_DELTA = "response.audio.delta"
     AUDIO_DONE = "response.audio.done"
     ERROR = "error"
@@ -35,7 +39,9 @@ class ServerEventType(str, enum.Enum):
 
 
 class _RealtimeModel(pydantic.BaseModel):
-    model_config = pydantic.ConfigDict(extra="allow")
+    # `populate_by_name` so a field carrying a `validation_alias` (see `SessionInfo.mode`) can still
+    # be constructed by its own name — tests and callers building these directly rely on it.
+    model_config = pydantic.ConfigDict(extra="allow", populate_by_name=True)
 
 
 class SessionStartingEvent(_RealtimeModel):
@@ -49,17 +55,28 @@ class SessionStartingEvent(_RealtimeModel):
 
 class SessionInfo(_RealtimeModel):
     id: str
-    model: str
+    # Reads `mode`, falling back to the retired `model` key a pre-rename server sends.
+    #
+    # This field being *required* is what made the rename a hard break in the first place: a
+    # server that stopped sending `model` did not leave this attribute unset, it failed the whole
+    # `session.created` parse, which kills the reader task and closes the socket — surfacing as an
+    # unexplained connection error. The alias makes this SDK parse either server, so an SDK and a
+    # server on different sides of the rename no longer have to be deployed in lockstep.
+    mode: str = pydantic.Field(validation_alias=pydantic.AliasChoices("mode", "model"))
     source_language: str
     target_language: str
     output_modalities: typing.List[str] = pydantic.Field(default_factory=list)
+    # Resolved voice, e.g. {"type": "cloned", "voice_id": 123}. Omitted by the server (``None``
+    # here) when the default built-in voice is used.
+    voice: typing.Optional[typing.Dict[str, typing.Any]] = None
 
 
 class SessionConfig(_RealtimeModel):
-    model: typing.Optional[str] = None
+    mode: typing.Optional[str] = None
     source_language: str
     target_language: str
     output_modalities: typing.List[str] = pydantic.Field(default_factory=list)
+    voice: typing.Optional[typing.Dict[str, typing.Any]] = None
 
 
 class SessionCreatedEvent(_RealtimeModel):
@@ -72,6 +89,17 @@ class SessionUpdatedEvent(_RealtimeModel):
     """Echo of the session configuration, sent immediately after ``session.created``."""
 
     session: SessionConfig
+
+
+class TranscriptDeltaEvent(_RealtimeModel):
+    """Incremental transcript of what the user is saying, in the source language.
+
+    Deltas are additive within one utterance and reset after the corresponding
+    :class:`TranscriptCompletedEvent`. This is the live source-transcript stream — the counterpart
+    to :class:`TextDeltaEvent`, which carries the translation.
+    """
+
+    delta: str
 
 
 class TranscriptCompletedEvent(_RealtimeModel):
@@ -133,6 +161,7 @@ PARSER_REGISTRY: typing.Dict[ServerEventType, typing.Optional[typing.Type[_Realt
     ServerEventType.SESSION_STARTING: SessionStartingEvent,
     ServerEventType.SESSION_CREATED: SessionCreatedEvent,
     ServerEventType.SESSION_UPDATED: SessionUpdatedEvent,
+    ServerEventType.TRANSCRIPT_DELTA: TranscriptDeltaEvent,
     ServerEventType.TRANSCRIPT_COMPLETED: TranscriptCompletedEvent,
     ServerEventType.TEXT_DELTA: TextDeltaEvent,
     ServerEventType.TEXT_DONE: TextDoneEvent,

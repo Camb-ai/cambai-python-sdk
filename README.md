@@ -377,6 +377,26 @@ async def main():
 asyncio.run(main())
 ```
 
+Sessions run in one of two modes, chosen with `mode`:
+
+```python
+session = await client.realtime.connect(
+    source_language="en-us",
+    target_language="de-de",
+    mode="slow",  # "fast" (default) or "slow"
+)
+```
+
+`"fast"` accepts audio almost immediately and translates with the lowest latency, but supports
+fewer languages. `"slow"` supports the full language list and translates more accurately, at the
+cost of a 30s+ cold boot before the session is ready — `wait_until_ready()` covers that wait.
+
+`mode` replaced a `model` argument that took engine codenames. Both are still accepted, so existing
+code keeps working: `model="iris"` resolves to `mode="fast"`, and `"lilac"`/`"violet"`/`"orchid"`
+resolve to `"slow"`, each with a `DeprecationWarning`. Note the default changed — it was `"lilac"`,
+whose language coverage matches today's `"slow"`. If you never passed `model` and translate a pair
+outside `"fast"`'s narrower set, pass `mode="slow"` explicitly.
+
 By default the translation is synthesized with a built-in voice for the target
 language. Pass `voice_id` to use one of your cloned voices instead (get the ID
 from `client.voice_cloning.list_voices()`):

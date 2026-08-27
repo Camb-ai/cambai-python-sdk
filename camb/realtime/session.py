@@ -112,10 +112,19 @@ class RealtimeSession:
     ) -> None:
         """Block until the server confirms the session is active.
 
-        Non-iris models cold-boot for 30+ seconds; the server sends
-        ``session.starting`` (and WebSocket keepalive pings) during that window
-        to signal it is still working. Raises :class:`RealtimeConnectError` if
-        ``timeout`` elapses or the socket closes before ``session.created`` arrives.
+        ``"fast"`` mode is ready almost immediately; ``"slow"`` mode cold-boots for 30+ seconds.
+        The server sends ``session.starting`` (and WebSocket keepalive pings) during that window
+        to signal it is still working. Raises :class:`RealtimeConnectError` if ``timeout`` elapses
+        or the socket closes before ``session.created`` arrives.
+
+        The default covers both modes' normal cold boot, but not the first-ever session for a given
+        ``voice_id``: that one additionally waits while the cloned voice is registered with the
+        synthesis provider, which can take minutes and happens once per voice. This applies in
+        **either** mode, because a cloned voice is always synthesized by the provider — in
+        ``"fast"`` mode, passing a ``voice_id`` is what switches synthesis away from the translation
+        model's own audio. Sessions without a ``voice_id`` never wait for it. Pass a larger
+        ``timeout`` when you know you are in that case, rather than raising this default and making
+        every voice-less session slow to fail.
         """
         try:
             await asyncio.wait_for(self._ready.wait(), timeout=timeout)
@@ -352,7 +361,9 @@ async def connect(
             ...
 
     Parameters mirror :class:`~camb.realtime.options.ConnectOptions`
-    (``model``, ``source_language``, ``target_language``, ``output_modalities``).
+    (``mode``, ``source_language``, ``target_language``, ``output_modalities``,
+    ``voice_id``). An unrecognised option raises ``ValidationError`` rather than
+    being ignored — notably the retired ``model`` parameter, replaced by ``mode``.
     """
     opts = ConnectOptions(**options)
     url = _build_url(base_url, opts)

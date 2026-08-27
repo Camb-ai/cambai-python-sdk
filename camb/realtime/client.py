@@ -59,7 +59,8 @@ class RealtimeClient:
 
         - ``source_language`` *(required)* — IETF BCP-47 tag, e.g. ``"en-US"``
         - ``target_language`` *(required)* — IETF BCP-47 tag, e.g. ``"de-DE"``
-        - ``model`` — one of ``"lilac"`` (default), ``"violet"``, ``"iris"``, ``"orchid"``
+        - ``mode`` — ``"fast"`` (default) or ``"slow"``; see
+          :class:`~camb.realtime.options.RealtimeMode` for the latency/quality tradeoff
         - ``output_modalities`` — list of ``"text"`` and/or ``"audio"`` (default: both)
         - ``voice_id`` — ID of one of your cloned voices to synthesize the
           translation with (default: a built-in voice for ``target_language``)
