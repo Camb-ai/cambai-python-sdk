@@ -5,6 +5,8 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.languages import Languages
+from ..types.dub_srt_input import DubSRTInput
+from ..types.dub_target_srt_input import DubTargetSRTInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.transcript_data_type import TranscriptDataType
@@ -56,6 +58,8 @@ class DubClient:
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
         ai_optimization: typing.Optional[bool] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
+        source_transcript: typing.Optional[typing.Union[DubSRTInput, typing.Dict[str, typing.Any]]] = OMIT,
+        target_transcripts: typing.Optional[typing.Sequence[typing.Union[DubTargetSRTInput, typing.Dict[str, typing.Any]]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -87,6 +91,12 @@ class DubClient:
 
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
+
+        source_transcript : typing.Optional[typing.Union[DubSRTInput, typing.Dict[str, typing.Any]]]
+            Optional original-language SRT contents. The API validates parsing and size limits.
+
+        target_transcripts : typing.Optional[typing.Sequence[typing.Union[DubTargetSRTInput, typing.Dict[str, typing.Any]]]]
+            Optional translated SRT contents, one per requested target language.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -122,6 +132,8 @@ class DubClient:
             chosen_dictionaries=chosen_dictionaries,
             ai_optimization=ai_optimization,
             transcription_mode=transcription_mode,
+            source_transcript=source_transcript,
+            target_transcripts=target_transcripts,
             request_options=request_options,
         )
         return _response.data
@@ -397,6 +409,8 @@ class AsyncDubClient:
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
         ai_optimization: typing.Optional[bool] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
+        source_transcript: typing.Optional[typing.Union[DubSRTInput, typing.Dict[str, typing.Any]]] = OMIT,
+        target_transcripts: typing.Optional[typing.Sequence[typing.Union[DubTargetSRTInput, typing.Dict[str, typing.Any]]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -428,6 +442,12 @@ class AsyncDubClient:
 
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
+
+        source_transcript : typing.Optional[typing.Union[DubSRTInput, typing.Dict[str, typing.Any]]]
+            Optional original-language SRT contents. The API validates parsing and size limits.
+
+        target_transcripts : typing.Optional[typing.Sequence[typing.Union[DubTargetSRTInput, typing.Dict[str, typing.Any]]]]
+            Optional translated SRT contents, one per requested target language.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -471,6 +491,8 @@ class AsyncDubClient:
             chosen_dictionaries=chosen_dictionaries,
             ai_optimization=ai_optimization,
             transcription_mode=transcription_mode,
+            source_transcript=source_transcript,
+            target_transcripts=target_transcripts,
             request_options=request_options,
         )
         return _response.data
