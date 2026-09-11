@@ -290,6 +290,50 @@ while True:
     time.sleep(5)
 ```
 
+#### Use your own SRT transcript or translation
+
+Pass SRT file contents in `source_transcript` and/or `target_transcripts`:
+
+```python
+from pathlib import Path
+from camb import DubSRTInput, DubTargetSRTInput
+from camb.client import CambAI
+from camb.types.language_enums import Languages
+
+client = CambAI()  # reads CAMB_API_KEY
+result = client.dub.create_dub(
+    video_url="https://example.com/video.mp4",
+    source_language=Languages.EN_US,
+    target_languages=[Languages.ES_ES],
+    source_transcript=DubSRTInput(
+        content=Path("original.srt").read_text(encoding="utf-8-sig"),
+    ),
+    target_transcripts=[
+        DubTargetSRTInput(
+            language="es-es",
+            content=Path("spanish.srt").read_text(encoding="utf-8-sig"),
+        )
+    ],
+)
+print(result.task_id)
+```
+
+Plain dictionaries also work: `source_transcript={"format": "srt", "content": srt_text}`
+and `target_transcripts=[{"language": "es-es", "format": "srt", "content": translated_srt}]`.
+`format` defaults to `"srt"`. Send the text itself, not a filename, URL, base64
+string, or segment array. Translation languages accept locale tags or numeric IDs.
+
+Both fields are optional. The same arguments work with `AsyncCambAI.dub.create_dub`
+and the sync/async raw method `dub.with_raw_response.end_to_end_dubbing`.
+Omitting the fields preserves the automatic dubbing flow.
+
+The API parses SRT with the `srt` library, requires at least one parsed cue, and
+enforces 2 MiB UTF-8 per script, 10 MiB combined, and at most 100 target scripts.
+Translation languages must be unique and among the requested targets. Overlapping
+and out-of-order cues are accepted; the SDK adds no cue-level checks. Server
+validation failures raise `camb.errors.UnprocessableEntityError` with status 422
+and the API's field details in `exception.body.detail`.
+
 ### 5. Live Transcription (Streaming WebSocket)
 
 Stream audio over a single WebSocket and receive cumulative interim

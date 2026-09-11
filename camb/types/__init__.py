@@ -22,6 +22,8 @@ if typing.TYPE_CHECKING:
     from .dictionary_term import DictionaryTerm
     from .dictionary_with_terms import DictionaryWithTerms
     from .dubbing_result import DubbingResult
+    from .dub_srt_input import DubSRTInput
+    from .dub_target_srt_input import DubTargetSRTInput
     from .exception_reasons import ExceptionReasons
     from .folder import Folder
     from .formalities import Formalities
@@ -92,6 +94,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DictionaryTerm": ".dictionary_term",
     "DictionaryWithTerms": ".dictionary_with_terms",
     "DubbingResult": ".dubbing_result",
+    "DubSRTInput": ".dub_srt_input",
+    "DubTargetSRTInput": ".dub_target_srt_input",
     "ExceptionReasons": ".exception_reasons",
     "Folder": ".folder",
     "Formalities": ".formalities",
@@ -186,6 +190,8 @@ __all__ = [
     "DictionaryTerm",
     "DictionaryWithTerms",
     "DubbingResult",
+    "DubSRTInput",
+    "DubTargetSRTInput",
     "ExceptionReasons",
     "Folder",
     "Formalities",
