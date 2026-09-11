@@ -8,7 +8,7 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
 class DubSRTInput(UniversalBaseModel):
     """Inline SRT text, not a filename, URL, or base64-encoded file.
 
-    Read files with ``Path(...).read_text(encoding="utf-8-sig")``.
+    Read files with ``Path(...).read_text(encoding="utf-8")``.
     SRT parsing and byte-size limits are enforced by the API.
     """
 

@@ -306,12 +306,12 @@ result = client.dub.create_dub(
     source_language=Languages.EN_US,
     target_languages=[Languages.ES_ES],
     source_transcript=DubSRTInput(
-        content=Path("original.srt").read_text(encoding="utf-8-sig"),
+        content=Path("original.srt").read_text(encoding="utf-8"),
     ),
     target_transcripts=[
         DubTargetSRTInput(
             language="es-es",
-            content=Path("spanish.srt").read_text(encoding="utf-8-sig"),
+            content=Path("spanish.srt").read_text(encoding="utf-8"),
         )
     ],
 )
