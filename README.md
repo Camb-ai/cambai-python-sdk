@@ -310,7 +310,7 @@ result = client.dub.create_dub(
     ),
     target_transcripts=[
         DubTargetSRTInput(
-            language="es-es",
+            language=Languages.ES_ES,
             content=Path("spanish.srt").read_text(encoding="utf-8"),
         )
     ],
@@ -319,7 +319,7 @@ print(result.task_id)
 ```
 
 Plain dictionaries also work: `source_transcript={"format": "srt", "content": srt_text}`
-and `target_transcripts=[{"language": "es-es", "format": "srt", "content": translated_srt}]`.
+and `target_transcripts=[{"language": Languages.ES_ES, "format": "srt", "content": translated_srt}]`.
 `format` defaults to `"srt"`. Send the text itself, not a filename, URL, base64
 string, or segment array. Translation languages accept locale tags or numeric IDs.
 
