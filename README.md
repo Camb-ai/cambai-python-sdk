@@ -563,3 +563,7 @@ Check out the `examples/` directory for complete, runnable examples:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+### Transcription audio cleaning and automatic language detection
+
+Transcription accepts `run_audio_cleaning` (default true). Set it to false for clean speech to skip source separation; media preparation still runs, including when requesting subtitle formatting. Pass `language="auto"` (Python) or `language: "auto"` (TypeScript) to use the existing auto-detection language. Dubbing, subtitles, translation, translated TTS, and project-setup language inputs also accept locale strings and `"auto"`; use a concrete target language when requesting translation. Numeric language IDs remain supported.

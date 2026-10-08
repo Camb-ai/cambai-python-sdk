@@ -13,7 +13,7 @@ from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.formalities import Formalities
 from ..types.gender import Gender
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.translation_result import TranslationResult
 
@@ -28,8 +28,8 @@ class RawTranslationClient:
     def translation_stream(
         self,
         *,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         text: str,
         traceparent: typing.Optional[str] = None,
         formality: typing.Optional[Formalities] = OMIT,
@@ -43,9 +43,9 @@ class RawTranslationClient:
         """
         Parameters
         ----------
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         text : str
 
@@ -124,8 +124,8 @@ class RawTranslationClient:
         self,
         *,
         texts: typing.Sequence[str],
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -141,9 +141,9 @@ class RawTranslationClient:
         ----------
         texts : typing.Sequence[str]
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -411,8 +411,8 @@ class AsyncRawTranslationClient:
     async def translation_stream(
         self,
         *,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         text: str,
         traceparent: typing.Optional[str] = None,
         formality: typing.Optional[Formalities] = OMIT,
@@ -426,9 +426,9 @@ class AsyncRawTranslationClient:
         """
         Parameters
         ----------
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         text : str
 
@@ -507,8 +507,8 @@ class AsyncRawTranslationClient:
         self,
         *,
         texts: typing.Sequence[str],
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -524,9 +524,9 @@ class AsyncRawTranslationClient:
         ----------
         texts : typing.Sequence[str]
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 

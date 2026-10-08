@@ -14,7 +14,7 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.subtitle_formatting_options import SubtitleFormattingOptions
@@ -34,7 +34,7 @@ class RawTranscriptionClient:
     def create_transcription(
         self,
         *,
-        language: Languages,
+        language: LanguageInput,
         run_id: typing.Optional[int] = None,
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
@@ -44,14 +44,15 @@ class RawTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
+        run_audio_cleaning: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineCallResult]:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        language : LanguageInput
+            Language ID, locale tag, or "auto" for language detection.
 
         run_id : typing.Optional[int]
 
@@ -75,6 +76,9 @@ class RawTranscriptionClient:
 
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
+
+        run_audio_cleaning : bool
+            Run source separation before transcription (default True). Set False for clean speech.
 
         formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]]
 
@@ -100,6 +104,7 @@ class RawTranscriptionClient:
                 "project_description": project_description,
                 "folder_id": folder_id,
                 "transcription_mode": transcription_mode,
+                "run_audio_cleaning": run_audio_cleaning,
                 "formatting_options": _serialize_formatting_options(formatting_options),
             },
             files={
@@ -334,7 +339,7 @@ class AsyncRawTranscriptionClient:
     async def create_transcription(
         self,
         *,
-        language: Languages,
+        language: LanguageInput,
         run_id: typing.Optional[int] = None,
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
@@ -344,14 +349,15 @@ class AsyncRawTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
+        run_audio_cleaning: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineCallResult]:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        language : LanguageInput
+            Language ID, locale tag, or "auto" for language detection.
 
         run_id : typing.Optional[int]
 
@@ -375,6 +381,9 @@ class AsyncRawTranscriptionClient:
 
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
+
+        run_audio_cleaning : bool
+            Run source separation before transcription (default True). Set False for clean speech.
 
         formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]]
 
@@ -400,6 +409,7 @@ class AsyncRawTranscriptionClient:
                 "project_description": project_description,
                 "folder_id": folder_id,
                 "transcription_mode": transcription_mode,
+                "run_audio_cleaning": run_audio_cleaning,
                 "formatting_options": _serialize_formatting_options(formatting_options),
             },
             files={

@@ -7,7 +7,7 @@ from ..core.request_options import RequestOptions
 from ..types.create_translated_tts_out import CreateTranslatedTtsOut
 from ..types.formalities import Formalities
 from ..types.gender import Gender
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from .raw_client import AsyncRawTranslatedTtsClient, RawTranslatedTtsClient
 
@@ -35,8 +35,8 @@ class TranslatedTtsClient:
         *,
         text: str,
         voice_id: int,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         traceparent: typing.Optional[str] = None,
         project_name: typing.Optional[str] = OMIT,
@@ -55,9 +55,9 @@ class TranslatedTtsClient:
 
         voice_id : int
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -176,8 +176,8 @@ class AsyncTranslatedTtsClient:
         *,
         text: str,
         voice_id: int,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         traceparent: typing.Optional[str] = None,
         project_name: typing.Optional[str] = OMIT,
@@ -196,9 +196,9 @@ class AsyncTranslatedTtsClient:
 
         voice_id : int
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 
