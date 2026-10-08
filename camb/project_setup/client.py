@@ -6,7 +6,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.create_project_setup_out import CreateProjectSetupOut
 from ..types.get_create_project_setup_response import GetCreateProjectSetupResponse
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from .raw_client import AsyncRawProjectSetupClient, RawProjectSetupClient
 
 # this is used as the default value for optional parameters
@@ -32,8 +32,8 @@ class ProjectSetupClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -75,9 +75,9 @@ class ProjectSetupClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         run_id : typing.Optional[int]
 
@@ -278,8 +278,8 @@ class AsyncProjectSetupClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -321,9 +321,9 @@ class AsyncProjectSetupClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         run_id : typing.Optional[int]
 

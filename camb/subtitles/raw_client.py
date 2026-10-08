@@ -12,7 +12,7 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.run_i_ds_request_payload import RunIDsRequestPayload
@@ -32,8 +32,8 @@ class RawSubtitlesClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -46,9 +46,9 @@ class RawSubtitlesClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         project_name : typing.Optional[str]
 
@@ -227,7 +227,7 @@ class RawSubtitlesClient:
     def get_subtitle_result_for_language(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -238,7 +238,7 @@ class RawSubtitlesClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -373,8 +373,8 @@ class AsyncRawSubtitlesClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -387,9 +387,9 @@ class AsyncRawSubtitlesClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         project_name : typing.Optional[str]
 
@@ -568,7 +568,7 @@ class AsyncRawSubtitlesClient:
     async def get_subtitle_result_for_language(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -579,7 +579,7 @@ class AsyncRawSubtitlesClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
 

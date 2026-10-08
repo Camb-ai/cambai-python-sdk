@@ -13,7 +13,7 @@ from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.create_project_setup_out import CreateProjectSetupOut
 from ..types.get_create_project_setup_response import GetCreateProjectSetupResponse
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -27,8 +27,8 @@ class RawProjectSetupClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -70,9 +70,9 @@ class RawProjectSetupClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         run_id : typing.Optional[int]
 
@@ -345,8 +345,8 @@ class AsyncRawProjectSetupClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -388,9 +388,9 @@ class AsyncRawProjectSetupClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         run_id : typing.Optional[int]
 

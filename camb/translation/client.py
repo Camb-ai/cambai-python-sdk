@@ -6,7 +6,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.formalities import Formalities
 from ..types.gender import Gender
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.translation_result import TranslationResult
 from .raw_client import AsyncRawTranslationClient, RawTranslationClient
@@ -33,8 +33,8 @@ class TranslationClient:
     def translation_stream(
         self,
         *,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         text: str,
         traceparent: typing.Optional[str] = None,
         formality: typing.Optional[Formalities] = OMIT,
@@ -48,9 +48,9 @@ class TranslationClient:
         """
         Parameters
         ----------
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         text : str
 
@@ -108,8 +108,8 @@ class TranslationClient:
         self,
         *,
         texts: typing.Sequence[str],
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -125,9 +125,9 @@ class TranslationClient:
         ----------
         texts : typing.Sequence[str]
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -321,8 +321,8 @@ class AsyncTranslationClient:
     async def translation_stream(
         self,
         *,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         text: str,
         traceparent: typing.Optional[str] = None,
         formality: typing.Optional[Formalities] = OMIT,
@@ -336,9 +336,9 @@ class AsyncTranslationClient:
         """
         Parameters
         ----------
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         text : str
 
@@ -404,8 +404,8 @@ class AsyncTranslationClient:
         self,
         *,
         texts: typing.Sequence[str],
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -421,9 +421,9 @@ class AsyncTranslationClient:
         ----------
         texts : typing.Sequence[str]
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 
