@@ -47,7 +47,6 @@ class RawTranscriptionClient:
         run_audio_cleaning: bool = True,
         include_music_in_fg: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineCallResult]:
         """
@@ -89,9 +88,6 @@ class RawTranscriptionClient:
 
         formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -103,7 +99,6 @@ class RawTranscriptionClient:
         _response = self._client_wrapper.httpx_client.request(
             "transcribe",
             method="POST",
-            headers={"traceparent": traceparent},
             data={
                 "language": language,
                 "media_url": media_url,
@@ -155,7 +150,6 @@ class RawTranscriptionClient:
         task_id: str,
         *,
         run_id: typing.Optional[int] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineResult]:
         """
@@ -165,9 +159,6 @@ class RawTranscriptionClient:
 
         run_id : typing.Optional[int]
             Deprecated compatibility argument; ignored by this endpoint.
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -180,7 +171,6 @@ class RawTranscriptionClient:
         _response = self._client_wrapper.httpx_client.request(
             f"transcribe/{jsonable_encoder(task_id)}",
             method="GET",
-            headers={"traceparent": traceparent},
             request_options=request_options,
         )
         try:
@@ -216,7 +206,6 @@ class RawTranscriptionClient:
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[typing.Union[TranscriptionResult, TranscriptExportResult]]:
         """
@@ -235,9 +224,6 @@ class RawTranscriptionClient:
 
         data_type : typing.Optional[TranscriptDataType]
 
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -249,7 +235,6 @@ class RawTranscriptionClient:
         _response = self._client_wrapper.httpx_client.request(
             f"transcription-result/{jsonable_encoder(run_id)}",
             method="GET",
-            headers={"traceparent": traceparent},
             params={
                 "format_type": format_type,
                 "data_type": data_type,
@@ -368,7 +353,6 @@ class AsyncRawTranscriptionClient:
         run_audio_cleaning: bool = True,
         include_music_in_fg: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineCallResult]:
         """
@@ -410,9 +394,6 @@ class AsyncRawTranscriptionClient:
 
         formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -424,7 +405,6 @@ class AsyncRawTranscriptionClient:
         _response = await self._client_wrapper.httpx_client.request(
             "transcribe",
             method="POST",
-            headers={"traceparent": traceparent},
             data={
                 "language": language,
                 "media_url": media_url,
@@ -476,7 +456,6 @@ class AsyncRawTranscriptionClient:
         task_id: str,
         *,
         run_id: typing.Optional[int] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineResult]:
         """
@@ -486,9 +465,6 @@ class AsyncRawTranscriptionClient:
 
         run_id : typing.Optional[int]
             Deprecated compatibility argument; ignored by this endpoint.
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -501,7 +477,6 @@ class AsyncRawTranscriptionClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"transcribe/{jsonable_encoder(task_id)}",
             method="GET",
-            headers={"traceparent": traceparent},
             request_options=request_options,
         )
         try:
@@ -537,7 +512,6 @@ class AsyncRawTranscriptionClient:
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[typing.Union[TranscriptionResult, TranscriptExportResult]]:
         """
@@ -556,9 +530,6 @@ class AsyncRawTranscriptionClient:
 
         data_type : typing.Optional[TranscriptDataType]
 
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -570,7 +541,6 @@ class AsyncRawTranscriptionClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"transcription-result/{jsonable_encoder(run_id)}",
             method="GET",
-            headers={"traceparent": traceparent},
             params={
                 "format_type": format_type,
                 "data_type": data_type,

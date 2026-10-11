@@ -584,7 +584,6 @@ and `POST /apis/transcription-results`.
 | `run_audio_cleaning` | Defaults to true; false skips source separation |
 | `include_music_in_fg` | Defaults to true; keeps music in foreground during separation; no effect when cleaning is false |
 | `formatting_options` | Optional options object or JSON string, serialized as a multipart field |
-| `traceparent` | Optional HTTP tracing header, supported on all four routes |
 
 Formatting supports all five API fields: `max_segment_duration_in_seconds`,
 `min_segment_duration_in_seconds`, `max_characters_in_segment`,
@@ -605,5 +604,5 @@ This does not affect the required run ID in the single-result path.
 
 Parity was audited against the client-microservice transcription router and its
 companion audio-cleaning PR (#4092). Wire tests cover normal/raw responses,
-all inputs, defaults and explicit false values, upload aliases, tracing,
+all inputs, defaults and explicit false values, upload aliases,
 formatting serialization, status, structured/export results, and bulk requests.

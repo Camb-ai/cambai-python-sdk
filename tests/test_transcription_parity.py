@@ -31,7 +31,6 @@ CREATE_FIELDS = {
     "run_audio_cleaning",
     "include_music_in_fg",
     "formatting_options",
-    "traceparent",
 }
 TRANSCRIPT = {
     "transcript": [{"start": 0.0, "end": 1.5, "text": "Hello", "speaker": "SPEAKER_0"}]
@@ -121,7 +120,6 @@ class TranscriptionParityTests(unittest.TestCase):
                                     formatting_options={
                                         "max_characters_in_segment": 40
                                     },
-                                    traceparent=TRACE,
                                     run_id=99,
                                 )
                                 options[upload] = (
@@ -165,13 +163,11 @@ class TranscriptionParityTests(unittest.TestCase):
                                     set(fields),
                                     CREATE_FIELDS
                                     - {
-                                        "traceparent",
                                         "file"
                                         if upload == "media_file"
                                         else "media_file",
                                     },
                                 )
-                                self.assertEqual(request.headers["traceparent"], TRACE)
                                 self.assertFalse(request.url.query)
                                 self.assertEqual(result.task_id, "task")
 
@@ -210,14 +206,13 @@ class TranscriptionParityTests(unittest.TestCase):
             for raw in [False, True]:
                 request, result = self.invoke(
                     "get_transcription_task_status",
-                    dict(task_id="task", traceparent=TRACE, run_id=99),
+                    dict(task_id="task", run_id=99),
                     {"status": "SUCCESS", "run_id": 7},
                     asynchronous,
                     raw,
                 )
                 self.assertEqual(request.url.path, "/apis/transcribe/task")
                 self.assertFalse(request.url.query)
-                self.assertEqual(request.headers["traceparent"], TRACE)
                 self.assertEqual(result.run_id, 7)
                 for format_type in [None, "txt", "srt", "vtt"]:
                     for data_type in [None, "file", "raw_data"]:
@@ -231,9 +226,7 @@ class TranscriptionParityTests(unittest.TestCase):
                             if exported
                             else TRANSCRIPT
                         )
-                        opts = dict(
-                            run_id=7, traceparent=TRACE, word_level_timestamps=True
-                        )
+                        opts = dict(run_id=7, word_level_timestamps=True)
                         if format_type:
                             opts["format_type"] = format_type
                         if data_type:
@@ -252,7 +245,6 @@ class TranscriptionParityTests(unittest.TestCase):
                                 if k in ["format_type", "data_type"]
                             },
                         )
-                        self.assertEqual(request.headers["traceparent"], TRACE)
                         if exported:
                             self.assertEqual(result.transcript, body["transcript"])
                         else:

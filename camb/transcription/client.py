@@ -50,7 +50,6 @@ class TranscriptionClient:
         run_audio_cleaning: bool = True,
         include_music_in_fg: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -92,9 +91,6 @@ class TranscriptionClient:
 
         formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
-
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -128,7 +124,7 @@ class TranscriptionClient:
             run_audio_cleaning=run_audio_cleaning,
             include_music_in_fg=include_music_in_fg,
             formatting_options=formatting_options,
-            traceparent=traceparent, request_options=request_options,
+            request_options=request_options,
         )
         return _response.data
 
@@ -137,7 +133,6 @@ class TranscriptionClient:
         task_id: str,
         *,
         run_id: typing.Optional[int] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineResult:
         """
@@ -147,9 +142,6 @@ class TranscriptionClient:
 
         run_id : typing.Optional[int]
             Deprecated compatibility argument; ignored by this endpoint.
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -171,7 +163,7 @@ class TranscriptionClient:
         )
         """
         _response = self._raw_client.get_transcription_task_status(
-            task_id, run_id=run_id, traceparent=traceparent, request_options=request_options
+            task_id, run_id=run_id, request_options=request_options
         )
         return _response.data
 
@@ -182,7 +174,6 @@ class TranscriptionClient:
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Union[TranscriptionResult, TranscriptExportResult]:
         """
@@ -200,9 +191,6 @@ class TranscriptionClient:
         format_type : typing.Optional[TranscriptFileFormat]
 
         data_type : typing.Optional[TranscriptDataType]
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -228,7 +216,7 @@ class TranscriptionClient:
             word_level_timestamps=word_level_timestamps,
             format_type=format_type,
             data_type=data_type,
-            traceparent=traceparent, request_options=request_options,
+            request_options=request_options,
         )
         return _response.data
 
@@ -306,7 +294,6 @@ class AsyncTranscriptionClient:
         run_audio_cleaning: bool = True,
         include_music_in_fg: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
@@ -347,9 +334,6 @@ class AsyncTranscriptionClient:
             Has no effect when run_audio_cleaning is False.
 
         formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -392,7 +376,6 @@ class AsyncTranscriptionClient:
             run_audio_cleaning=run_audio_cleaning,
             include_music_in_fg=include_music_in_fg,
             formatting_options=formatting_options,
-            traceparent=traceparent,
             request_options=request_options,
         )
         return _response.data
@@ -402,7 +385,6 @@ class AsyncTranscriptionClient:
         task_id: str,
         *,
         run_id: typing.Optional[int] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineResult:
         """
@@ -412,9 +394,6 @@ class AsyncTranscriptionClient:
 
         run_id : typing.Optional[int]
             Deprecated compatibility argument; ignored by this endpoint.
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -444,7 +423,7 @@ class AsyncTranscriptionClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_transcription_task_status(
-            task_id, run_id=run_id, traceparent=traceparent, request_options=request_options
+            task_id, run_id=run_id, request_options=request_options
         )
         return _response.data
 
@@ -455,7 +434,6 @@ class AsyncTranscriptionClient:
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
-        traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> typing.Union[TranscriptionResult, TranscriptExportResult]:
         """
@@ -473,9 +451,6 @@ class AsyncTranscriptionClient:
         format_type : typing.Optional[TranscriptFileFormat]
 
         data_type : typing.Optional[TranscriptDataType]
-
-        traceparent : typing.Optional[str]
-            W3C trace context forwarded as an HTTP header.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -509,7 +484,6 @@ class AsyncTranscriptionClient:
             word_level_timestamps=word_level_timestamps,
             format_type=format_type,
             data_type=data_type,
-            traceparent=traceparent,
             request_options=request_options,
         )
         return _response.data
