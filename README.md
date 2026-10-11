@@ -567,3 +567,43 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### Transcription audio cleaning and automatic language detection
 
 Transcription accepts `run_audio_cleaning` (default true). Set it to false for clean speech to skip source separation; media preparation still runs, including when requesting subtitle formatting. Pass `language="auto"` (Python) or `language: "auto"` (TypeScript) to use the existing auto-detection language. Dubbing, subtitles, translation, translated TTS, and project-setup language inputs also accept locale strings and `"auto"`; use a concrete target language when requesting translation. Numeric language IDs remain supported.
+
+### Transcription API parity
+
+The transcription client covers all four routes: `POST /apis/transcribe`,
+`GET /apis/transcribe/{task_id}`, `GET /apis/transcription-result/{run_id}`,
+and `POST /apis/transcription-results`.
+
+| Create input | Behavior |
+| --- | --- |
+| `language` | Required numeric ID, locale string, or `"auto"` |
+| `media_file`, `media_url` | Upload or media URL; supply at least one media source |
+| `file`, `audio_url` | Deprecated upload/URL aliases retained for compatibility |
+| `project_name`, `project_description`, `folder_id` | Optional project metadata |
+| `transcription_mode` | `"fast"` by default; also accepts `"slow"` |
+| `run_audio_cleaning` | Defaults to true; false skips source separation |
+| `include_music_in_fg` | Defaults to true; keeps music in foreground during separation; no effect when cleaning is false |
+| `formatting_options` | Optional options object or JSON string, serialized as a multipart field |
+| `traceparent` | Optional HTTP tracing header, supported on all four routes |
+
+Formatting supports all five API fields: `max_segment_duration_in_seconds`,
+`min_segment_duration_in_seconds`, `max_characters_in_segment`,
+`max_reading_speed_in_cps`, and `min_gap_between_segments_in_frames`.
+Omitted rules use backend defaults; Python also accepts `SubtitleFormattingOptions`.
+
+A single result requires a run ID. Omit both `format_type` and `data_type` for
+structured segments (`start`, `end`, `text`, `speaker`). Request `srt`, `vtt`, or
+`txt` with `file` or `raw_data` for an exported transcript. If only one export
+option is specified, the other defaults to `txt` or `file`, respectively.
+Bulk results send `run_ids` in JSON and return a mapping of run IDs to structured
+transcripts.
+
+Historical query arguments `run_id` on create/status/bulk and
+`word_level_timestamps` on result retrieval are deprecated compatibility no-ops:
+they remain callable but are not sent because the API does not support them.
+This does not affect the required run ID in the single-result path.
+
+Parity was audited against the client-microservice transcription router and its
+companion audio-cleaning PR (#4092). Wire tests cover normal/raw responses,
+all inputs, defaults and explicit false values, upload aliases, tracing,
+formatting serialization, status, structured/export results, and bulk requests.
