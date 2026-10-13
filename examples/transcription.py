@@ -1,8 +1,9 @@
+import os
 import time
 
 from camb.client import CambAI
 
-client = CambAI()  # Set the CAMB_API_KEY environment variable.
+client = CambAI(api_key=os.getenv("CAMB_API_KEY"))
 
 # Edit these values for your request.
 job = client.transcription.create_transcription(
