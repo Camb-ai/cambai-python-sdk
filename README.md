@@ -551,6 +551,7 @@ Check out the `examples/` directory for complete, runnable examples:
 - `async_tts_call.py` - Async text-to-speech example
 - `text_to_audio.py` - Sound generation example
 - `perform_dubbing.py` - Video dubbing workflow
+- `transcription_modes.py` - Select fast/slow mode, audio cleaning, music handling, and automatic language detection
 - `transcription_formatting.py` - Async transcription with formatting options and TXT/SRT/VTT exports
 - `subtitles.py` - Subtitle job creation, polling, and language-specific TXT/SRT/VTT exports
 - `translation.py` - Text translation workflow
@@ -567,6 +568,43 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### Transcription audio cleaning and automatic language detection
 
 Transcription accepts `run_audio_cleaning` (default true). Set it to false for clean speech to skip source separation; media preparation still runs, including when requesting subtitle formatting. Pass `language="auto"` (Python) or `language: "auto"` (TypeScript) to use the existing auto-detection language. Dubbing, subtitles, translation, translated TTS, and project-setup language inputs also accept locale strings and `"auto"`; use a concrete target language when requesting translation. Numeric language IDs remain supported.
+
+### Choosing transcription mode and audio options
+
+```python
+from camb.client import CambAI
+
+client = CambAI()  # Set CAMB_API_KEY in your environment.
+job = client.transcription.create_transcription(
+    media_url="https://example.com/meeting.mp3",
+    language="auto",               # Or a locale such as "en-us".
+    transcription_mode="fast",     # Change to "slow" for the slower accuracy-oriented mode.
+    run_audio_cleaning=True,        # False skips source separation for clean speech.
+    include_music_in_fg=True,       # Only applies when audio cleaning is enabled.
+    formatting_options={           # Optional subtitle segmentation rules.
+        "max_segment_duration_in_seconds": 6,
+        "max_characters_in_segment": 42,
+    },
+)
+print(job.task_id)
+```
+
+`fast` is the default. `slow` takes longer and may improve accuracy. Both modes
+include diarization. Disabling cleaning still extracts/decodes the media; it does
+not disable diarization. For clean speech, set `run_audio_cleaning=False`.
+
+The runnable [mode example](examples/transcription_modes.py) submits one job,
+polls with a timeout, handles errors, and retrieves the result:
+
+```bash
+export CAMB_API_KEY="YOUR_API_KEY"
+python examples/transcription_modes.py "https://example.com/meeting.mp3" --mode fast
+python examples/transcription_modes.py "https://example.com/meeting.mp3" --mode slow --no-audio-cleaning
+python examples/transcription_modes.py "https://example.com/meeting.mp3" --mode fast --no-include-music-in-fg --format-subtitles
+```
+
+Each command creates a separate job. Omit `--language` for auto detection, or pass
+`--language en-us` for a known source language.
 
 ### Transcription API parity
 
