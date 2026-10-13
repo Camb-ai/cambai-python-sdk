@@ -601,8 +601,8 @@ export CAMB_API_KEY="YOUR_API_KEY"
 python examples/transcription.py
 ```
 
-Change `transcription_mode` to `"slow"` or `run_audio_cleaning` to `False` in the script
-as needed. Each run creates one job.
+The script defaults to fast mode with audio cleaning and music inclusion disabled.
+Add `transcription_mode="slow"` to choose slow mode. Each run creates one job.
 
 ### Transcription API parity
 

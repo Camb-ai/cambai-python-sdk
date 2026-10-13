@@ -8,9 +8,9 @@ client = CambAI()  # Set the CAMB_API_KEY environment variable.
 job = client.transcription.create_transcription(
     media_url="https://example.com/meeting.mp3",
     language="auto",             # Or "en-us".
-    transcription_mode="fast",   # Default; change to "slow" if needed.
-    run_audio_cleaning=True,      # False skips source separation.
-    include_music_in_fg=True,    # Only applies when cleaning is enabled.
+    # transcription_mode="slow" can be chosen; the default is "fast".
+    run_audio_cleaning=False,     # Skip source separation.
+    include_music_in_fg=False,   # Only applies when cleaning is enabled.
 )
 print("Task ID:", job.task_id)
 
