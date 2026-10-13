@@ -593,18 +593,16 @@ print(job.task_id)
 include diarization. Disabling cleaning still extracts/decodes the media; it does
 not disable diarization. For clean speech, set `run_audio_cleaning=False`.
 
-The runnable [mode example](examples/transcription.py) submits one job,
-polls with a timeout, handles errors, and retrieves the result:
+Edit the URL and options directly in [transcription.py](examples/transcription.py),
+then run it to submit, poll, and print the result:
 
 ```bash
 export CAMB_API_KEY="YOUR_API_KEY"
-python examples/transcription.py "https://example.com/meeting.mp3" --mode fast
-python examples/transcription.py "https://example.com/meeting.mp3" --mode slow --no-audio-cleaning
-python examples/transcription.py "https://example.com/meeting.mp3" --mode fast --no-include-music-in-fg --format-subtitles
+python examples/transcription.py
 ```
 
-Each command creates a separate job. Omit `--language` for auto detection, or pass
-`--language en-us` for a known source language.
+Change `transcription_mode` to `"slow"` or `run_audio_cleaning` to `False` in the script
+as needed. Each run creates one job.
 
 ### Transcription API parity
 
