@@ -1,8 +1,8 @@
 """Submit one transcription job with configurable mode and audio preparation.
 
 Set CAMB_API_KEY, then run:
-    python examples/transcription_modes.py https://example.com/audio.mp3 --mode fast
-    python examples/transcription_modes.py https://example.com/audio.mp3 --mode slow --no-audio-cleaning
+    python examples/transcription.py https://example.com/audio.mp3 --mode fast
+    python examples/transcription.py https://example.com/audio.mp3 --mode slow --no-audio-cleaning
 """
 
 import argparse

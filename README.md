@@ -551,7 +551,7 @@ Check out the `examples/` directory for complete, runnable examples:
 - `async_tts_call.py` - Async text-to-speech example
 - `text_to_audio.py` - Sound generation example
 - `perform_dubbing.py` - Video dubbing workflow
-- `transcription_modes.py` - Select fast/slow mode, audio cleaning, music handling, and automatic language detection
+- `transcription.py` - Select fast/slow mode, audio cleaning, music handling, and automatic language detection
 - `transcription_formatting.py` - Async transcription with formatting options and TXT/SRT/VTT exports
 - `subtitles.py` - Subtitle job creation, polling, and language-specific TXT/SRT/VTT exports
 - `translation.py` - Text translation workflow
@@ -593,14 +593,14 @@ print(job.task_id)
 include diarization. Disabling cleaning still extracts/decodes the media; it does
 not disable diarization. For clean speech, set `run_audio_cleaning=False`.
 
-The runnable [mode example](examples/transcription_modes.py) submits one job,
+The runnable [mode example](examples/transcription.py) submits one job,
 polls with a timeout, handles errors, and retrieves the result:
 
 ```bash
 export CAMB_API_KEY="YOUR_API_KEY"
-python examples/transcription_modes.py "https://example.com/meeting.mp3" --mode fast
-python examples/transcription_modes.py "https://example.com/meeting.mp3" --mode slow --no-audio-cleaning
-python examples/transcription_modes.py "https://example.com/meeting.mp3" --mode fast --no-include-music-in-fg --format-subtitles
+python examples/transcription.py "https://example.com/meeting.mp3" --mode fast
+python examples/transcription.py "https://example.com/meeting.mp3" --mode slow --no-audio-cleaning
+python examples/transcription.py "https://example.com/meeting.mp3" --mode fast --no-include-music-in-fg --format-subtitles
 ```
 
 Each command creates a separate job. Omit `--language` for auto detection, or pass
