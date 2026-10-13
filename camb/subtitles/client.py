@@ -4,7 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.subtitle_formatting_options import SubtitleFormattingOptions
@@ -35,8 +35,8 @@ class SubtitlesClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -49,9 +49,9 @@ class SubtitlesClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         project_name : typing.Optional[str]
 
@@ -175,7 +175,7 @@ class SubtitlesClient:
     def get_subtitle_result_for_language(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -186,7 +186,7 @@ class SubtitlesClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -287,8 +287,8 @@ class AsyncSubtitlesClient:
         self,
         *,
         media_url: str,
-        source_language: Languages,
-        target_languages: typing.Sequence[Languages],
+        source_language: LanguageInput,
+        target_languages: typing.Sequence[LanguageInput],
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -301,9 +301,9 @@ class AsyncSubtitlesClient:
         ----------
         media_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_languages : typing.Sequence[Languages]
+        target_languages : typing.Sequence[LanguageInput]
 
         project_name : typing.Optional[str]
 
@@ -451,7 +451,7 @@ class AsyncSubtitlesClient:
     async def get_subtitle_result_for_language(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -462,7 +462,7 @@ class AsyncSubtitlesClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
 

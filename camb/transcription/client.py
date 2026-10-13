@@ -5,7 +5,7 @@ import typing
 from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.subtitle_formatting_options import SubtitleFormattingOptions
@@ -37,7 +37,7 @@ class TranscriptionClient:
     def create_transcription(
         self,
         *,
-        language: Languages,
+        language: LanguageInput,
         run_id: typing.Optional[int] = None,
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
@@ -47,16 +47,19 @@ class TranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
-        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]] = OMIT,
+        run_audio_cleaning: bool = True,
+        include_music_in_fg: bool = True,
+        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        language : LanguageInput
+            Language ID, locale tag, or "auto" for language detection.
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         media_file : typing.Optional[core.File]
             See core.File for more documentation
@@ -65,7 +68,7 @@ class TranscriptionClient:
             Signed URL to media file for transcription
 
         file : typing.Optional[core.File]
-            See core.File for more documentation
+            Deprecated alias for media_file. See core.File for upload documentation.
 
         audio_url : typing.Optional[str]
             [DEPRECATED] Use 'media_url' instead
@@ -79,7 +82,14 @@ class TranscriptionClient:
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
 
-        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]]
+        run_audio_cleaning : bool
+            Run source separation before transcription (default True). Set False for clean speech.
+
+        include_music_in_fg : bool
+            Keep music in foreground audio during cleaning (default True).
+            Has no effect when run_audio_cleaning is False.
+
+        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -111,6 +121,8 @@ class TranscriptionClient:
             project_description=project_description,
             folder_id=folder_id,
             transcription_mode=transcription_mode,
+            run_audio_cleaning=run_audio_cleaning,
+            include_music_in_fg=include_music_in_fg,
             formatting_options=formatting_options,
             request_options=request_options,
         )
@@ -129,6 +141,7 @@ class TranscriptionClient:
         task_id : str
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -156,7 +169,7 @@ class TranscriptionClient:
 
     def get_transcription_result(
         self,
-        run_id: typing.Optional[int],
+        run_id: int,
         *,
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
@@ -169,9 +182,11 @@ class TranscriptionClient:
 
         Parameters
         ----------
-        run_id : typing.Optional[int]
+        run_id : int
+            Required transcription run ID.
 
         word_level_timestamps : typing.Optional[bool]
+            Deprecated compatibility argument; ignored by the API.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -219,6 +234,7 @@ class TranscriptionClient:
         run_ids : typing.Sequence[int]
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         traceparent : typing.Optional[str]
 
@@ -265,7 +281,7 @@ class AsyncTranscriptionClient:
     async def create_transcription(
         self,
         *,
-        language: Languages,
+        language: LanguageInput,
         run_id: typing.Optional[int] = None,
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
@@ -275,16 +291,19 @@ class AsyncTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
-        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]] = OMIT,
+        run_audio_cleaning: bool = True,
+        include_music_in_fg: bool = True,
+        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        language : LanguageInput
+            Language ID, locale tag, or "auto" for language detection.
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         media_file : typing.Optional[core.File]
             See core.File for more documentation
@@ -293,7 +312,7 @@ class AsyncTranscriptionClient:
             Signed URL to media file for transcription
 
         file : typing.Optional[core.File]
-            See core.File for more documentation
+            Deprecated alias for media_file. See core.File for upload documentation.
 
         audio_url : typing.Optional[str]
             [DEPRECATED] Use 'media_url' instead
@@ -307,7 +326,14 @@ class AsyncTranscriptionClient:
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
 
-        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]]
+        run_audio_cleaning : bool
+            Run source separation before transcription (default True). Set False for clean speech.
+
+        include_music_in_fg : bool
+            Keep music in foreground audio during cleaning (default True).
+            Has no effect when run_audio_cleaning is False.
+
+        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -347,6 +373,8 @@ class AsyncTranscriptionClient:
             project_description=project_description,
             folder_id=folder_id,
             transcription_mode=transcription_mode,
+            run_audio_cleaning=run_audio_cleaning,
+            include_music_in_fg=include_music_in_fg,
             formatting_options=formatting_options,
             request_options=request_options,
         )
@@ -365,6 +393,7 @@ class AsyncTranscriptionClient:
         task_id : str
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -400,7 +429,7 @@ class AsyncTranscriptionClient:
 
     async def get_transcription_result(
         self,
-        run_id: typing.Optional[int],
+        run_id: int,
         *,
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
@@ -413,9 +442,11 @@ class AsyncTranscriptionClient:
 
         Parameters
         ----------
-        run_id : typing.Optional[int]
+        run_id : int
+            Required transcription run ID.
 
         word_level_timestamps : typing.Optional[bool]
+            Deprecated compatibility argument; ignored by the API.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -471,6 +502,7 @@ class AsyncTranscriptionClient:
         run_ids : typing.Sequence[int]
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         traceparent : typing.Optional[str]
 

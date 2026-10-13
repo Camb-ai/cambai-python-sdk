@@ -12,7 +12,7 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.dub_srt_input import DubSRTInput
 from ..types.dub_target_srt_input import DubTargetSRTInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
@@ -42,13 +42,13 @@ class RawDubClient:
         self,
         *,
         video_url: str,
-        source_language: Languages,
+        source_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
-        target_language: typing.Optional[Languages] = OMIT,
-        target_languages: typing.Optional[typing.Sequence[Languages]] = OMIT,
+        target_language: typing.Optional[LanguageInput] = OMIT,
+        target_languages: typing.Optional[typing.Sequence[LanguageInput]] = OMIT,
         selected_audio_tracks: typing.Optional[typing.Sequence[int]] = OMIT,
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -63,7 +63,7 @@ class RawDubClient:
         ----------
         video_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -73,9 +73,9 @@ class RawDubClient:
 
         folder_id : typing.Optional[int]
 
-        target_language : typing.Optional[Languages]
+        target_language : typing.Optional[LanguageInput]
 
-        target_languages : typing.Optional[typing.Sequence[Languages]]
+        target_languages : typing.Optional[typing.Sequence[LanguageInput]]
 
         selected_audio_tracks : typing.Optional[typing.Sequence[int]]
 
@@ -332,7 +332,7 @@ class RawDubClient:
     def get_dubbed_run_transcript(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -343,7 +343,7 @@ class RawDubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
             Format to use for the transcription. Either `srt`, `vtt` or `txt`. Defaults to `txt`.
@@ -397,7 +397,7 @@ class RawDubClient:
     def get_dubbed_output_in_alt_format(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         output_format: DubbedOutputInAltFormatRequestPayloadOutputFormat,
         request_options: typing.Optional[RequestOptions] = None,
@@ -407,7 +407,7 @@ class RawDubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         output_format : DubbedOutputInAltFormatRequestPayloadOutputFormat
 
@@ -638,13 +638,13 @@ class AsyncRawDubClient:
         self,
         *,
         video_url: str,
-        source_language: Languages,
+        source_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
-        target_language: typing.Optional[Languages] = OMIT,
-        target_languages: typing.Optional[typing.Sequence[Languages]] = OMIT,
+        target_language: typing.Optional[LanguageInput] = OMIT,
+        target_languages: typing.Optional[typing.Sequence[LanguageInput]] = OMIT,
         selected_audio_tracks: typing.Optional[typing.Sequence[int]] = OMIT,
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -659,7 +659,7 @@ class AsyncRawDubClient:
         ----------
         video_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -669,9 +669,9 @@ class AsyncRawDubClient:
 
         folder_id : typing.Optional[int]
 
-        target_language : typing.Optional[Languages]
+        target_language : typing.Optional[LanguageInput]
 
-        target_languages : typing.Optional[typing.Sequence[Languages]]
+        target_languages : typing.Optional[typing.Sequence[LanguageInput]]
 
         selected_audio_tracks : typing.Optional[typing.Sequence[int]]
 
@@ -928,7 +928,7 @@ class AsyncRawDubClient:
     async def get_dubbed_run_transcript(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -939,7 +939,7 @@ class AsyncRawDubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
             Format to use for the transcription. Either `srt`, `vtt` or `txt`. Defaults to `txt`.
@@ -993,7 +993,7 @@ class AsyncRawDubClient:
     async def get_dubbed_output_in_alt_format(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         output_format: DubbedOutputInAltFormatRequestPayloadOutputFormat,
         request_options: typing.Optional[RequestOptions] = None,
@@ -1003,7 +1003,7 @@ class AsyncRawDubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         output_format : DubbedOutputInAltFormatRequestPayloadOutputFormat
 

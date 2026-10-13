@@ -14,7 +14,7 @@ from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from ..types.subtitle_formatting_options import SubtitleFormattingOptions
@@ -34,7 +34,7 @@ class RawTranscriptionClient:
     def create_transcription(
         self,
         *,
-        language: Languages,
+        language: LanguageInput,
         run_id: typing.Optional[int] = None,
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
@@ -44,16 +44,19 @@ class RawTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
-        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]] = OMIT,
+        run_audio_cleaning: bool = True,
+        include_music_in_fg: bool = True,
+        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineCallResult]:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        language : LanguageInput
+            Language ID, locale tag, or "auto" for language detection.
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         media_file : typing.Optional[core.File]
             See core.File for more documentation
@@ -62,7 +65,7 @@ class RawTranscriptionClient:
             Signed URL to media file for transcription
 
         file : typing.Optional[core.File]
-            See core.File for more documentation
+            Deprecated alias for media_file. See core.File for upload documentation.
 
         audio_url : typing.Optional[str]
             [DEPRECATED] Use 'media_url' instead
@@ -76,7 +79,14 @@ class RawTranscriptionClient:
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
 
-        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]]
+        run_audio_cleaning : bool
+            Run source separation before transcription (default True). Set False for clean speech.
+
+        include_music_in_fg : bool
+            Keep music in foreground audio during cleaning (default True).
+            Has no effect when run_audio_cleaning is False.
+
+        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -89,9 +99,6 @@ class RawTranscriptionClient:
         _response = self._client_wrapper.httpx_client.request(
             "transcribe",
             method="POST",
-            params={
-                "run_id": run_id,
-            },
             data={
                 "language": language,
                 "media_url": media_url,
@@ -100,6 +107,8 @@ class RawTranscriptionClient:
                 "project_description": project_description,
                 "folder_id": folder_id,
                 "transcription_mode": transcription_mode,
+                "run_audio_cleaning": run_audio_cleaning,
+                "include_music_in_fg": include_music_in_fg,
                 "formatting_options": _serialize_formatting_options(formatting_options),
             },
             files={
@@ -149,6 +158,7 @@ class RawTranscriptionClient:
         task_id : str
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -161,9 +171,6 @@ class RawTranscriptionClient:
         _response = self._client_wrapper.httpx_client.request(
             f"transcribe/{jsonable_encoder(task_id)}",
             method="GET",
-            params={
-                "run_id": run_id,
-            },
             request_options=request_options,
         )
         try:
@@ -194,7 +201,7 @@ class RawTranscriptionClient:
 
     def get_transcription_result(
         self,
-        run_id: typing.Optional[int],
+        run_id: int,
         *,
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
@@ -207,9 +214,11 @@ class RawTranscriptionClient:
 
         Parameters
         ----------
-        run_id : typing.Optional[int]
+        run_id : int
+            Required transcription run ID.
 
         word_level_timestamps : typing.Optional[bool]
+            Deprecated compatibility argument; ignored by the API.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -227,7 +236,6 @@ class RawTranscriptionClient:
             f"transcription-result/{jsonable_encoder(run_id)}",
             method="GET",
             params={
-                "word_level_timestamps": word_level_timestamps,
                 "format_type": format_type,
                 "data_type": data_type,
             },
@@ -273,6 +281,7 @@ class RawTranscriptionClient:
         run_ids : typing.Sequence[int]
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         traceparent : typing.Optional[str]
 
@@ -287,9 +296,6 @@ class RawTranscriptionClient:
         _response = self._client_wrapper.httpx_client.request(
             "transcription-results",
             method="POST",
-            params={
-                "run_id": run_id,
-            },
             json={
                 "run_ids": run_ids,
             },
@@ -334,7 +340,7 @@ class AsyncRawTranscriptionClient:
     async def create_transcription(
         self,
         *,
-        language: Languages,
+        language: LanguageInput,
         run_id: typing.Optional[int] = None,
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
@@ -344,16 +350,19 @@ class AsyncRawTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
-        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]] = OMIT,
+        run_audio_cleaning: bool = True,
+        include_music_in_fg: bool = True,
+        formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineCallResult]:
         """
         Parameters
         ----------
-        language : Languages
-            Signed URL to audio file for transcription
+        language : LanguageInput
+            Language ID, locale tag, or "auto" for language detection.
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         media_file : typing.Optional[core.File]
             See core.File for more documentation
@@ -362,7 +371,7 @@ class AsyncRawTranscriptionClient:
             Signed URL to media file for transcription
 
         file : typing.Optional[core.File]
-            See core.File for more documentation
+            Deprecated alias for media_file. See core.File for upload documentation.
 
         audio_url : typing.Optional[str]
             [DEPRECATED] Use 'media_url' instead
@@ -376,7 +385,14 @@ class AsyncRawTranscriptionClient:
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
 
-        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]]
+        run_audio_cleaning : bool
+            Run source separation before transcription (default True). Set False for clean speech.
+
+        include_music_in_fg : bool
+            Keep music in foreground audio during cleaning (default True).
+            Has no effect when run_audio_cleaning is False.
+
+        formatting_options : typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -389,9 +405,6 @@ class AsyncRawTranscriptionClient:
         _response = await self._client_wrapper.httpx_client.request(
             "transcribe",
             method="POST",
-            params={
-                "run_id": run_id,
-            },
             data={
                 "language": language,
                 "media_url": media_url,
@@ -400,6 +413,8 @@ class AsyncRawTranscriptionClient:
                 "project_description": project_description,
                 "folder_id": folder_id,
                 "transcription_mode": transcription_mode,
+                "run_audio_cleaning": run_audio_cleaning,
+                "include_music_in_fg": include_music_in_fg,
                 "formatting_options": _serialize_formatting_options(formatting_options),
             },
             files={
@@ -449,6 +464,7 @@ class AsyncRawTranscriptionClient:
         task_id : str
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -461,9 +477,6 @@ class AsyncRawTranscriptionClient:
         _response = await self._client_wrapper.httpx_client.request(
             f"transcribe/{jsonable_encoder(task_id)}",
             method="GET",
-            params={
-                "run_id": run_id,
-            },
             request_options=request_options,
         )
         try:
@@ -494,7 +507,7 @@ class AsyncRawTranscriptionClient:
 
     async def get_transcription_result(
         self,
-        run_id: typing.Optional[int],
+        run_id: int,
         *,
         word_level_timestamps: typing.Optional[bool] = None,
         format_type: typing.Optional[TranscriptFileFormat] = None,
@@ -507,9 +520,11 @@ class AsyncRawTranscriptionClient:
 
         Parameters
         ----------
-        run_id : typing.Optional[int]
+        run_id : int
+            Required transcription run ID.
 
         word_level_timestamps : typing.Optional[bool]
+            Deprecated compatibility argument; ignored by the API.
 
         format_type : typing.Optional[TranscriptFileFormat]
 
@@ -527,7 +542,6 @@ class AsyncRawTranscriptionClient:
             f"transcription-result/{jsonable_encoder(run_id)}",
             method="GET",
             params={
-                "word_level_timestamps": word_level_timestamps,
                 "format_type": format_type,
                 "data_type": data_type,
             },
@@ -573,6 +587,7 @@ class AsyncRawTranscriptionClient:
         run_ids : typing.Sequence[int]
 
         run_id : typing.Optional[int]
+            Deprecated compatibility argument; ignored by this endpoint.
 
         traceparent : typing.Optional[str]
 
@@ -587,9 +602,6 @@ class AsyncRawTranscriptionClient:
         _response = await self._client_wrapper.httpx_client.request(
             "transcription-results",
             method="POST",
-            params={
-                "run_id": run_id,
-            },
             json={
                 "run_ids": run_ids,
             },
@@ -628,9 +640,11 @@ class AsyncRawTranscriptionClient:
 
 
 def _serialize_formatting_options(
-    formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any]]],
+    formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]],
 ) -> typing.Any:
     if formatting_options is OMIT or formatting_options is None:
+        return formatting_options
+    if isinstance(formatting_options, str):
         return formatting_options
     return json.dumps(
         jsonable_encoder(

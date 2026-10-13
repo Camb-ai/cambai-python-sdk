@@ -15,8 +15,9 @@ BASE = {"video_url": "https://example.com/video.mp4", "source_language": 1, "tar
 
 
 class DubSRTTests(unittest.TestCase):
-    def invoke(self, *, asynchronous, raw, options, status=200, response=None):
+    def invoke(self, *, asynchronous, raw, options, status=200, response=None, source_language=None):
         requests = []
+        base = {**BASE, **({"source_language": source_language} if source_language is not None else {})}
 
         def handler(request):
             requests.append(request)
@@ -29,20 +30,28 @@ class DubSRTTests(unittest.TestCase):
                 async with httpx.AsyncClient(transport=transport) as http:
                     sdk = AsyncCambAI(api_key="test-key", httpx_client=http)
                     method = sdk.dub.with_raw_response.end_to_end_dubbing if raw else sdk.dub.create_dub
-                    return await method(**BASE, **options)
+                    return await method(**base, **options)
 
             result = asyncio.run(run())
         else:
             with httpx.Client(transport=transport) as http:
                 sdk = CambAI(api_key="test-key", httpx_client=http)
                 method = sdk.dub.with_raw_response.end_to_end_dubbing if raw else sdk.dub.create_dub
-                result = method(**BASE, **options)
+                result = method(**base, **options)
         self.assertEqual((result.data if raw else result).task_id, "test-task")
         self.assertEqual(len(requests), 1)
         self.assertEqual(requests[0].method, "POST")
         self.assertTrue(requests[0].url.path.endswith("/dub"))
         self.assertEqual(requests[0].headers["x-api-key"], "test-key")
         return json.loads(requests[0].content)
+
+    def test_auto_source_language_serializes_in_all_clients(self):
+        for asynchronous in (False, True):
+            for raw in (False, True):
+                with self.subTest(asynchronous=asynchronous, raw=raw):
+                    body = self.invoke(asynchronous=asynchronous, raw=raw, options={}, source_language="auto")
+                    self.assertEqual(body["source_language"], "auto")
+                    self.assertEqual(body["target_languages"], [4])
 
     def test_scripts_serialize_in_all_clients(self):
         for asynchronous in (False, True):

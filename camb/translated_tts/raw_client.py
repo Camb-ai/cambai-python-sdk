@@ -14,7 +14,7 @@ from ..types.create_translated_tts_out import CreateTranslatedTtsOut
 from ..types.formalities import Formalities
 from ..types.gender import Gender
 from ..types.http_validation_error import HttpValidationError
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 
 # this is used as the default value for optional parameters
@@ -30,8 +30,8 @@ class RawTranslatedTtsClient:
         *,
         text: str,
         voice_id: int,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         traceparent: typing.Optional[str] = None,
         project_name: typing.Optional[str] = OMIT,
@@ -50,9 +50,9 @@ class RawTranslatedTtsClient:
 
         voice_id : int
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -198,8 +198,8 @@ class AsyncRawTranslatedTtsClient:
         *,
         text: str,
         voice_id: int,
-        source_language: Languages,
-        target_language: Languages,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         traceparent: typing.Optional[str] = None,
         project_name: typing.Optional[str] = OMIT,
@@ -218,9 +218,9 @@ class AsyncRawTranslatedTtsClient:
 
         voice_id : int
 
-        source_language : Languages
+        source_language : LanguageInput
 
-        target_language : Languages
+        target_language : LanguageInput
 
         run_id : typing.Optional[int]
 

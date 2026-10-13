@@ -4,7 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.languages import Languages
+from ..types.language_input import LanguageInput
 from ..types.dub_srt_input import DubSRTInput
 from ..types.dub_target_srt_input import DubTargetSRTInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
@@ -46,13 +46,13 @@ class DubClient:
         self,
         *,
         video_url: str,
-        source_language: Languages,
+        source_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
-        target_language: typing.Optional[Languages] = OMIT,
-        target_languages: typing.Optional[typing.Sequence[Languages]] = OMIT,
+        target_language: typing.Optional[LanguageInput] = OMIT,
+        target_languages: typing.Optional[typing.Sequence[LanguageInput]] = OMIT,
         selected_audio_tracks: typing.Optional[typing.Sequence[int]] = OMIT,
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -67,7 +67,7 @@ class DubClient:
         ----------
         video_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -77,9 +77,9 @@ class DubClient:
 
         folder_id : typing.Optional[int]
 
-        target_language : typing.Optional[Languages]
+        target_language : typing.Optional[LanguageInput]
 
-        target_languages : typing.Optional[typing.Sequence[Languages]]
+        target_languages : typing.Optional[typing.Sequence[LanguageInput]]
 
         selected_audio_tracks : typing.Optional[typing.Sequence[int]]
 
@@ -253,7 +253,7 @@ class DubClient:
     def get_dubbed_run_transcript(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -264,7 +264,7 @@ class DubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
             Format to use for the transcription. Either `srt`, `vtt` or `txt`. Defaults to `txt`.
@@ -300,7 +300,7 @@ class DubClient:
     def get_dubbed_output_in_alt_format(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         output_format: DubbedOutputInAltFormatRequestPayloadOutputFormat,
         request_options: typing.Optional[RequestOptions] = None,
@@ -310,7 +310,7 @@ class DubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         output_format : DubbedOutputInAltFormatRequestPayloadOutputFormat
 
@@ -397,13 +397,13 @@ class AsyncDubClient:
         self,
         *,
         video_url: str,
-        source_language: Languages,
+        source_language: LanguageInput,
         run_id: typing.Optional[int] = None,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
-        target_language: typing.Optional[Languages] = OMIT,
-        target_languages: typing.Optional[typing.Sequence[Languages]] = OMIT,
+        target_language: typing.Optional[LanguageInput] = OMIT,
+        target_languages: typing.Optional[typing.Sequence[LanguageInput]] = OMIT,
         selected_audio_tracks: typing.Optional[typing.Sequence[int]] = OMIT,
         add_output_as_an_audio_track: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -418,7 +418,7 @@ class AsyncDubClient:
         ----------
         video_url : str
 
-        source_language : Languages
+        source_language : LanguageInput
 
         run_id : typing.Optional[int]
 
@@ -428,9 +428,9 @@ class AsyncDubClient:
 
         folder_id : typing.Optional[int]
 
-        target_language : typing.Optional[Languages]
+        target_language : typing.Optional[LanguageInput]
 
-        target_languages : typing.Optional[typing.Sequence[Languages]]
+        target_languages : typing.Optional[typing.Sequence[LanguageInput]]
 
         selected_audio_tracks : typing.Optional[typing.Sequence[int]]
 
@@ -636,7 +636,7 @@ class AsyncDubClient:
     async def get_dubbed_run_transcript(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         format_type: typing.Optional[TranscriptFileFormat] = None,
         data_type: typing.Optional[TranscriptDataType] = None,
@@ -647,7 +647,7 @@ class AsyncDubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         format_type : typing.Optional[TranscriptFileFormat]
             Format to use for the transcription. Either `srt`, `vtt` or `txt`. Defaults to `txt`.
@@ -691,7 +691,7 @@ class AsyncDubClient:
     async def get_dubbed_output_in_alt_format(
         self,
         run_id: typing.Optional[int],
-        language: Languages,
+        language: LanguageInput,
         *,
         output_format: DubbedOutputInAltFormatRequestPayloadOutputFormat,
         request_options: typing.Optional[RequestOptions] = None,
@@ -701,7 +701,7 @@ class AsyncDubClient:
         ----------
         run_id : typing.Optional[int]
 
-        language : Languages
+        language : LanguageInput
 
         output_format : DubbedOutputInAltFormatRequestPayloadOutputFormat
 
