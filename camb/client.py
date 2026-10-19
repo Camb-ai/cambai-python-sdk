@@ -24,6 +24,12 @@ if typing.TYPE_CHECKING:
     from .streaming.client import AsyncStreamingClient, StreamingClient
     from .subtitles.client import AsyncSubtitlesClient, SubtitlesClient
     from .text_to_audio.client import AsyncTextToAudioClient, TextToAudioClient
+    from .spot_transcription.client import AsyncSpotTranscriptionClient, SpotTranscriptionClient
+    from .spot_translation.client import AsyncSpotTranslationClient, SpotTranslationClient
+    from .scene_audio_description.client import AsyncSceneAudioDescriptionClient, SceneAudioDescriptionClient
+    from .export_audiobook.client import AsyncExportAudiobookClient, ExportAudiobookClient
+    from .export_stems.client import AsyncExportStemsClient, ExportStemsClient
+    from .narration.client import AsyncNarrationClient, NarrationClient
     from .text_to_speech.client import AsyncTextToSpeechClient, TextToSpeechClient
     from .text_to_voice.client import AsyncTextToVoiceClient, TextToVoiceClient
     from .transcription.client import AsyncTranscriptionClient, TranscriptionClient
@@ -151,6 +157,12 @@ class CambAI:
         self._subtitles: typing.Optional[SubtitlesClient] = None
         self._translated_story: typing.Optional[TranslatedStoryClient] = None
         self._text_to_audio: typing.Optional[TextToAudioClient] = None
+        self._spot_transcription: typing.Optional[SpotTranscriptionClient] = None
+        self._spot_translation: typing.Optional[SpotTranslationClient] = None
+        self._scene_audio_description: typing.Optional[SceneAudioDescriptionClient] = None
+        self._export_audiobook: typing.Optional[ExportAudiobookClient] = None
+        self._export_stems: typing.Optional[ExportStemsClient] = None
+        self._narration: typing.Optional[NarrationClient] = None
         self._text_to_voice: typing.Optional[TextToVoiceClient] = None
         self._text_to_speech: typing.Optional[TextToSpeechClient] = None
         self._translation: typing.Optional[TranslationClient] = None
@@ -312,6 +324,54 @@ class CambAI:
 
             self._text_to_audio = TextToAudioClient(client_wrapper=self._client_wrapper)
         return self._text_to_audio
+
+    @property
+    def spot_transcription(self):
+        if self._spot_transcription is None:
+            from .spot_transcription.client import SpotTranscriptionClient  # noqa: E402
+
+            self._spot_transcription = SpotTranscriptionClient(client_wrapper=self._client_wrapper)
+        return self._spot_transcription
+
+    @property
+    def spot_translation(self):
+        if self._spot_translation is None:
+            from .spot_translation.client import SpotTranslationClient  # noqa: E402
+
+            self._spot_translation = SpotTranslationClient(client_wrapper=self._client_wrapper)
+        return self._spot_translation
+
+    @property
+    def scene_audio_description(self):
+        if self._scene_audio_description is None:
+            from .scene_audio_description.client import SceneAudioDescriptionClient  # noqa: E402
+
+            self._scene_audio_description = SceneAudioDescriptionClient(client_wrapper=self._client_wrapper)
+        return self._scene_audio_description
+
+    @property
+    def export_audiobook(self):
+        if self._export_audiobook is None:
+            from .export_audiobook.client import ExportAudiobookClient  # noqa: E402
+
+            self._export_audiobook = ExportAudiobookClient(client_wrapper=self._client_wrapper)
+        return self._export_audiobook
+
+    @property
+    def export_stems(self):
+        if self._export_stems is None:
+            from .export_stems.client import ExportStemsClient  # noqa: E402
+
+            self._export_stems = ExportStemsClient(client_wrapper=self._client_wrapper)
+        return self._export_stems
+
+    @property
+    def narration(self):
+        if self._narration is None:
+            from .narration.client import NarrationClient  # noqa: E402
+
+            self._narration = NarrationClient(client_wrapper=self._client_wrapper)
+        return self._narration
 
     @property
     def text_to_voice(self):
@@ -499,6 +559,12 @@ class AsyncCambAI:
         self._subtitles: typing.Optional[AsyncSubtitlesClient] = None
         self._translated_story: typing.Optional[AsyncTranslatedStoryClient] = None
         self._text_to_audio: typing.Optional[AsyncTextToAudioClient] = None
+        self._spot_transcription: typing.Optional[AsyncSpotTranscriptionClient] = None
+        self._spot_translation: typing.Optional[AsyncSpotTranslationClient] = None
+        self._scene_audio_description: typing.Optional[AsyncSceneAudioDescriptionClient] = None
+        self._export_audiobook: typing.Optional[AsyncExportAudiobookClient] = None
+        self._export_stems: typing.Optional[AsyncExportStemsClient] = None
+        self._narration: typing.Optional[AsyncNarrationClient] = None
         self._text_to_voice: typing.Optional[AsyncTextToVoiceClient] = None
         self._text_to_speech: typing.Optional[AsyncTextToSpeechClient] = None
         self._translation: typing.Optional[AsyncTranslationClient] = None
@@ -684,6 +750,54 @@ class AsyncCambAI:
 
             self._text_to_audio = AsyncTextToAudioClient(client_wrapper=self._client_wrapper)
         return self._text_to_audio
+
+    @property
+    def spot_transcription(self):
+        if self._spot_transcription is None:
+            from .spot_transcription.client import AsyncSpotTranscriptionClient  # noqa: E402
+
+            self._spot_transcription = AsyncSpotTranscriptionClient(client_wrapper=self._client_wrapper)
+        return self._spot_transcription
+
+    @property
+    def spot_translation(self):
+        if self._spot_translation is None:
+            from .spot_translation.client import AsyncSpotTranslationClient  # noqa: E402
+
+            self._spot_translation = AsyncSpotTranslationClient(client_wrapper=self._client_wrapper)
+        return self._spot_translation
+
+    @property
+    def scene_audio_description(self):
+        if self._scene_audio_description is None:
+            from .scene_audio_description.client import AsyncSceneAudioDescriptionClient  # noqa: E402
+
+            self._scene_audio_description = AsyncSceneAudioDescriptionClient(client_wrapper=self._client_wrapper)
+        return self._scene_audio_description
+
+    @property
+    def export_audiobook(self):
+        if self._export_audiobook is None:
+            from .export_audiobook.client import AsyncExportAudiobookClient  # noqa: E402
+
+            self._export_audiobook = AsyncExportAudiobookClient(client_wrapper=self._client_wrapper)
+        return self._export_audiobook
+
+    @property
+    def export_stems(self):
+        if self._export_stems is None:
+            from .export_stems.client import AsyncExportStemsClient  # noqa: E402
+
+            self._export_stems = AsyncExportStemsClient(client_wrapper=self._client_wrapper)
+        return self._export_stems
+
+    @property
+    def narration(self):
+        if self._narration is None:
+            from .narration.client import AsyncNarrationClient  # noqa: E402
+
+            self._narration = AsyncNarrationClient(client_wrapper=self._client_wrapper)
+        return self._narration
 
     @property
     def text_to_voice(self):
