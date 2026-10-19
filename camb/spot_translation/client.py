@@ -4,6 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.generation_type import GenerationType
 from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
@@ -36,7 +37,7 @@ class SpotTranslationClient:
         source_language: LanguageInput,
         target_language: LanguageInput,
         revision_num: typing.Optional[int] = OMIT,
-        generation_type: typing.Optional[str] = OMIT,
+        generation_type: typing.Optional[GenerationType] = OMIT,
         user_duration_percentage: typing.Optional[float] = OMIT,
         user_prompt: typing.Optional[str] = OMIT,
         traceparent: typing.Optional[str] = None,
@@ -60,7 +61,7 @@ class SpotTranslationClient:
         revision_num : typing.Optional[int]
             Revision to re-translate. Defaults to the run's latest.
 
-        generation_type : typing.Optional[str]
+        generation_type : typing.Optional[GenerationType]
             fix_duration keeps the timing; rephrase lets wording move.
 
         user_duration_percentage : typing.Optional[float]
@@ -150,7 +151,7 @@ class AsyncSpotTranslationClient:
         source_language: LanguageInput,
         target_language: LanguageInput,
         revision_num: typing.Optional[int] = OMIT,
-        generation_type: typing.Optional[str] = OMIT,
+        generation_type: typing.Optional[GenerationType] = OMIT,
         user_duration_percentage: typing.Optional[float] = OMIT,
         user_prompt: typing.Optional[str] = OMIT,
         traceparent: typing.Optional[str] = None,
@@ -174,7 +175,7 @@ class AsyncSpotTranslationClient:
         revision_num : typing.Optional[int]
             Revision to re-translate. Defaults to the run's latest.
 
-        generation_type : typing.Optional[str]
+        generation_type : typing.Optional[GenerationType]
             fix_duration keeps the timing; rephrase lets wording move.
 
         user_duration_percentage : typing.Optional[float]

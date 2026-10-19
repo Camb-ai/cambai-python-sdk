@@ -10,6 +10,8 @@ from ..core.jsonable_encoder import jsonable_encoder
 from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
+from ..types.audio_output_type import AudioOutputType
+from ..types.audio_to_export import AudioToExport
 from ..types.http_validation_error import HttpValidationError
 from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
@@ -27,8 +29,8 @@ class RawExportStemsClient:
         self,
         *,
         run_id: int,
-        audio_to_export: str,
-        type: str,
+        audio_to_export: AudioToExport,
+        type: AudioOutputType,
         language: typing.Optional[LanguageInput] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -39,10 +41,10 @@ class RawExportStemsClient:
         run_id : int
             The run whose stems are exported.
 
-        audio_to_export : str
+        audio_to_export : AudioToExport
             Which stem: dialogue, background or foreground.
 
-        type : str
+        type : AudioOutputType
             Audio container to export into.
 
         language : typing.Optional[LanguageInput]
@@ -157,8 +159,8 @@ class AsyncRawExportStemsClient:
         self,
         *,
         run_id: int,
-        audio_to_export: str,
-        type: str,
+        audio_to_export: AudioToExport,
+        type: AudioOutputType,
         language: typing.Optional[LanguageInput] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -169,10 +171,10 @@ class AsyncRawExportStemsClient:
         run_id : int
             The run whose stems are exported.
 
-        audio_to_export : str
+        audio_to_export : AudioToExport
             Which stem: dialogue, background or foreground.
 
-        type : str
+        type : AudioOutputType
             Audio container to export into.
 
         language : typing.Optional[LanguageInput]

@@ -4,6 +4,9 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.link_video_types import LinkVideoTypes
+from ..types.narration_type import NarrationType
+from ..types.speech_models import SpeechModels
 from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
@@ -32,15 +35,15 @@ class NarrationClient:
         self,
         *,
         video_url: str,
-        video_type: int,
+        video_type: LinkVideoTypes,
         source_language: LanguageInput,
         narrator_voice_id: int,
-        narration_type: typing.Optional[str] = OMIT,
+        narration_type: typing.Optional[NarrationType] = OMIT,
         video_id: typing.Optional[str] = OMIT,
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
-        speech_model: typing.Optional[str] = OMIT,
+        speech_model: typing.Optional[SpeechModels] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -53,7 +56,7 @@ class NarrationClient:
         video_url : str
             Video to narrate, as a public or bucket URL.
 
-        video_type : int
+        video_type : LinkVideoTypes
             Where video_url points.
 
         source_language : LanguageInput
@@ -62,7 +65,7 @@ class NarrationClient:
         narrator_voice_id : int
             Voice that reads the narration.
 
-        narration_type : typing.Optional[str]
+        narration_type : typing.Optional[NarrationType]
             narration reads a script; audio_description describes the picture.
 
         video_id : typing.Optional[str]
@@ -77,7 +80,7 @@ class NarrationClient:
         chosen_dictionaries : typing.Optional[typing.Sequence[int]]
             Dictionaries applied to the narration.
 
-        speech_model : typing.Optional[str]
+        speech_model : typing.Optional[SpeechModels]
             Speech model used to read the narration.
 
         project_name : typing.Optional[str]
@@ -167,15 +170,15 @@ class AsyncNarrationClient:
         self,
         *,
         video_url: str,
-        video_type: int,
+        video_type: LinkVideoTypes,
         source_language: LanguageInput,
         narrator_voice_id: int,
-        narration_type: typing.Optional[str] = OMIT,
+        narration_type: typing.Optional[NarrationType] = OMIT,
         video_id: typing.Optional[str] = OMIT,
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
-        speech_model: typing.Optional[str] = OMIT,
+        speech_model: typing.Optional[SpeechModels] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -188,7 +191,7 @@ class AsyncNarrationClient:
         video_url : str
             Video to narrate, as a public or bucket URL.
 
-        video_type : int
+        video_type : LinkVideoTypes
             Where video_url points.
 
         source_language : LanguageInput
@@ -197,7 +200,7 @@ class AsyncNarrationClient:
         narrator_voice_id : int
             Voice that reads the narration.
 
-        narration_type : typing.Optional[str]
+        narration_type : typing.Optional[NarrationType]
             narration reads a script; audio_description describes the picture.
 
         video_id : typing.Optional[str]
@@ -212,7 +215,7 @@ class AsyncNarrationClient:
         chosen_dictionaries : typing.Optional[typing.Sequence[int]]
             Dictionaries applied to the narration.
 
-        speech_model : typing.Optional[str]
+        speech_model : typing.Optional[SpeechModels]
             Speech model used to read the narration.
 
         project_name : typing.Optional[str]

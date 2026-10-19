@@ -6,13 +6,13 @@ from camb.types.language_enums import Languages
 
 
 POLL_INTERVAL_SECONDS = 5
-TERMINAL_STATUSES = ("SUCCESS", "ERROR")
+PENDING_STATUS = "PENDING"
 
 
 def wait_for(poll, task_id: str):
     while True:
         result = poll(task_id=task_id)
-        if result.status in TERMINAL_STATUSES:
+        if result.status != PENDING_STATUS:
             return result
         time.sleep(POLL_INTERVAL_SECONDS)
 

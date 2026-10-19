@@ -4,6 +4,8 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.audio_output_type import AudioOutputType
+from ..types.audio_to_export import AudioToExport
 from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
@@ -32,8 +34,8 @@ class ExportStemsClient:
         self,
         *,
         run_id: int,
-        audio_to_export: str,
-        type: str,
+        audio_to_export: AudioToExport,
+        type: AudioOutputType,
         language: typing.Optional[LanguageInput] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -44,10 +46,10 @@ class ExportStemsClient:
         run_id : int
             The run whose stems are exported.
 
-        audio_to_export : str
+        audio_to_export : AudioToExport
             Which stem: dialogue, background or foreground.
 
-        type : str
+        type : AudioOutputType
             Audio container to export into.
 
         language : typing.Optional[LanguageInput]
@@ -130,8 +132,8 @@ class AsyncExportStemsClient:
         self,
         *,
         run_id: int,
-        audio_to_export: str,
-        type: str,
+        audio_to_export: AudioToExport,
+        type: AudioOutputType,
         language: typing.Optional[LanguageInput] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -142,10 +144,10 @@ class AsyncExportStemsClient:
         run_id : int
             The run whose stems are exported.
 
-        audio_to_export : str
+        audio_to_export : AudioToExport
             Which stem: dialogue, background or foreground.
 
-        type : str
+        type : AudioOutputType
             Audio container to export into.
 
         language : typing.Optional[LanguageInput]
