@@ -53,7 +53,6 @@ if typing.TYPE_CHECKING:
     from .run_i_ds_request_payload import RunIDsRequestPayload
     from .segmenting_option import SegmentingOption
     from .source_stream import SourceStream
-    from .speech_models import SpeechModels
     from .story_details import StoryDetails
     from .stream_category import StreamCategory
     from .stream_tts_inference_options import StreamTtsInferenceOptions
@@ -130,7 +129,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "RunIDsRequestPayload": ".run_i_ds_request_payload",
     "SegmentingOption": ".segmenting_option",
     "SourceStream": ".source_stream",
-    "SpeechModels": ".speech_models",
     "StoryDetails": ".story_details",
     "StreamCategory": ".stream_category",
     "StreamTtsInferenceOptions": ".stream_tts_inference_options",
@@ -231,7 +229,6 @@ __all__ = [
     "RunIDsRequestPayload",
     "SegmentingOption",
     "SourceStream",
-    "SpeechModels",
     "StoryDetails",
     "StreamCategory",
     "StreamTtsInferenceOptions",

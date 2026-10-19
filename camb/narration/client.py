@@ -4,12 +4,12 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.language_input import LanguageInput
 from ..types.link_video_types import LinkVideoTypes
 from ..types.narration_type import NarrationType
-from ..types.speech_models import SpeechModels
-from ..types.language_input import LanguageInput
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
+from .types.create_narration_request_payload_speech_model import CreateNarrationRequestPayloadSpeechModel
 from .raw_client import AsyncRawNarrationClient, RawNarrationClient
 
 # this is used as the default value for optional parameters
@@ -43,7 +43,7 @@ class NarrationClient:
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
-        speech_model: typing.Optional[SpeechModels] = OMIT,
+        speech_model: typing.Optional[CreateNarrationRequestPayloadSpeechModel] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -80,7 +80,7 @@ class NarrationClient:
         chosen_dictionaries : typing.Optional[typing.Sequence[int]]
             Dictionaries applied to the narration.
 
-        speech_model : typing.Optional[SpeechModels]
+        speech_model : typing.Optional[CreateNarrationRequestPayloadSpeechModel]
             Speech model used to read the narration.
 
         project_name : typing.Optional[str]
@@ -178,7 +178,7 @@ class AsyncNarrationClient:
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
-        speech_model: typing.Optional[SpeechModels] = OMIT,
+        speech_model: typing.Optional[CreateNarrationRequestPayloadSpeechModel] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -215,7 +215,7 @@ class AsyncNarrationClient:
         chosen_dictionaries : typing.Optional[typing.Sequence[int]]
             Dictionaries applied to the narration.
 
-        speech_model : typing.Optional[SpeechModels]
+        speech_model : typing.Optional[CreateNarrationRequestPayloadSpeechModel]
             Speech model used to read the narration.
 
         project_name : typing.Optional[str]
