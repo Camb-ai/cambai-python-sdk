@@ -41,12 +41,15 @@ def main() -> None:
     result = wait_for(client.spot_transcription.get_spot_transcription_status, task.task_id)
     print(f"spot transcription: {result.status}")
 
-    # Re-translate named lines only. fix_duration keeps the original timing,
-    # which matters once the audio is cut to picture; rephrase lets it move.
+    # Re-translate named lines only. target_language picks which of the run's
+    # translations to redo, so the run must already have a transcript in it.
+    # fix_duration keeps the original timing, which matters once the audio is
+    # cut to picture; rephrase lets it move.
     task = client.spot_translation.create_spot_translation(
         run_id=run_id,
         dialogue_ids=["8842"],
         source_language=Languages.EN_US,
+        target_language=Languages.ES_ES,
         generation_type="fix_duration",
     )
     result = wait_for(client.spot_translation.get_spot_translation_status, task.task_id)

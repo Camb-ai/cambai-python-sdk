@@ -37,7 +37,6 @@ class NarrationClient:
         narrator_voice_id: int,
         narration_type: typing.Optional[str] = OMIT,
         video_id: typing.Optional[str] = OMIT,
-        target_language: typing.Optional[LanguageInput] = OMIT,
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -68,9 +67,6 @@ class NarrationClient:
 
         video_id : typing.Optional[str]
             Platform video id, derived from video_url when omitted.
-
-        target_language : typing.Optional[LanguageInput]
-            Language to narrate in.
 
         script_file_key : typing.Optional[str]
             Bucket key of a narration script.
@@ -115,7 +111,7 @@ class NarrationClient:
             narrator_voice_id=1,
         )
         """
-        _response = self._raw_client.create_narration(video_url=video_url, video_type=video_type, source_language=source_language, narrator_voice_id=narrator_voice_id, narration_type=narration_type, video_id=video_id, target_language=target_language, script_file_key=script_file_key, remove_fg_audio=remove_fg_audio, chosen_dictionaries=chosen_dictionaries, speech_model=speech_model, project_name=project_name, project_description=project_description, folder_id=folder_id, traceparent=traceparent, request_options=request_options)
+        _response = self._raw_client.create_narration(video_url=video_url, video_type=video_type, source_language=source_language, narrator_voice_id=narrator_voice_id, narration_type=narration_type, video_id=video_id, script_file_key=script_file_key, remove_fg_audio=remove_fg_audio, chosen_dictionaries=chosen_dictionaries, speech_model=speech_model, project_name=project_name, project_description=project_description, folder_id=folder_id, traceparent=traceparent, request_options=request_options)
         return _response.data
 
     def get_narration_status(
@@ -176,7 +172,6 @@ class AsyncNarrationClient:
         narrator_voice_id: int,
         narration_type: typing.Optional[str] = OMIT,
         video_id: typing.Optional[str] = OMIT,
-        target_language: typing.Optional[LanguageInput] = OMIT,
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -208,9 +203,6 @@ class AsyncNarrationClient:
         video_id : typing.Optional[str]
             Platform video id, derived from video_url when omitted.
 
-        target_language : typing.Optional[LanguageInput]
-            Language to narrate in.
-
         script_file_key : typing.Optional[str]
             Bucket key of a narration script.
 
@@ -240,7 +232,7 @@ class AsyncNarrationClient:
         OrchestratorPipelineCallResult
             Successful Response
         """
-        _response = await self._raw_client.create_narration(video_url=video_url, video_type=video_type, source_language=source_language, narrator_voice_id=narrator_voice_id, narration_type=narration_type, video_id=video_id, target_language=target_language, script_file_key=script_file_key, remove_fg_audio=remove_fg_audio, chosen_dictionaries=chosen_dictionaries, speech_model=speech_model, project_name=project_name, project_description=project_description, folder_id=folder_id, traceparent=traceparent, request_options=request_options)
+        _response = await self._raw_client.create_narration(video_url=video_url, video_type=video_type, source_language=source_language, narrator_voice_id=narrator_voice_id, narration_type=narration_type, video_id=video_id, script_file_key=script_file_key, remove_fg_audio=remove_fg_audio, chosen_dictionaries=chosen_dictionaries, speech_model=speech_model, project_name=project_name, project_description=project_description, folder_id=folder_id, traceparent=traceparent, request_options=request_options)
         return _response.data
 
     async def get_narration_status(

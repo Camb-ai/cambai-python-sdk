@@ -32,7 +32,6 @@ class RawNarrationClient:
         narrator_voice_id: int,
         narration_type: typing.Optional[str] = OMIT,
         video_id: typing.Optional[str] = OMIT,
-        target_language: typing.Optional[LanguageInput] = OMIT,
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -63,9 +62,6 @@ class RawNarrationClient:
 
         video_id : typing.Optional[str]
             Platform video id, derived from video_url when omitted.
-
-        target_language : typing.Optional[LanguageInput]
-            Language to narrate in.
 
         script_file_key : typing.Optional[str]
             Bucket key of a narration script.
@@ -106,7 +102,6 @@ class RawNarrationClient:
                 "narrator_voice_id": narrator_voice_id,
                 "narration_type": narration_type,
                 "video_id": video_id,
-                "target_language": target_language,
                 "script_file_key": script_file_key,
                 "remove_fg_audio": remove_fg_audio,
                 "chosen_dictionaries": chosen_dictionaries,
@@ -212,7 +207,6 @@ class AsyncRawNarrationClient:
         narrator_voice_id: int,
         narration_type: typing.Optional[str] = OMIT,
         video_id: typing.Optional[str] = OMIT,
-        target_language: typing.Optional[LanguageInput] = OMIT,
         script_file_key: typing.Optional[str] = OMIT,
         remove_fg_audio: typing.Optional[bool] = OMIT,
         chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
@@ -243,9 +237,6 @@ class AsyncRawNarrationClient:
 
         video_id : typing.Optional[str]
             Platform video id, derived from video_url when omitted.
-
-        target_language : typing.Optional[LanguageInput]
-            Language to narrate in.
 
         script_file_key : typing.Optional[str]
             Bucket key of a narration script.
@@ -286,7 +277,6 @@ class AsyncRawNarrationClient:
                 "narrator_voice_id": narrator_voice_id,
                 "narration_type": narration_type,
                 "video_id": video_id,
-                "target_language": target_language,
                 "script_file_key": script_file_key,
                 "remove_fg_audio": remove_fg_audio,
                 "chosen_dictionaries": chosen_dictionaries,

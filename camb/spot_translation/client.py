@@ -34,13 +34,10 @@ class SpotTranslationClient:
         run_id: int,
         dialogue_ids: typing.Sequence[str],
         source_language: LanguageInput,
+        target_language: LanguageInput,
         revision_num: typing.Optional[int] = OMIT,
-        target_language: typing.Optional[LanguageInput] = OMIT,
         generation_type: typing.Optional[str] = OMIT,
         user_duration_percentage: typing.Optional[float] = OMIT,
-        formality: typing.Optional[int] = OMIT,
-        age: typing.Optional[int] = OMIT,
-        gender: typing.Optional[int] = OMIT,
         user_prompt: typing.Optional[str] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -57,26 +54,17 @@ class SpotTranslationClient:
         source_language : LanguageInput
             Language the dialogues are in.
 
+        target_language : LanguageInput
+            Language to translate into. The run must already have a transcript in it.
+
         revision_num : typing.Optional[int]
             Revision to re-translate. Defaults to the run's latest.
-
-        target_language : typing.Optional[LanguageInput]
-            Language to translate into.
 
         generation_type : typing.Optional[str]
             fix_duration keeps the timing; rephrase lets wording move.
 
         user_duration_percentage : typing.Optional[float]
             Permitted change in duration, as a percentage.
-
-        formality : typing.Optional[int]
-            Formality register for the new translation.
-
-        age : typing.Optional[int]
-            Speaker age, used to pitch the wording.
-
-        gender : typing.Optional[int]
-            Speaker gender.
 
         user_prompt : typing.Optional[str]
             Free-text instruction for the translator.
@@ -102,7 +90,7 @@ class SpotTranslationClient:
             source_language=1,
         )
         """
-        _response = self._raw_client.create_spot_translation(run_id=run_id, dialogue_ids=dialogue_ids, source_language=source_language, revision_num=revision_num, target_language=target_language, generation_type=generation_type, user_duration_percentage=user_duration_percentage, formality=formality, age=age, gender=gender, user_prompt=user_prompt, traceparent=traceparent, request_options=request_options)
+        _response = self._raw_client.create_spot_translation(run_id=run_id, dialogue_ids=dialogue_ids, source_language=source_language, revision_num=revision_num, target_language=target_language, generation_type=generation_type, user_duration_percentage=user_duration_percentage, user_prompt=user_prompt, traceparent=traceparent, request_options=request_options)
         return _response.data
 
     def get_spot_translation_status(
@@ -160,13 +148,10 @@ class AsyncSpotTranslationClient:
         run_id: int,
         dialogue_ids: typing.Sequence[str],
         source_language: LanguageInput,
+        target_language: LanguageInput,
         revision_num: typing.Optional[int] = OMIT,
-        target_language: typing.Optional[LanguageInput] = OMIT,
         generation_type: typing.Optional[str] = OMIT,
         user_duration_percentage: typing.Optional[float] = OMIT,
-        formality: typing.Optional[int] = OMIT,
-        age: typing.Optional[int] = OMIT,
-        gender: typing.Optional[int] = OMIT,
         user_prompt: typing.Optional[str] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -183,26 +168,17 @@ class AsyncSpotTranslationClient:
         source_language : LanguageInput
             Language the dialogues are in.
 
+        target_language : LanguageInput
+            Language to translate into. The run must already have a transcript in it.
+
         revision_num : typing.Optional[int]
             Revision to re-translate. Defaults to the run's latest.
-
-        target_language : typing.Optional[LanguageInput]
-            Language to translate into.
 
         generation_type : typing.Optional[str]
             fix_duration keeps the timing; rephrase lets wording move.
 
         user_duration_percentage : typing.Optional[float]
             Permitted change in duration, as a percentage.
-
-        formality : typing.Optional[int]
-            Formality register for the new translation.
-
-        age : typing.Optional[int]
-            Speaker age, used to pitch the wording.
-
-        gender : typing.Optional[int]
-            Speaker gender.
 
         user_prompt : typing.Optional[str]
             Free-text instruction for the translator.
@@ -215,7 +191,7 @@ class AsyncSpotTranslationClient:
         OrchestratorPipelineCallResult
             Successful Response
         """
-        _response = await self._raw_client.create_spot_translation(run_id=run_id, dialogue_ids=dialogue_ids, source_language=source_language, revision_num=revision_num, target_language=target_language, generation_type=generation_type, user_duration_percentage=user_duration_percentage, formality=formality, age=age, gender=gender, user_prompt=user_prompt, traceparent=traceparent, request_options=request_options)
+        _response = await self._raw_client.create_spot_translation(run_id=run_id, dialogue_ids=dialogue_ids, source_language=source_language, revision_num=revision_num, target_language=target_language, generation_type=generation_type, user_duration_percentage=user_duration_percentage, user_prompt=user_prompt, traceparent=traceparent, request_options=request_options)
         return _response.data
 
     async def get_spot_translation_status(
