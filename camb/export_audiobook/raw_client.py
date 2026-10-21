@@ -11,7 +11,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 
@@ -27,7 +27,7 @@ class RawExportAudiobookClient:
         self,
         *,
         run_id: int,
-        language: LanguageInput,
+        language: Languages,
         revision_num: typing.Optional[int] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -38,7 +38,7 @@ class RawExportAudiobookClient:
         run_id : int
             The audiobook run to export.
 
-        language : LanguageInput
+        language : Languages
             Language edition to export.
 
         revision_num : typing.Optional[int]
@@ -152,7 +152,7 @@ class AsyncRawExportAudiobookClient:
         self,
         *,
         run_id: int,
-        language: LanguageInput,
+        language: Languages,
         revision_num: typing.Optional[int] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -163,7 +163,7 @@ class AsyncRawExportAudiobookClient:
         run_id : int
             The audiobook run to export.
 
-        language : LanguageInput
+        language : Languages
             Language edition to export.
 
         revision_num : typing.Optional[int]

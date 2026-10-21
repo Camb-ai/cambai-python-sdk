@@ -4,7 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from .raw_client import AsyncRawExportAudiobookClient, RawExportAudiobookClient
@@ -32,7 +32,7 @@ class ExportAudiobookClient:
         self,
         *,
         run_id: int,
-        language: LanguageInput,
+        language: Languages,
         revision_num: typing.Optional[int] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -43,7 +43,7 @@ class ExportAudiobookClient:
         run_id : int
             The audiobook run to export.
 
-        language : LanguageInput
+        language : Languages
             Language edition to export.
 
         revision_num : typing.Optional[int]
@@ -125,7 +125,7 @@ class AsyncExportAudiobookClient:
         self,
         *,
         run_id: int,
-        language: LanguageInput,
+        language: Languages,
         revision_num: typing.Optional[int] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -136,7 +136,7 @@ class AsyncExportAudiobookClient:
         run_id : int
             The audiobook run to export.
 
-        language : LanguageInput
+        language : Languages
             Language edition to export.
 
         revision_num : typing.Optional[int]

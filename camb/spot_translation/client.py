@@ -5,7 +5,7 @@ import typing
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.generation_type import GenerationType
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from .raw_client import AsyncRawSpotTranslationClient, RawSpotTranslationClient
@@ -34,8 +34,8 @@ class SpotTranslationClient:
         *,
         run_id: int,
         dialogue_ids: typing.Sequence[str],
-        source_language: LanguageInput,
-        target_language: LanguageInput,
+        source_language: Languages,
+        target_language: Languages,
         revision_num: typing.Optional[int] = OMIT,
         generation_type: typing.Optional[GenerationType] = OMIT,
         user_duration_percentage: typing.Optional[float] = OMIT,
@@ -52,10 +52,10 @@ class SpotTranslationClient:
         dialogue_ids : typing.Sequence[str]
             Dialogues to re-translate, from the run's transcript.
 
-        source_language : LanguageInput
+        source_language : Languages
             Language the dialogues are in.
 
-        target_language : LanguageInput
+        target_language : Languages
             Language to translate into. The run must already have a transcript in it.
 
         revision_num : typing.Optional[int]
@@ -148,8 +148,8 @@ class AsyncSpotTranslationClient:
         *,
         run_id: int,
         dialogue_ids: typing.Sequence[str],
-        source_language: LanguageInput,
-        target_language: LanguageInput,
+        source_language: Languages,
+        target_language: Languages,
         revision_num: typing.Optional[int] = OMIT,
         generation_type: typing.Optional[GenerationType] = OMIT,
         user_duration_percentage: typing.Optional[float] = OMIT,
@@ -166,10 +166,10 @@ class AsyncSpotTranslationClient:
         dialogue_ids : typing.Sequence[str]
             Dialogues to re-translate, from the run's transcript.
 
-        source_language : LanguageInput
+        source_language : Languages
             Language the dialogues are in.
 
-        target_language : LanguageInput
+        target_language : Languages
             Language to translate into. The run must already have a transcript in it.
 
         revision_num : typing.Optional[int]

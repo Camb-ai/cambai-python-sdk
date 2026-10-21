@@ -6,7 +6,7 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.audio_output_type import AudioOutputType
 from ..types.audio_to_export import AudioToExport
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 from .raw_client import AsyncRawExportStemsClient, RawExportStemsClient
@@ -36,7 +36,7 @@ class ExportStemsClient:
         run_id: int,
         audio_to_export: AudioToExport,
         type: AudioOutputType,
-        language: typing.Optional[LanguageInput] = OMIT,
+        language: typing.Optional[Languages] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
@@ -52,7 +52,7 @@ class ExportStemsClient:
         type : AudioOutputType
             Audio container to export into.
 
-        language : typing.Optional[LanguageInput]
+        language : typing.Optional[Languages]
             Language edition. Omit for the source stems.
 
         request_options : typing.Optional[RequestOptions]
@@ -134,7 +134,7 @@ class AsyncExportStemsClient:
         run_id: int,
         audio_to_export: AudioToExport,
         type: AudioOutputType,
-        language: typing.Optional[LanguageInput] = OMIT,
+        language: typing.Optional[Languages] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> OrchestratorPipelineCallResult:
@@ -150,7 +150,7 @@ class AsyncExportStemsClient:
         type : AudioOutputType
             Audio container to export into.
 
-        language : typing.Optional[LanguageInput]
+        language : typing.Optional[Languages]
             Language edition. Omit for the source stems.
 
         request_options : typing.Optional[RequestOptions]

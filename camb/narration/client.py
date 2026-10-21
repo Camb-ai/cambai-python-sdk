@@ -4,7 +4,7 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.link_video_types import LinkVideoTypes
 from ..types.narration_type import NarrationType
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
@@ -36,7 +36,7 @@ class NarrationClient:
         *,
         video_url: str,
         video_type: LinkVideoTypes,
-        source_language: LanguageInput,
+        source_language: Languages,
         narrator_voice_id: int,
         narration_type: typing.Optional[NarrationType] = OMIT,
         video_id: typing.Optional[str] = OMIT,
@@ -59,7 +59,7 @@ class NarrationClient:
         video_type : LinkVideoTypes
             Where video_url points.
 
-        source_language : LanguageInput
+        source_language : Languages
             Language spoken in the video.
 
         narrator_voice_id : int
@@ -171,7 +171,7 @@ class AsyncNarrationClient:
         *,
         video_url: str,
         video_type: LinkVideoTypes,
-        source_language: LanguageInput,
+        source_language: Languages,
         narrator_voice_id: int,
         narration_type: typing.Optional[NarrationType] = OMIT,
         video_id: typing.Optional[str] = OMIT,
@@ -194,7 +194,7 @@ class AsyncNarrationClient:
         video_type : LinkVideoTypes
             Where video_url points.
 
-        source_language : LanguageInput
+        source_language : Languages
             Language spoken in the video.
 
         narrator_voice_id : int

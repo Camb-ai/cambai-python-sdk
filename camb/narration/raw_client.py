@@ -11,7 +11,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.link_video_types import LinkVideoTypes
 from ..types.narration_type import NarrationType
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
@@ -31,7 +31,7 @@ class RawNarrationClient:
         *,
         video_url: str,
         video_type: LinkVideoTypes,
-        source_language: LanguageInput,
+        source_language: Languages,
         narrator_voice_id: int,
         narration_type: typing.Optional[NarrationType] = OMIT,
         video_id: typing.Optional[str] = OMIT,
@@ -54,7 +54,7 @@ class RawNarrationClient:
         video_type : LinkVideoTypes
             Where video_url points.
 
-        source_language : LanguageInput
+        source_language : Languages
             Language spoken in the video.
 
         narrator_voice_id : int
@@ -206,7 +206,7 @@ class AsyncRawNarrationClient:
         *,
         video_url: str,
         video_type: LinkVideoTypes,
-        source_language: LanguageInput,
+        source_language: Languages,
         narrator_voice_id: int,
         narration_type: typing.Optional[NarrationType] = OMIT,
         video_id: typing.Optional[str] = OMIT,
@@ -229,7 +229,7 @@ class AsyncRawNarrationClient:
         video_type : LinkVideoTypes
             Where video_url points.
 
-        source_language : LanguageInput
+        source_language : Languages
             Language spoken in the video.
 
         narrator_voice_id : int

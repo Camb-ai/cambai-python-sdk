@@ -11,7 +11,7 @@ from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.http_validation_error import HttpValidationError
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 
@@ -30,7 +30,7 @@ class RawSpotTranscriptionClient:
         revision_num: typing.Optional[int] = OMIT,
         start_seconds: typing.Optional[float] = OMIT,
         end_seconds: typing.Optional[float] = OMIT,
-        source_language: typing.Optional[LanguageInput] = OMIT,
+        source_language: typing.Optional[Languages] = OMIT,
         auto_detect_language: typing.Optional[bool] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -50,7 +50,7 @@ class RawSpotTranscriptionClient:
         end_seconds : typing.Optional[float]
             End of the window to re-transcribe.
 
-        source_language : typing.Optional[LanguageInput]
+        source_language : typing.Optional[Languages]
             Language spoken in the window. Defaults to the run's.
 
         auto_detect_language : typing.Optional[bool]
@@ -170,7 +170,7 @@ class AsyncRawSpotTranscriptionClient:
         revision_num: typing.Optional[int] = OMIT,
         start_seconds: typing.Optional[float] = OMIT,
         end_seconds: typing.Optional[float] = OMIT,
-        source_language: typing.Optional[LanguageInput] = OMIT,
+        source_language: typing.Optional[Languages] = OMIT,
         auto_detect_language: typing.Optional[bool] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
@@ -190,7 +190,7 @@ class AsyncRawSpotTranscriptionClient:
         end_seconds : typing.Optional[float]
             End of the window to re-transcribe.
 
-        source_language : typing.Optional[LanguageInput]
+        source_language : typing.Optional[Languages]
             Language spoken in the window. Defaults to the run's.
 
         auto_detect_language : typing.Optional[bool]

@@ -13,7 +13,7 @@ from ..errors.unprocessable_entity_error import UnprocessableEntityError
 from ..types.audio_output_type import AudioOutputType
 from ..types.audio_to_export import AudioToExport
 from ..types.http_validation_error import HttpValidationError
-from ..types.language_input import LanguageInput
+from ..types.languages import Languages
 from ..types.orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
 from ..types.orchestrator_pipeline_result import OrchestratorPipelineResult
 
@@ -31,7 +31,7 @@ class RawExportStemsClient:
         run_id: int,
         audio_to_export: AudioToExport,
         type: AudioOutputType,
-        language: typing.Optional[LanguageInput] = OMIT,
+        language: typing.Optional[Languages] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[OrchestratorPipelineCallResult]:
@@ -47,7 +47,7 @@ class RawExportStemsClient:
         type : AudioOutputType
             Audio container to export into.
 
-        language : typing.Optional[LanguageInput]
+        language : typing.Optional[Languages]
             Language edition. Omit for the source stems.
 
         request_options : typing.Optional[RequestOptions]
@@ -161,7 +161,7 @@ class AsyncRawExportStemsClient:
         run_id: int,
         audio_to_export: AudioToExport,
         type: AudioOutputType,
-        language: typing.Optional[LanguageInput] = OMIT,
+        language: typing.Optional[Languages] = OMIT,
         traceparent: typing.Optional[str] = None,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[OrchestratorPipelineCallResult]:
@@ -177,7 +177,7 @@ class AsyncRawExportStemsClient:
         type : AudioOutputType
             Audio container to export into.
 
-        language : typing.Optional[LanguageInput]
+        language : typing.Optional[Languages]
             Language edition. Omit for the source stems.
 
         request_options : typing.Optional[RequestOptions]
