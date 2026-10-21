@@ -34,6 +34,11 @@ class ServerEventType(str, enum.Enum):
     AUDIO_DELTA = "response.audio.delta"
     AUDIO_DONE = "response.audio.done"
     ERROR = "error"
+    # Sent only to sessions whose source language is detected automatically.
+    SOURCE_LANGUAGE_CHANGED = "session.source_language_changed"
+    SOURCE_LANGUAGE_SWITCH_CONFIRMATION_REQUESTED = (
+        "session.source_language_switch_confirmation_requested"
+    )
     # Synthetic — emitted by the SDK when the transport closes, never sent by server.
     CLOSED = "Closed"
 
@@ -64,7 +69,10 @@ class SessionInfo(_RealtimeModel):
     # server on different sides of the rename no longer have to be deployed in lockstep.
     mode: str = pydantic.Field(validation_alias=pydantic.AliasChoices("mode", "model"))
     source_language: str
-    target_language: str
+    # Empty while a session whose source language is detected automatically has no target yet. A
+    # default rather than a required field, for the same reason as `mode` above: a missing value
+    # must not fail the whole parse and close the session.
+    target_language: str = ""
     output_modalities: typing.List[str] = pydantic.Field(default_factory=list)
     # Resolved voice, e.g. {"type": "cloned", "voice_id": 123}. Omitted by the server (``None``
     # here) when the default built-in voice is used.
@@ -74,7 +82,7 @@ class SessionInfo(_RealtimeModel):
 class SessionConfig(_RealtimeModel):
     mode: typing.Optional[str] = None
     source_language: str
-    target_language: str
+    target_language: str = ""
     output_modalities: typing.List[str] = pydantic.Field(default_factory=list)
     voice: typing.Optional[typing.Dict[str, typing.Any]] = None
 
@@ -106,6 +114,16 @@ class TranscriptCompletedEvent(_RealtimeModel):
     """Final transcript for the most recent user utterance."""
 
     transcript: str
+    # The three fields below are sent only when the source language is detected automatically.
+    item_id: typing.Optional[str] = None
+    """Identifies the utterance, e.g. for
+    :meth:`~camb.realtime.session.RealtimeSession.ignore_utterance_for_language_detection`."""
+    language: typing.Optional[str] = None
+    """The language the utterance was identified as; ``None`` when it was too short or too
+    ambiguous to identify."""
+    passthrough: typing.Optional[bool] = None
+    """``True`` when the utterance was already in the target language, so it was passed through as
+    text and not translated or spoken."""
 
 
 class TextDeltaEvent(_RealtimeModel):
@@ -140,10 +158,36 @@ class AudioDoneEvent(_RealtimeModel):
     """The current synthesized audio response is complete."""
 
 
+class SourceLanguageChangedEvent(_RealtimeModel):
+    """The session's source language changed: detected for the first time, detected as having
+    switched, or set by the client."""
+
+    language: str
+    previous_language: typing.Optional[str] = None
+
+
+class SourceLanguageSwitchConfirmationRequestedEvent(_RealtimeModel):
+    """A ``single_known_speaker`` session heard sustained speech in its own target language.
+
+    That is usually the other party coming through the loudspeakers rather than the local speaker
+    switching language, so the server does not switch on its own. To confirm the switch, call
+    ``update_languages(source_language=event.language)``; to ignore it, do nothing.
+    """
+
+    language: str
+
+
 class ErrorEvent(_RealtimeModel):
     """Structured error from the server, or a handler exception surfaced by the SDK."""
 
     message: str
+    code: typing.Optional[str] = None
+    """Stable, machine-readable error code, e.g. ``"insufficient_credits"``. Branch on this, not on
+    ``message``. ``None`` only for errors the SDK raises itself, such as a handler exception."""
+    error_type: typing.Optional[str] = None
+    """The error's category, e.g. ``"authentication_error"`` or ``"server_error"``."""
+    param: typing.Optional[str] = None
+    """The field at fault, e.g. ``"session.target_language"``."""
     raw: typing.Dict[str, typing.Any] = pydantic.Field(default_factory=dict)
 
 
@@ -166,6 +210,10 @@ PARSER_REGISTRY: typing.Dict[ServerEventType, typing.Optional[typing.Type[_Realt
     ServerEventType.TEXT_DELTA: TextDeltaEvent,
     ServerEventType.TEXT_DONE: TextDoneEvent,
     ServerEventType.AUDIO_DONE: AudioDoneEvent,
+    ServerEventType.SOURCE_LANGUAGE_CHANGED: SourceLanguageChangedEvent,
+    ServerEventType.SOURCE_LANGUAGE_SWITCH_CONFIRMATION_REQUESTED: (
+        SourceLanguageSwitchConfirmationRequestedEvent
+    ),
     ServerEventType.CLOSED: ClosedEvent,
 }
 """Single source of truth mapping wire ``type`` strings to payload models."""

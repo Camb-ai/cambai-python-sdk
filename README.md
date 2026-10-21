@@ -456,6 +456,40 @@ session = await client.realtime.connect(
 For the most natural-sounding results, choose a voice whose reference language
 matches `target_language`.
 
+#### Detecting the source language automatically
+
+In `"slow"` mode, pass `source_language="auto"` and the server detects what the speaker is saying,
+reporting each change as a `SOURCE_LANGUAGE_CHANGED` event. The target language may be omitted
+(the session then transcribes without translating) and changed at any time:
+
+```python
+session = await client.realtime.connect(mode="slow", source_language="auto")
+
+@session.on(ServerEventType.SOURCE_LANGUAGE_CHANGED)
+async def _(event):
+    print(f"now speaking {event.language}")
+
+await session.update_languages(target_language="de-de")
+```
+
+For a call, open both directions as a pair. Each session detects its own source language and the
+pair sets it as the other session's target, so each side hears the other in its own language:
+
+```python
+pair = await client.realtime.connect_session_pair(mode="slow")
+async with pair:
+    await pair.wait_until_ready()
+    await asyncio.gather(
+        pair.local_speaker_session.stream_audio(microphone),
+        pair.other_party_session.stream_audio(call_audio),
+    )
+```
+
+The local speaker's session only switches language after sustained speech, so the other party heard
+through your loudspeakers cannot switch it. When it hears its own target language for a while, it
+sends `SOURCE_LANGUAGE_SWITCH_CONFIRMATION_REQUESTED` instead of switching; confirm with
+`update_languages(source_language=event.language)`, or ignore it.
+
 Runnable examples:
 [`examples/realtime_translation_microphone.py`](examples/realtime_translation_microphone.py)
 (mic in, translated speech out) and

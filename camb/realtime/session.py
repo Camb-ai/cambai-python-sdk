@@ -187,6 +187,49 @@ class RealtimeSession:
             )
             await self._transport.send_text(payload)
 
+    async def update_languages(
+        self,
+        *,
+        source_language: typing.Optional[str] = None,
+        target_language: typing.Optional[str] = None,
+    ) -> None:
+        """Change the session's languages mid-session; only the languages passed change.
+
+        Available when the session was opened with ``source_language="auto"``:
+
+        - ``target_language`` translates into a new language from the next utterance on.
+        - ``source_language`` fixes the source language, which stops automatic detection from
+          switching it (this is also how a switch confirmation request is confirmed). Pass
+          ``"auto"`` to go back to detecting it.
+
+        The server answers with ``session.updated``, and with ``session.source_language_changed``
+        when the source language changed. A change the session cannot make arrives as an
+        ``error`` event with a ``code``.
+        """
+        session_changes: typing.Dict[str, str] = {}
+        if source_language is not None:
+            session_changes["source_language"] = source_language
+        if target_language is not None:
+            session_changes["target_language"] = target_language
+        if not session_changes:
+            raise ValueError("pass source_language, target_language, or both")
+        await self._send_event({"type": "session.update", "session": session_changes})
+
+    async def ignore_utterance_for_language_detection(self, item_id: str) -> None:
+        """Stop counting an utterance towards a source language switch.
+
+        For an utterance the application recognised as echo or crosstalk, identified by the
+        ``item_id`` of its :class:`~camb.realtime.events.TranscriptCompletedEvent`. It only has
+        an effect while the switch it supports is still pending.
+        """
+        await self._send_event(
+            {"type": "input_audio_buffer.ignore_for_language_detection", "item_id": item_id}
+        )
+
+    async def _send_event(self, event: typing.Dict[str, typing.Any]) -> None:
+        async with self._send_lock:
+            await self._transport.send_text(json.dumps(event))
+
     async def stream_audio(self, source: typing.AsyncIterable[bytes]) -> None:
         """Pump chunks from ``source`` into the session until it is exhausted.
 
@@ -258,6 +301,9 @@ class RealtimeSession:
             error_obj = raw.get("error", {})
             payload = ErrorEvent(
                 message=error_obj.get("message", "Unknown error"),
+                code=error_obj.get("code"),
+                error_type=error_obj.get("type"),
+                param=error_obj.get("param"),
                 raw=raw,
             )
 
@@ -361,10 +407,31 @@ async def connect(
             ...
 
     Parameters mirror :class:`~camb.realtime.options.ConnectOptions`
-    (``mode``, ``source_language``, ``target_language``, ``output_modalities``,
-    ``voice_id``). An unrecognised option raises ``ValidationError`` rather than
+    (``mode``, ``source_language``, ``target_language``, ``speaker_setup``,
+    ``source_language_candidates``, ``output_modalities``, ``voice_id``). An unrecognised option raises ``ValidationError`` rather than
     being ignored — notably the retired ``model`` parameter, replaced by ``mode``.
     """
+    session = _create_session(
+        api_key,
+        base_url=base_url,
+        transport=transport,
+        extra_headers=extra_headers,
+        **options,
+    )
+    await session._open()
+    return session
+
+
+def _create_session(
+    api_key: str,
+    *,
+    base_url: str,
+    transport: typing.Optional[Transport],
+    extra_headers: typing.Optional[typing.Dict[str, str]],
+    **options: typing.Any,
+) -> RealtimeSession:
+    """A session that is configured but not yet connected, so handlers can be registered before
+    the first server event can arrive."""
     opts = ConnectOptions(**options)
     url = _build_url(base_url, opts)
     headers: typing.Dict[str, str] = extra_headers.copy() if extra_headers else {}
@@ -374,11 +441,9 @@ async def connect(
         "auth": {"api_key": api_key},
     }
     tport = transport if transport is not None else WebsocketsTransport()
-    session = RealtimeSession(
+    return RealtimeSession(
         transport=tport,
         url=url,
         headers=headers,
         session_payload=session_payload,
     )
-    await session._open()
-    return session
