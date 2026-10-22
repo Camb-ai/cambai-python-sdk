@@ -55,21 +55,27 @@ from .events import (
     SessionInfo,
     SessionStartingEvent,
     SessionUpdatedEvent,
+    SourceLanguageChangedEvent,
+    SourceLanguageSwitchConfirmationRequestedEvent,
     TextDeltaEvent,
     TextDoneEvent,
     TranscriptCompletedEvent,
     TranscriptDeltaEvent,
 )
 from .options import (
+    AUTOMATIC_SOURCE_LANGUAGE,
     LEGACY_ENGINE_CODENAMES,
     ConnectOptions,
     OutputModality,
     RealtimeMode,
+    SpeakerSetup,
     resolve_mode,
 )
 from .session import RealtimeSession, connect
+from .session_pair import RealtimeSessionPair, connect_session_pair
 
 __all__ = [
+    "AUTOMATIC_SOURCE_LANGUAGE",
     "AudioDeltaEvent",
     "AudioDoneEvent",
     "ClosedEvent",
@@ -84,16 +90,21 @@ __all__ = [
     "RealtimeMode",
     "RealtimeProtocolError",
     "RealtimeSession",
+    "RealtimeSessionPair",
     "ServerEventType",
     "SessionConfig",
     "SessionCreatedEvent",
     "SessionInfo",
     "SessionStartingEvent",
     "SessionUpdatedEvent",
+    "SourceLanguageChangedEvent",
+    "SourceLanguageSwitchConfirmationRequestedEvent",
+    "SpeakerSetup",
     "TextDeltaEvent",
     "TextDoneEvent",
     "TranscriptCompletedEvent",
     "TranscriptDeltaEvent",
     "connect",
+    "connect_session_pair",
     "resolve_mode",
 ]
