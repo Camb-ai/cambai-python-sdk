@@ -89,3 +89,10 @@ class Microphone:
 
     def __exit__(self, *exc: typing.Any) -> None:
         self.stop()
+
+    async def __aenter__(self) -> "Microphone":
+        self.start()
+        return self
+
+    async def __aexit__(self, *exc: typing.Any) -> None:
+        await self.close()
