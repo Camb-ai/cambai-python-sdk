@@ -2,4 +2,4 @@
 
 import typing
 
-TaskStatus = typing.Union[typing.Literal["SUCCESS", "PENDING", "ERROR"], typing.Any]
+TaskStatus = typing.Union[typing.Literal["SUCCESS", "PENDING", "TIMEOUT", "ERROR", "PAYMENT_REQUIRED"], typing.Any]

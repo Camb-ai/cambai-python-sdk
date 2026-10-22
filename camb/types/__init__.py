@@ -9,6 +9,7 @@ if typing.TYPE_CHECKING:
     from .add_target_language_out import AddTargetLanguageOut
     from .audio_output_type import AudioOutputType
     from .audio_stream import AudioStream
+    from .audio_to_export import AudioToExport
     from .config_stream import ConfigStream
     from .config_stream_pipeline import ConfigStreamPipeline
     from .create_custom_voice_out import CreateCustomVoiceOut
@@ -28,6 +29,7 @@ if typing.TYPE_CHECKING:
     from .folder import Folder
     from .formalities import Formalities
     from .gender import Gender
+    from .generation_type import GenerationType
     from .get_audio_separation_result_out import GetAudioSeparationResultOut
     from .get_create_project_setup_response import GetCreateProjectSetupResponse
     from .get_probe_stream_in import GetProbeStreamIn
@@ -38,6 +40,8 @@ if typing.TYPE_CHECKING:
     from .http_validation_error import HttpValidationError
     from .language_pydantic_model import LanguagePydanticModel
     from .languages import Languages
+    from .link_video_types import LinkVideoTypes
+    from .narration_type import NarrationType
     from .orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
     from .orchestrator_pipeline_result import OrchestratorPipelineResult
     from .orchestrator_pipeline_result_exception_reason import OrchestratorPipelineResultExceptionReason
@@ -81,6 +85,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "AddTargetLanguageOut": ".add_target_language_out",
     "AudioOutputType": ".audio_output_type",
     "AudioStream": ".audio_stream",
+    "AudioToExport": ".audio_to_export",
     "ConfigStream": ".config_stream",
     "ConfigStreamPipeline": ".config_stream_pipeline",
     "CreateCustomVoiceOut": ".create_custom_voice_out",
@@ -100,6 +105,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "Folder": ".folder",
     "Formalities": ".formalities",
     "Gender": ".gender",
+    "GenerationType": ".generation_type",
     "GetAudioSeparationResultOut": ".get_audio_separation_result_out",
     "GetCreateProjectSetupResponse": ".get_create_project_setup_response",
     "GetProbeStreamIn": ".get_probe_stream_in",
@@ -110,6 +116,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "HttpValidationError": ".http_validation_error",
     "LanguagePydanticModel": ".language_pydantic_model",
     "Languages": ".languages",
+    "LinkVideoTypes": ".link_video_types",
+    "NarrationType": ".narration_type",
     "OrchestratorPipelineCallResult": ".orchestrator_pipeline_call_result",
     "OrchestratorPipelineResult": ".orchestrator_pipeline_result",
     "OrchestratorPipelineResultExceptionReason": ".orchestrator_pipeline_result_exception_reason",
@@ -177,6 +185,7 @@ __all__ = [
     "AddTargetLanguageOut",
     "AudioOutputType",
     "AudioStream",
+    "AudioToExport",
     "ConfigStream",
     "ConfigStreamPipeline",
     "CreateCustomVoiceOut",
@@ -196,6 +205,7 @@ __all__ = [
     "Folder",
     "Formalities",
     "Gender",
+    "GenerationType",
     "GetAudioSeparationResultOut",
     "GetCreateProjectSetupResponse",
     "GetProbeStreamIn",
@@ -206,6 +216,8 @@ __all__ = [
     "HttpValidationError",
     "LanguagePydanticModel",
     "Languages",
+    "LinkVideoTypes",
+    "NarrationType",
     "OrchestratorPipelineCallResult",
     "OrchestratorPipelineResult",
     "OrchestratorPipelineResultExceptionReason",
