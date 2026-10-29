@@ -44,6 +44,7 @@ class RawTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
+        diarize: bool = True,
         run_audio_cleaning: bool = True,
         include_music_in_fg: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
@@ -79,6 +80,9 @@ class RawTranscriptionClient:
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
 
+        diarize : bool
+            Separate speakers in the transcript. Defaults to True.
+
         run_audio_cleaning : bool
             Run source separation before transcription (default True). Set False for clean speech.
 
@@ -107,6 +111,7 @@ class RawTranscriptionClient:
                 "project_description": project_description,
                 "folder_id": folder_id,
                 "transcription_mode": transcription_mode,
+                "diarize": diarize,
                 "run_audio_cleaning": run_audio_cleaning,
                 "include_music_in_fg": include_music_in_fg,
                 "formatting_options": _serialize_formatting_options(formatting_options),
@@ -350,6 +355,7 @@ class AsyncRawTranscriptionClient:
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
         transcription_mode: typing.Optional[typing.Literal["fast", "slow"]] = "fast",
+        diarize: bool = True,
         run_audio_cleaning: bool = True,
         include_music_in_fg: bool = True,
         formatting_options: typing.Optional[typing.Union[SubtitleFormattingOptions, typing.Dict[str, typing.Any], str]] = OMIT,
@@ -385,6 +391,9 @@ class AsyncRawTranscriptionClient:
         transcription_mode : typing.Optional[typing.Literal["fast", "slow"]]
             Transcription mode: `fast` (default) or `slow`.
 
+        diarize : bool
+            Separate speakers in the transcript. Defaults to True.
+
         run_audio_cleaning : bool
             Run source separation before transcription (default True). Set False for clean speech.
 
@@ -413,6 +422,7 @@ class AsyncRawTranscriptionClient:
                 "project_description": project_description,
                 "folder_id": folder_id,
                 "transcription_mode": transcription_mode,
+                "diarize": diarize,
                 "run_audio_cleaning": run_audio_cleaning,
                 "include_music_in_fg": include_music_in_fg,
                 "formatting_options": _serialize_formatting_options(formatting_options),

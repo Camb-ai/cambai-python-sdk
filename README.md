@@ -676,3 +676,5 @@ Parity was audited against the client-microservice transcription router and its
 companion audio-cleaning PR (#4092). Wire tests cover normal/raw responses,
 all inputs, defaults and explicit false values, upload aliases,
 formatting serialization, status, structured/export results, and bulk requests.
+
+Transcription creation accepts `diarize=True` in synchronous, asynchronous, and raw clients. Pass `diarize=False` to request a single-speaker transcript. The boolean is sent in the multipart request, including explicit false.
