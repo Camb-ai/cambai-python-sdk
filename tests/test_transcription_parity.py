@@ -29,6 +29,7 @@ CREATE_FIELDS = {
     "folder_id",
     "transcription_mode",
     "run_audio_cleaning",
+    "diarize",
     "include_music_in_fg",
     "formatting_options",
 }
@@ -91,7 +92,7 @@ class TranscriptionParityTests(unittest.TestCase):
             self.assertEqual(
                 set(params) - {"self", "request_options", "run_id"}, CREATE_FIELDS
             )
-            for flag in ["include_music_in_fg", "run_audio_cleaning"]:
+            for flag in ["include_music_in_fg", "run_audio_cleaning", "diarize"]:
                 self.assertIs(params[flag].default, True)
             self.assertEqual(params["transcription_mode"].default, "fast")
 

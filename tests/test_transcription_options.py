@@ -34,6 +34,7 @@ class TranscriptionOptionsTests(unittest.TestCase):
                             }
                             if cleaning is not None:
                                 options["run_audio_cleaning"] = cleaning
+                                options["diarize"] = cleaning
                             transport = httpx.MockTransport(handler)
                             if asynchronous:
 
@@ -76,6 +77,7 @@ class TranscriptionOptionsTests(unittest.TestCase):
                                 for part in message.iter_parts()
                             }
                             self.assertEqual(fields["language"], str(language))
+                            self.assertEqual(fields["diarize"], "false" if cleaning is False else "true")
                             self.assertEqual(
                                 fields["run_audio_cleaning"],
                                 "false" if cleaning is False else "true",
