@@ -18,6 +18,7 @@ if typing.TYPE_CHECKING:
     from .dictionaries.client import AsyncDictionariesClient, DictionariesClient
     from .dub.client import AsyncDubClient, DubClient
     from .folders.client import AsyncFoldersClient, FoldersClient
+    from .image_translation.client import AsyncImageTranslationClient, ImageTranslationClient
     from .languages.client import AsyncLanguagesClient, LanguagesClient
     from .project_setup.client import AsyncProjectSetupClient, ProjectSetupClient
     from .story.client import AsyncStoryClient, StoryClient
@@ -146,6 +147,7 @@ class CambAI:
         self._audio_separation: typing.Optional[AudioSeparationClient] = None
         self._dub: typing.Optional[DubClient] = None
         self._folders: typing.Optional[FoldersClient] = None
+        self._image_translation: typing.Optional[ImageTranslationClient] = None
         self._languages: typing.Optional[LanguagesClient] = None
         self._story: typing.Optional[StoryClient] = None
         self._subtitles: typing.Optional[SubtitlesClient] = None
@@ -272,6 +274,14 @@ class CambAI:
 
             self._folders = FoldersClient(client_wrapper=self._client_wrapper)
         return self._folders
+
+    @property
+    def image_translation(self):
+        if self._image_translation is None:
+            from .image_translation.client import ImageTranslationClient  # noqa: E402
+
+            self._image_translation = ImageTranslationClient(client_wrapper=self._client_wrapper)
+        return self._image_translation
 
     @property
     def languages(self):
@@ -494,6 +504,7 @@ class AsyncCambAI:
         self._audio_separation: typing.Optional[AsyncAudioSeparationClient] = None
         self._dub: typing.Optional[AsyncDubClient] = None
         self._folders: typing.Optional[AsyncFoldersClient] = None
+        self._image_translation: typing.Optional[AsyncImageTranslationClient] = None
         self._languages: typing.Optional[AsyncLanguagesClient] = None
         self._story: typing.Optional[AsyncStoryClient] = None
         self._subtitles: typing.Optional[AsyncSubtitlesClient] = None
@@ -644,6 +655,14 @@ class AsyncCambAI:
 
             self._folders = AsyncFoldersClient(client_wrapper=self._client_wrapper)
         return self._folders
+
+    @property
+    def image_translation(self):
+        if self._image_translation is None:
+            from .image_translation.client import AsyncImageTranslationClient  # noqa: E402
+
+            self._image_translation = AsyncImageTranslationClient(client_wrapper=self._client_wrapper)
+        return self._image_translation
 
     @property
     def languages(self):

@@ -25,6 +25,10 @@ if typing.TYPE_CHECKING:
     from .dub_srt_input import DubSRTInput
     from .dub_target_srt_input import DubTargetSRTInput
     from .exception_reasons import ExceptionReasons
+    from .fine_tune_image_translation_out import (
+        FineTuneImageTranslationOut,
+        FineTuneImageTranslationUserMessageOut,
+    )
     from .folder import Folder
     from .formalities import Formalities
     from .gender import Gender
@@ -36,6 +40,19 @@ if typing.TYPE_CHECKING:
     from .get_text_to_voice_result_out import GetTextToVoiceResultOut
     from .get_tts_result_out_file_url import GetTtsResultOutFileUrl
     from .http_validation_error import HttpValidationError
+    from .image_text_edit_content_kind import ImageTextEditContentKind
+    from .image_text_edit_create_out import ImageTextEditCreateOut
+    from .image_text_edit_export_out import ImageTextEditExportOut
+    from .image_translation_project import (
+        ImageTranslationProject,
+        ImageTranslationProjectPage,
+        ImageTranslationProjectRegion,
+        PageRender,
+        RegionBox,
+        RegionTranslation,
+        TargetLanguageRef,
+    )
+    from .image_translation_result import ImageTranslationResult
     from .language_pydantic_model import LanguagePydanticModel
     from .languages import Languages
     from .orchestrator_pipeline_call_result import OrchestratorPipelineCallResult
@@ -97,6 +114,8 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DubSRTInput": ".dub_srt_input",
     "DubTargetSRTInput": ".dub_target_srt_input",
     "ExceptionReasons": ".exception_reasons",
+    "FineTuneImageTranslationOut": ".fine_tune_image_translation_out",
+    "FineTuneImageTranslationUserMessageOut": ".fine_tune_image_translation_out",
     "Folder": ".folder",
     "Formalities": ".formalities",
     "Gender": ".gender",
@@ -108,6 +127,13 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTextToVoiceResultOut": ".get_text_to_voice_result_out",
     "GetTtsResultOutFileUrl": ".get_tts_result_out_file_url",
     "HttpValidationError": ".http_validation_error",
+    "ImageTextEditContentKind": ".image_text_edit_content_kind",
+    "ImageTextEditCreateOut": ".image_text_edit_create_out",
+    "ImageTextEditExportOut": ".image_text_edit_export_out",
+    "ImageTranslationProject": ".image_translation_project",
+    "ImageTranslationProjectPage": ".image_translation_project",
+    "ImageTranslationProjectRegion": ".image_translation_project",
+    "ImageTranslationResult": ".image_translation_result",
     "LanguagePydanticModel": ".language_pydantic_model",
     "Languages": ".languages",
     "OrchestratorPipelineCallResult": ".orchestrator_pipeline_call_result",
@@ -116,7 +142,10 @@ _dynamic_imports: typing.Dict[str, str] = {
     "OrchestratorPipelineResultMessage": ".orchestrator_pipeline_result_message",
     "OutputFormat": ".output_format",
     "OverdubConfig": ".overdub_config",
+    "PageRender": ".image_translation_project",
     "ProjectDetails": ".project_details",
+    "RegionBox": ".image_translation_project",
+    "RegionTranslation": ".image_translation_project",
     "RevoicingOption": ".revoicing_option",
     "RunIDsRequestPayload": ".run_i_ds_request_payload",
     "SegmentingOption": ".segmenting_option",
@@ -129,6 +158,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "StreamType": ".stream_type",
     "StreamUrlForLanguages": ".stream_url_for_languages",
     "SubtitleFormattingOptions": ".subtitle_formatting_options",
+    "TargetLanguageRef": ".image_translation_project",
     "TargetStream": ".target_stream",
     "TaskStatus": ".task_status",
     "TermTranslationInput": ".term_translation_input",
@@ -193,6 +223,8 @@ __all__ = [
     "DubSRTInput",
     "DubTargetSRTInput",
     "ExceptionReasons",
+    "FineTuneImageTranslationOut",
+    "FineTuneImageTranslationUserMessageOut",
     "Folder",
     "Formalities",
     "Gender",
@@ -204,6 +236,13 @@ __all__ = [
     "GetTextToVoiceResultOut",
     "GetTtsResultOutFileUrl",
     "HttpValidationError",
+    "ImageTextEditContentKind",
+    "ImageTextEditCreateOut",
+    "ImageTextEditExportOut",
+    "ImageTranslationProject",
+    "ImageTranslationProjectPage",
+    "ImageTranslationProjectRegion",
+    "ImageTranslationResult",
     "LanguagePydanticModel",
     "Languages",
     "OrchestratorPipelineCallResult",
@@ -212,7 +251,10 @@ __all__ = [
     "OrchestratorPipelineResultMessage",
     "OutputFormat",
     "OverdubConfig",
+    "PageRender",
     "ProjectDetails",
+    "RegionBox",
+    "RegionTranslation",
     "RevoicingOption",
     "RunIDsRequestPayload",
     "SegmentingOption",
@@ -225,6 +267,7 @@ __all__ = [
     "StreamType",
     "StreamUrlForLanguages",
     "SubtitleFormattingOptions",
+    "TargetLanguageRef",
     "TargetStream",
     "TaskStatus",
     "TermTranslationInput",
