@@ -8,6 +8,7 @@ from ..core.request_options import RequestOptions
 from ..types.fine_tune_image_translation_out import FineTuneImageTranslationOut
 from ..types.image_text_edit_content_kind import ImageTextEditContentKind
 from ..types.image_text_edit_create_out import ImageTextEditCreateOut
+from ..types.image_text_edit_export_format import ImageTextEditExportFormat
 from ..types.image_text_edit_export_out import ImageTextEditExportOut
 from ..types.image_translation_project import ImageTranslationProject
 from ..types.image_translation_result import ImageTranslationResult
@@ -42,6 +43,7 @@ class ImageTranslationClient:
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
         content_kind: typing.Optional[ImageTextEditContentKind] = OMIT,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -64,6 +66,9 @@ class ImageTranslationClient:
 
         content_kind : typing.Optional[ImageTextEditContentKind]
             `generic` (default) or `comic`
+
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
 
         project_name : typing.Optional[str]
 
@@ -97,6 +102,7 @@ class ImageTranslationClient:
             media_file=media_file,
             media_url=media_url,
             content_kind=content_kind,
+            export_format=export_format,
             project_name=project_name,
             project_description=project_description,
             folder_id=folder_id,
@@ -213,6 +219,7 @@ class ImageTranslationClient:
         self,
         *,
         run_id: int,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ImageTextEditExportOut:
         """
@@ -220,6 +227,9 @@ class ImageTranslationClient:
         ----------
         run_id : int
             Image translation run to export.
+
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -241,7 +251,7 @@ class ImageTranslationClient:
         )
         """
         _response = self._raw_client.export_image_translation(
-            run_id=run_id, request_options=request_options
+            run_id=run_id, export_format=export_format, request_options=request_options
         )
         return _response.data
 
@@ -320,6 +330,7 @@ class AsyncImageTranslationClient:
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
         content_kind: typing.Optional[ImageTextEditContentKind] = OMIT,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -342,6 +353,9 @@ class AsyncImageTranslationClient:
 
         content_kind : typing.Optional[ImageTextEditContentKind]
             `generic` (default) or `comic`
+
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
 
         project_name : typing.Optional[str]
 
@@ -383,6 +397,7 @@ class AsyncImageTranslationClient:
             media_file=media_file,
             media_url=media_url,
             content_kind=content_kind,
+            export_format=export_format,
             project_name=project_name,
             project_description=project_description,
             folder_id=folder_id,
@@ -523,6 +538,7 @@ class AsyncImageTranslationClient:
         self,
         *,
         run_id: int,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> ImageTextEditExportOut:
         """
@@ -530,6 +546,9 @@ class AsyncImageTranslationClient:
         ----------
         run_id : int
             Image translation run to export.
+
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -559,7 +578,7 @@ class AsyncImageTranslationClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.export_image_translation(
-            run_id=run_id, request_options=request_options
+            run_id=run_id, export_format=export_format, request_options=request_options
         )
         return _response.data
 

@@ -42,6 +42,7 @@ if typing.TYPE_CHECKING:
     from .http_validation_error import HttpValidationError
     from .image_text_edit_content_kind import ImageTextEditContentKind
     from .image_text_edit_create_out import ImageTextEditCreateOut
+    from .image_text_edit_export_format import ImageTextEditExportFormat
     from .image_text_edit_export_out import ImageTextEditExportOut
     from .image_translation_project import (
         ImageTranslationProject,
@@ -129,6 +130,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "HttpValidationError": ".http_validation_error",
     "ImageTextEditContentKind": ".image_text_edit_content_kind",
     "ImageTextEditCreateOut": ".image_text_edit_create_out",
+    "ImageTextEditExportFormat": ".image_text_edit_export_format",
     "ImageTextEditExportOut": ".image_text_edit_export_out",
     "ImageTranslationProject": ".image_translation_project",
     "ImageTranslationProjectPage": ".image_translation_project",
@@ -238,6 +240,7 @@ __all__ = [
     "HttpValidationError",
     "ImageTextEditContentKind",
     "ImageTextEditCreateOut",
+    "ImageTextEditExportFormat",
     "ImageTextEditExportOut",
     "ImageTranslationProject",
     "ImageTranslationProjectPage",

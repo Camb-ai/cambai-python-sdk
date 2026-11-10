@@ -15,6 +15,7 @@ from ..types.fine_tune_image_translation_out import FineTuneImageTranslationOut
 from ..types.http_validation_error import HttpValidationError
 from ..types.image_text_edit_content_kind import ImageTextEditContentKind
 from ..types.image_text_edit_create_out import ImageTextEditCreateOut
+from ..types.image_text_edit_export_format import ImageTextEditExportFormat
 from ..types.image_text_edit_export_out import ImageTextEditExportOut
 from ..types.image_translation_project import ImageTranslationProject
 from ..types.image_translation_result import ImageTranslationResult
@@ -41,6 +42,7 @@ class RawImageTranslationClient:
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
         content_kind: typing.Optional[ImageTextEditContentKind] = OMIT,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -64,6 +66,9 @@ class RawImageTranslationClient:
         content_kind : typing.Optional[ImageTextEditContentKind]
             `generic` (default) or `comic`
 
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
+
         project_name : typing.Optional[str]
 
         project_description : typing.Optional[str]
@@ -86,6 +91,7 @@ class RawImageTranslationClient:
                 "target_languages": _target_languages_csv(target_languages),
                 "media_url": media_url,
                 "content_kind": content_kind,
+                "export_format": export_format,
                 "project_name": project_name,
                 "project_description": project_description,
                 "folder_id": folder_id,
@@ -277,6 +283,7 @@ class RawImageTranslationClient:
         self,
         *,
         run_id: int,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[ImageTextEditExportOut]:
         """
@@ -284,6 +291,9 @@ class RawImageTranslationClient:
         ----------
         run_id : int
             Image translation run to export.
+
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -298,6 +308,7 @@ class RawImageTranslationClient:
             method="POST",
             json={
                 "run_id": run_id,
+                "export_format": export_format,
             },
             headers={
                 "content-type": "application/json",
@@ -413,6 +424,7 @@ class AsyncRawImageTranslationClient:
         media_file: typing.Optional[core.File] = OMIT,
         media_url: typing.Optional[str] = OMIT,
         content_kind: typing.Optional[ImageTextEditContentKind] = OMIT,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
         folder_id: typing.Optional[int] = OMIT,
@@ -436,6 +448,9 @@ class AsyncRawImageTranslationClient:
         content_kind : typing.Optional[ImageTextEditContentKind]
             `generic` (default) or `comic`
 
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
+
         project_name : typing.Optional[str]
 
         project_description : typing.Optional[str]
@@ -458,6 +473,7 @@ class AsyncRawImageTranslationClient:
                 "target_languages": _target_languages_csv(target_languages),
                 "media_url": media_url,
                 "content_kind": content_kind,
+                "export_format": export_format,
                 "project_name": project_name,
                 "project_description": project_description,
                 "folder_id": folder_id,
@@ -649,6 +665,7 @@ class AsyncRawImageTranslationClient:
         self,
         *,
         run_id: int,
+        export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[ImageTextEditExportOut]:
         """
@@ -656,6 +673,9 @@ class AsyncRawImageTranslationClient:
         ----------
         run_id : int
             Image translation run to export.
+
+        export_format : typing.Optional[ImageTextEditExportFormat]
+            `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -670,6 +690,7 @@ class AsyncRawImageTranslationClient:
             method="POST",
             json={
                 "run_id": run_id,
+                "export_format": export_format,
             },
             headers={
                 "content-type": "application/json",

@@ -21,7 +21,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
 - **Transcripts & Subtitles**: Create async transcription/subtitle jobs and export TXT, SRT, or VTT results as raw data or files.
-- **Image Translation**: Translate text in images, PDFs, or ZIP uploads, then poll, download the export ZIP, inspect project data, or fine-tune a region.
+- **Image Translation**: Translate text in images, PDFs, or ZIP uploads, fine-tune a region, then download all of your translated images.
 - **Live Transcription**: Stream microphone or file audio over a WebSocket and receive cumulative interim transcripts, word-level timing, and typed events.
 - Access to voice cloning, translation, and more (refer to full API documentation).
 
@@ -589,7 +589,7 @@ Check out the `examples/` directory for complete, runnable examples:
 - `transcription.py` - Select fast/slow mode, audio cleaning, music handling, and automatic language detection
 - `transcription_formatting.py` - Async transcription with formatting options and TXT/SRT/VTT exports
 - `subtitles.py` - Subtitle job creation, polling, and language-specific TXT/SRT/VTT exports
-- `image_translation.py` - Image translation create, poll, result, and project read
+- `image_translation.py` - Translate an image, fine-tune a region, and download the results
 - `translation.py` - Text translation workflow
 - `baseten_provider_example.py` - Using custom hosting providers
 - `live_transcription_microphone.py` - Stream microphone audio over the WebSocket
@@ -681,9 +681,9 @@ formatting serialization, status, structured/export results, and bulk requests.
 
 ### 8. Image Translation
 
-Create an image translation job with a file or URL, poll until success, then
-fetch the export ZIP. PNG, JPG, JPEG, WEBP, PDF, and ZIP inputs are accepted.
-PSD/PSB are not.
+Translate text in images, PDFs, or ZIP uploads. PNG, JPG, JPEG, WEBP, PDF, and ZIP
+are accepted; PSD/PSB are not. Fine-tune a region, then download all of your
+translated images.
 
 ```python
 import time
@@ -696,23 +696,19 @@ created = client.image_translation.create_image_translation(
     media_url="https://example.com/poster.png",
     content_kind="generic",
 )
-print(f"Image translation task: {created.task_id} run_id={created.run_id}")
 
 while True:
     status = client.image_translation.get_image_translation_status(created.task_id)
-    print(f"Current Status: {status.status}")
     if status.status == "SUCCESS":
         break
     time.sleep(5)
 
+project = client.image_translation.get_image_translation_project(created.run_id)
 result = client.image_translation.get_image_translation_result(created.run_id)
 print(result.download_url)
-
-project = client.image_translation.get_image_translation_project(created.run_id)
 ```
 
-After editing a region, poll the fine-tune task, export, then fetch the ZIP
-again. If export returns `cached=True`, skip polling.
+After fine-tuning a region, export and download the updated images.
 
 ```python
 ft = client.image_translation.fine_tune_image_translation(
@@ -722,6 +718,18 @@ ft = client.image_translation.fine_tune_image_translation(
     prompt="Make the headline shorter",
 )
 exported = client.image_translation.export_image_translation(run_id=created.run_id)
+result = client.image_translation.get_image_translation_result(created.run_id)
+print(result.download_url)
 ```
 
-See [`examples/image_translation.py`](examples/image_translation.py) for a complete polling example.
+Pass `export_format="PDF"` on create or export for a ZIP of per-language PDFs.
+Omit it, or pass `"ZIP"`, for the default ZIP of page images.
+
+```python
+exported = client.image_translation.export_image_translation(
+    run_id=created.run_id,
+    export_format="PDF",
+)
+```
+
+See [`examples/image_translation.py`](examples/image_translation.py) for a complete example.
