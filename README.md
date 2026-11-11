@@ -21,7 +21,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
 - **Transcripts & Subtitles**: Create async transcription/subtitle jobs and export TXT, SRT, or VTT results as raw data or files.
-- **Image Translation**: Localize images and PDFs into any language, fine-tune a region, then download all of your translated images.
+- **Image Translation**: Localize images and PDFs into any language, with fine-tuning for individual text regions.
 - **Live Transcription**: Stream microphone or file audio over a WebSocket and receive cumulative interim transcripts, word-level timing, and typed events.
 - Access to voice cloning, translation, and more (refer to full API documentation).
 
@@ -681,9 +681,7 @@ formatting serialization, status, structured/export results, and bulk requests.
 
 ### 8. Image Translation
 
-Localize images and PDFs into any language. Pass a publicly accessible `media_url`
-to a PNG, JPG, JPEG, WEBP, PDF, or ZIP of page images. Fine-tune a region, then
-download all of your translated images.
+Localize images and PDFs into any language, then fine-tune individual text regions.
 
 ```python
 import time
