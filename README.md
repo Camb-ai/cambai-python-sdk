@@ -588,6 +588,8 @@ result = client.translation.get_doc_translation_result(status.run_id)
 print(result.download_url)
 ```
 
+See [`examples/document_translation.py`](examples/document_translation.py) for a complete polling example.
+
 ## ⚙️ Advanced Usage & Other Features
 
 The Camb AI SDK offers a wide range of capabilities beyond these examples, including:
@@ -613,6 +615,7 @@ Check out the `examples/` directory for complete, runnable examples:
 - `transcription_formatting.py` - Async transcription with formatting options and TXT/SRT/VTT exports
 - `subtitles.py` - Subtitle job creation, polling, and language-specific TXT/SRT/VTT exports
 - `translation.py` - Text translation workflow
+- `document_translation.py` - DOCX/SRT document translation from a local file or URL
 - `baseten_provider_example.py` - Using custom hosting providers
 - `live_transcription_microphone.py` - Stream microphone audio over the WebSocket
 - `live_transcription_file.py` - Stream a local audio file over the WebSocket
