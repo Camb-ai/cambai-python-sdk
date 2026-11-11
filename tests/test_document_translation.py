@@ -35,7 +35,7 @@ class DocTranslationTests(unittest.TestCase):
         transport = httpx.MockTransport(handler)
 
         def pick(sdk):
-            client = sdk.document_translation
+            client = sdk.translation
             return getattr(client.with_raw_response if raw else client, method)
 
         if asynchronous:

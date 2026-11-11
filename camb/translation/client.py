@@ -2,8 +2,11 @@
 
 import typing
 
+from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.create_doc_translation_out import CreateDocTranslationOut
+from ..types.doc_translation_result import DocTranslationResult
 from ..types.formalities import Formalities
 from ..types.gender import Gender
 from ..types.language_input import LanguageInput
@@ -300,6 +303,100 @@ class TranslationClient:
         _response = self._raw_client.get_translation_results(
             run_ids=run_ids, run_id=run_id, traceparent=traceparent, request_options=request_options
         )
+        return _response.data
+
+    def create_doc_translation(
+        self,
+        *,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
+        media_file: typing.Optional[core.File] = OMIT,
+        media_url: typing.Optional[str] = OMIT,
+        project_name: typing.Optional[str] = OMIT,
+        project_description: typing.Optional[str] = OMIT,
+        folder_id: typing.Optional[int] = OMIT,
+        chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
+        translation_style: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateDocTranslationOut:
+        """
+        Translate a DOCX or SRT document. Provide exactly one of `media_file` or `media_url`.
+
+        Parameters
+        ----------
+        source_language : LanguageInput
+            Language ID (e.g. 1) or locale tag (e.g. "en-us").
+
+        target_language : LanguageInput
+            Language ID or locale tag (e.g. "es-es").
+
+        media_file : typing.Optional[core.File]
+            Document to upload (DOCX or SRT). See core.File for more documentation.
+
+        media_url : typing.Optional[str]
+            URL of a document to translate.
+
+        project_name : typing.Optional[str]
+
+        project_description : typing.Optional[str]
+
+        folder_id : typing.Optional[int]
+
+        chosen_dictionaries : typing.Optional[typing.Sequence[int]]
+            Dictionary IDs to apply during translation.
+
+        translation_style : typing.Optional[str]
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        CreateDocTranslationOut
+            Successful Response
+
+        Examples
+        --------
+        from camb.client import CambAI
+
+        client = CambAI(api_key="YOUR_API_KEY")
+        with open("contract.docx", "rb") as f:
+            task = client.translation.create_doc_translation(
+                source_language="en-us",
+                target_language="es-es",
+                media_file=f,
+            )
+        """
+        _response = self._raw_client.create_doc_translation(
+            source_language=source_language,
+            target_language=target_language,
+            media_file=media_file,
+            media_url=media_url,
+            project_name=project_name,
+            project_description=project_description,
+            folder_id=folder_id,
+            chosen_dictionaries=chosen_dictionaries,
+            translation_style=translation_style,
+            request_options=request_options,
+        )
+        return _response.data
+
+    def get_doc_translation_task_status(
+        self, task_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> OrchestratorPipelineResult:
+        """
+        Poll a document translation task. `run_id` is set once the task succeeds.
+        """
+        _response = self._raw_client.get_doc_translation_task_status(task_id, request_options=request_options)
+        return _response.data
+
+    def get_doc_translation_result(
+        self, run_id: int, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocTranslationResult:
+        """
+        Get the download URL of a completed document translation.
+        """
+        _response = self._raw_client.get_doc_translation_result(run_id, request_options=request_options)
         return _response.data
 
 
@@ -628,4 +725,54 @@ class AsyncTranslationClient:
         _response = await self._raw_client.get_translation_results(
             run_ids=run_ids, run_id=run_id, traceparent=traceparent, request_options=request_options
         )
+        return _response.data
+
+    async def create_doc_translation(
+        self,
+        *,
+        source_language: LanguageInput,
+        target_language: LanguageInput,
+        media_file: typing.Optional[core.File] = OMIT,
+        media_url: typing.Optional[str] = OMIT,
+        project_name: typing.Optional[str] = OMIT,
+        project_description: typing.Optional[str] = OMIT,
+        folder_id: typing.Optional[int] = OMIT,
+        chosen_dictionaries: typing.Optional[typing.Sequence[int]] = OMIT,
+        translation_style: typing.Optional[str] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> CreateDocTranslationOut:
+        """
+        Translate a DOCX or SRT document. Provide exactly one of `media_file` or `media_url`.
+        See `TranslationClient.create_doc_translation` for parameter documentation.
+        """
+        _response = await self._raw_client.create_doc_translation(
+            source_language=source_language,
+            target_language=target_language,
+            media_file=media_file,
+            media_url=media_url,
+            project_name=project_name,
+            project_description=project_description,
+            folder_id=folder_id,
+            chosen_dictionaries=chosen_dictionaries,
+            translation_style=translation_style,
+            request_options=request_options,
+        )
+        return _response.data
+
+    async def get_doc_translation_task_status(
+        self, task_id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> OrchestratorPipelineResult:
+        """
+        Poll a document translation task. `run_id` is set once the task succeeds.
+        """
+        _response = await self._raw_client.get_doc_translation_task_status(task_id, request_options=request_options)
+        return _response.data
+
+    async def get_doc_translation_result(
+        self, run_id: int, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> DocTranslationResult:
+        """
+        Get the download URL of a completed document translation.
+        """
+        _response = await self._raw_client.get_doc_translation_result(run_id, request_options=request_options)
         return _response.data

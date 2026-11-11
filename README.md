@@ -572,19 +572,19 @@ Translate a DOCX or SRT document from a local file or a URL (provide exactly one
 import time
 
 with open("contract.docx", "rb") as f:
-    task = client.document_translation.create_doc_translation(
+    task = client.translation.create_doc_translation(
         source_language="en-us",
         target_language="es-es",
         media_file=f,  # or media_url="https://example.com/contract.docx"
     )
 
 while True:
-    status = client.document_translation.get_doc_translation_task_status(task.task_id)
+    status = client.translation.get_doc_translation_task_status(task.task_id)
     if status.status == "SUCCESS":
         break
     time.sleep(5)
 
-result = client.document_translation.get_doc_translation_result(status.run_id)
+result = client.translation.get_doc_translation_result(status.run_id)
 print(result.download_url)
 ```
 
