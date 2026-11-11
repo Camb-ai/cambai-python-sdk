@@ -439,6 +439,9 @@ class HttpClient:
         ) as stream:
             yield stream
 
+    def close(self) -> None:
+        self.httpx_client.close()
+
 
 class AsyncHttpClient:
     def __init__(
@@ -661,3 +664,6 @@ class AsyncHttpClient:
             timeout=timeout,
         ) as stream:
             yield stream
+
+    async def aclose(self) -> None:
+        await self.httpx_client.aclose()
