@@ -40,7 +40,6 @@ if typing.TYPE_CHECKING:
     from .get_text_to_voice_result_out import GetTextToVoiceResultOut
     from .get_tts_result_out_file_url import GetTtsResultOutFileUrl
     from .http_validation_error import HttpValidationError
-    from .image_text_edit_content_kind import ImageTextEditContentKind
     from .image_text_edit_create_out import ImageTextEditCreateOut
     from .image_text_edit_export_format import ImageTextEditExportFormat
     from .image_text_edit_export_out import ImageTextEditExportOut
@@ -128,7 +127,6 @@ _dynamic_imports: typing.Dict[str, str] = {
     "GetTextToVoiceResultOut": ".get_text_to_voice_result_out",
     "GetTtsResultOutFileUrl": ".get_tts_result_out_file_url",
     "HttpValidationError": ".http_validation_error",
-    "ImageTextEditContentKind": ".image_text_edit_content_kind",
     "ImageTextEditCreateOut": ".image_text_edit_create_out",
     "ImageTextEditExportFormat": ".image_text_edit_export_format",
     "ImageTextEditExportOut": ".image_text_edit_export_out",
@@ -238,7 +236,6 @@ __all__ = [
     "GetTextToVoiceResultOut",
     "GetTtsResultOutFileUrl",
     "HttpValidationError",
-    "ImageTextEditContentKind",
     "ImageTextEditCreateOut",
     "ImageTextEditExportFormat",
     "ImageTextEditExportOut",

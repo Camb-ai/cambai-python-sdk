@@ -21,7 +21,7 @@ The official Python SDK for interacting with Camb AI's powerful voice and audio 
 - **Generative Voices**: Create entirely new, unique voices from text prompts and descriptions.
 - **Soundscapes from Text**: Generate ambient audio and sound effects from textual descriptions.
 - **Transcripts & Subtitles**: Create async transcription/subtitle jobs and export TXT, SRT, or VTT results as raw data or files.
-- **Image Translation**: Translate text in images, PDFs, or ZIP uploads, fine-tune a region, then download all of your translated images.
+- **Image Translation**: Localize images and PDFs into any language, fine-tune a region, then download all of your translated images.
 - **Live Transcription**: Stream microphone or file audio over a WebSocket and receive cumulative interim transcripts, word-level timing, and typed events.
 - Access to voice cloning, translation, and more (refer to full API documentation).
 
@@ -681,9 +681,9 @@ formatting serialization, status, structured/export results, and bulk requests.
 
 ### 8. Image Translation
 
-Translate text in images, PDFs, or ZIP uploads. PNG, JPG, JPEG, WEBP, PDF, and ZIP
-are accepted; PSD/PSB are not. Fine-tune a region, then download all of your
-translated images.
+Localize images and PDFs into any language. Pass a publicly accessible `media_url`
+to a PNG, JPG, JPEG, WEBP, PDF, or ZIP of page images. Fine-tune a region, then
+download all of your translated images.
 
 ```python
 import time
@@ -694,7 +694,6 @@ created = client.image_translation.create_image_translation(
     source_language=Languages.EN_US,
     target_languages=[Languages.ES_ES, Languages.FR_FR],
     media_url="https://example.com/poster.png",
-    content_kind="generic",
 )
 
 while True:
@@ -715,7 +714,7 @@ ft = client.image_translation.fine_tune_image_translation(
     run_id=created.run_id,
     target_language_id=Languages.ES_ES,
     region_id=project.pages[0].regions[0].region_id,
-    prompt="Make the headline shorter",
+    prompt="Use a bolder font and make the text color more vibrant",
 )
 exported = client.image_translation.export_image_translation(run_id=created.run_id)
 result = client.image_translation.get_image_translation_result(created.run_id)

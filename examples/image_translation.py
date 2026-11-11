@@ -23,7 +23,6 @@ def main() -> None:
         source_language=Languages.EN_US,
         target_languages=[Languages.ES_ES],
         media_url="https://example.com/poster.png",
-        content_kind="generic",
         project_name="Poster ES",
     )
     print(f">> created run_id={created.run_id}")
@@ -38,7 +37,7 @@ def main() -> None:
         run_id=created.run_id,
         target_language_id=Languages.ES_ES,
         region_id=region.region_id,
-        prompt="Make the headline shorter",
+        prompt="Use a bolder font and make the text color more vibrant",
     )
     wait_until_success(ft.task_id)
 

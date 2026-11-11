@@ -2,11 +2,9 @@
 
 import typing
 
-from .. import core
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
 from ..types.fine_tune_image_translation_out import FineTuneImageTranslationOut
-from ..types.image_text_edit_content_kind import ImageTextEditContentKind
 from ..types.image_text_edit_create_out import ImageTextEditCreateOut
 from ..types.image_text_edit_export_format import ImageTextEditExportFormat
 from ..types.image_text_edit_export_out import ImageTextEditExportOut
@@ -40,9 +38,7 @@ class ImageTranslationClient:
         *,
         source_language: LanguageInput,
         target_languages: typing.Sequence[LanguageInput],
-        media_file: typing.Optional[core.File] = OMIT,
-        media_url: typing.Optional[str] = OMIT,
-        content_kind: typing.Optional[ImageTextEditContentKind] = OMIT,
+        media_url: str,
         export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -58,14 +54,8 @@ class ImageTranslationClient:
         target_languages : typing.Sequence[LanguageInput]
             Target languages as language IDs or locale tags
 
-        media_file : typing.Optional[core.File]
-            Image (PNG, JPG, JPEG, WEBP), PDF, or ZIP of images. See core.File for more documentation
-
-        media_url : typing.Optional[str]
-            URL to an image, PDF, or ZIP
-
-        content_kind : typing.Optional[ImageTextEditContentKind]
-            `generic` (default) or `comic`
+        media_url : str
+            Publicly accessible URL of an image, PDF, or ZIP of page images
 
         export_format : typing.Optional[ImageTextEditExportFormat]
             `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
@@ -94,14 +84,13 @@ class ImageTranslationClient:
         client.image_translation.create_image_translation(
             source_language=1,
             target_languages=[84],
+            media_url="https://example.com/poster.png",
         )
         """
         _response = self._raw_client.create_image_translation(
             source_language=source_language,
             target_languages=target_languages,
-            media_file=media_file,
             media_url=media_url,
-            content_kind=content_kind,
             export_format=export_format,
             project_name=project_name,
             project_description=project_description,
@@ -327,9 +316,7 @@ class AsyncImageTranslationClient:
         *,
         source_language: LanguageInput,
         target_languages: typing.Sequence[LanguageInput],
-        media_file: typing.Optional[core.File] = OMIT,
-        media_url: typing.Optional[str] = OMIT,
-        content_kind: typing.Optional[ImageTextEditContentKind] = OMIT,
+        media_url: str,
         export_format: typing.Optional[ImageTextEditExportFormat] = OMIT,
         project_name: typing.Optional[str] = OMIT,
         project_description: typing.Optional[str] = OMIT,
@@ -345,14 +332,8 @@ class AsyncImageTranslationClient:
         target_languages : typing.Sequence[LanguageInput]
             Target languages as language IDs or locale tags
 
-        media_file : typing.Optional[core.File]
-            Image (PNG, JPG, JPEG, WEBP), PDF, or ZIP of images. See core.File for more documentation
-
-        media_url : typing.Optional[str]
-            URL to an image, PDF, or ZIP
-
-        content_kind : typing.Optional[ImageTextEditContentKind]
-            `generic` (default) or `comic`
+        media_url : str
+            Publicly accessible URL of an image, PDF, or ZIP of page images
 
         export_format : typing.Optional[ImageTextEditExportFormat]
             `ZIP` of page images (default) or `PDF` (a ZIP of per-language PDFs)
@@ -394,9 +375,7 @@ class AsyncImageTranslationClient:
         _response = await self._raw_client.create_image_translation(
             source_language=source_language,
             target_languages=target_languages,
-            media_file=media_file,
             media_url=media_url,
-            content_kind=content_kind,
             export_format=export_format,
             project_name=project_name,
             project_description=project_description,
