@@ -16,6 +16,7 @@ if typing.TYPE_CHECKING:
     from .audio_separation.client import AsyncAudioSeparationClient, AudioSeparationClient
     from .deprecated_streaming.client import AsyncDeprecatedStreamingClient, DeprecatedStreamingClient
     from .dictionaries.client import AsyncDictionariesClient, DictionariesClient
+    from .document_translation.client import AsyncDocumentTranslationClient, DocumentTranslationClient
     from .dub.client import AsyncDubClient, DubClient
     from .folders.client import AsyncFoldersClient, FoldersClient
     from .languages.client import AsyncLanguagesClient, LanguagesClient
@@ -159,6 +160,7 @@ class CambAI:
         self._streaming: typing.Optional[StreamingClient] = None
         self._voice_cloning: typing.Optional[VoiceCloningClient] = None
         self._dictionaries: typing.Optional[DictionariesClient] = None
+        self._document_translation: typing.Optional[DocumentTranslationClient] = None
         self._project_setup: typing.Optional[ProjectSetupClient] = None
         self._deprecated_streaming: typing.Optional[DeprecatedStreamingClient] = None
         self._live_transcription: typing.Optional[typing.Any] = None
@@ -378,6 +380,14 @@ class CambAI:
         return self._dictionaries
 
     @property
+    def document_translation(self):
+        if self._document_translation is None:
+            from .document_translation.client import DocumentTranslationClient  # noqa: E402
+
+            self._document_translation = DocumentTranslationClient(client_wrapper=self._client_wrapper)
+        return self._document_translation
+
+    @property
     def project_setup(self):
         if self._project_setup is None:
             from .project_setup.client import ProjectSetupClient  # noqa: E402
@@ -507,6 +517,7 @@ class AsyncCambAI:
         self._streaming: typing.Optional[AsyncStreamingClient] = None
         self._voice_cloning: typing.Optional[AsyncVoiceCloningClient] = None
         self._dictionaries: typing.Optional[AsyncDictionariesClient] = None
+        self._document_translation: typing.Optional[AsyncDocumentTranslationClient] = None
         self._project_setup: typing.Optional[AsyncProjectSetupClient] = None
         self._deprecated_streaming: typing.Optional[AsyncDeprecatedStreamingClient] = None
         self._live_transcription: typing.Optional[typing.Any] = None
@@ -748,6 +759,14 @@ class AsyncCambAI:
 
             self._dictionaries = AsyncDictionariesClient(client_wrapper=self._client_wrapper)
         return self._dictionaries
+
+    @property
+    def document_translation(self):
+        if self._document_translation is None:
+            from .document_translation.client import AsyncDocumentTranslationClient  # noqa: E402
+
+            self._document_translation = AsyncDocumentTranslationClient(client_wrapper=self._client_wrapper)
+        return self._document_translation
 
     @property
     def project_setup(self):
