@@ -12,6 +12,7 @@ if typing.TYPE_CHECKING:
     from .config_stream import ConfigStream
     from .config_stream_pipeline import ConfigStreamPipeline
     from .create_custom_voice_out import CreateCustomVoiceOut
+    from .create_doc_translation_out import CreateDocTranslationOut
     from .create_project_setup_out import CreateProjectSetupOut
     from .create_stream_out import CreateStreamOut
     from .create_stream_request_payload import CreateStreamRequestPayload
@@ -21,6 +22,7 @@ if typing.TYPE_CHECKING:
     from .demixing_option import DemixingOption
     from .dictionary_term import DictionaryTerm
     from .dictionary_with_terms import DictionaryWithTerms
+    from .doc_translation_result import DocTranslationResult
     from .dubbing_result import DubbingResult
     from .dub_srt_input import DubSRTInput
     from .dub_target_srt_input import DubTargetSRTInput
@@ -84,6 +86,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "ConfigStream": ".config_stream",
     "ConfigStreamPipeline": ".config_stream_pipeline",
     "CreateCustomVoiceOut": ".create_custom_voice_out",
+    "CreateDocTranslationOut": ".create_doc_translation_out",
     "CreateProjectSetupOut": ".create_project_setup_out",
     "CreateStreamOut": ".create_stream_out",
     "CreateStreamRequestPayload": ".create_stream_request_payload",
@@ -93,6 +96,7 @@ _dynamic_imports: typing.Dict[str, str] = {
     "DemixingOption": ".demixing_option",
     "DictionaryTerm": ".dictionary_term",
     "DictionaryWithTerms": ".dictionary_with_terms",
+    "DocTranslationResult": ".doc_translation_result",
     "DubbingResult": ".dubbing_result",
     "DubSRTInput": ".dub_srt_input",
     "DubTargetSRTInput": ".dub_target_srt_input",
@@ -180,6 +184,7 @@ __all__ = [
     "ConfigStream",
     "ConfigStreamPipeline",
     "CreateCustomVoiceOut",
+    "CreateDocTranslationOut",
     "CreateProjectSetupOut",
     "CreateStreamOut",
     "CreateStreamRequestPayload",
@@ -189,6 +194,7 @@ __all__ = [
     "DemixingOption",
     "DictionaryTerm",
     "DictionaryWithTerms",
+    "DocTranslationResult",
     "DubbingResult",
     "DubSRTInput",
     "DubTargetSRTInput",
