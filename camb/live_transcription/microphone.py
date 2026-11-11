@@ -6,8 +6,6 @@ import asyncio
 import queue
 import typing
 
-import sounddevice as sd
-
 
 class Microphone:
     """Capture raw 16-bit PCM audio from the default input device.
@@ -39,6 +37,8 @@ class Microphone:
         return self._chunk_size
 
     def start(self) -> None:
+        import sounddevice as sd
+
         if self._running:
             return
 
